@@ -1,0 +1,161 @@
+[gd_scene load_steps=23 format=3 uid="uid://boqc2y4amjeqp"]
+
+[ext_resource type="Script" path="res://scenes/creature/Creature.gd" id="1_4jpvp"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="2_6f3ey"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector.gd" id="3_l1ib0"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence_star.gd" id="4_0y2j8"]
+[ext_resource type="Script" path="res://ai/conditions/IsHungryCondition.gd" id="5_7u07e"]
+[ext_resource type="Script" path="res://ai/actions/MoveToBedAction.gd" id="6_7urcs"]
+[ext_resource type="Script" path="res://ai/actions/WalkToFoodAction.gd" id="7_qslpf"]
+[ext_resource type="Script" path="res://ai/actions/WalkAroundAction.gd" id="8_rtp40"]
+[ext_resource type="Texture2D" uid="uid://d4n35pl3x5ipp" path="res://assets/egg.png" id="9_fefmi"]
+[ext_resource type="Script" path="res://ai/conditions/IsSleepyCondition.gd" id="9_g5f5m"]
+[ext_resource type="Script" path="res://ai/actions/IdleAction.gd" id="9_milg3"]
+[ext_resource type="Texture2D" uid="uid://bqfr07p54au1w" path="res://assets/TL_Creatures.png" id="9_phaxw"]
+[ext_resource type="Script" path="res://ai/actions/SleepAction.gd" id="10_3qdq7"]
+[ext_resource type="PackedScene" uid="uid://b8uamh30l86kw" path="res://scenes/creature/emotions/singing_bubble.tscn" id="10_t2ebw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dvbcp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_fefmi")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_55nak"]
+atlas = ExtResource("9_phaxw")
+region = Rect2(0, 256, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nf1q8"]
+atlas = ExtResource("9_phaxw")
+region = Rect2(32, 256, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wdqk3"]
+atlas = ExtResource("9_phaxw")
+region = Rect2(64, 256, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_loeeb"]
+atlas = ExtResource("9_phaxw")
+region = Rect2(96, 256, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wlfi1"]
+atlas = ExtResource("9_phaxw")
+region = Rect2(128, 256, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7yjf2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_55nak")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nf1q8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wdqk3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_loeeb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wlfi1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b7s5w"]
+radius = 8.24621
+
+[node name="Creature" type="CharacterBody2D" groups=["Creature"]]
+z_index = 2
+y_sort_enabled = true
+input_pickable = true
+motion_mode = 1
+safe_margin = 0.001
+script = ExtResource("1_4jpvp")
+movement_speed = 30.0
+movement_range = 200
+
+[node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard")]
+script = ExtResource("2_6f3ey")
+actor_node_path = NodePath("..")
+blackboard = NodePath("@Node@18216")
+
+[node name="Either" type="Node" parent="BeehaveTree"]
+script = ExtResource("3_l1ib0")
+
+[node name="Sleep" type="Node" parent="BeehaveTree/Either"]
+script = ExtResource("4_0y2j8")
+
+[node name="IsSleepyCondition" type="Node" parent="BeehaveTree/Either/Sleep"]
+script = ExtResource("9_g5f5m")
+
+[node name="MoveToBed" type="Node" parent="BeehaveTree/Either/Sleep"]
+script = ExtResource("6_7urcs")
+
+[node name="Sleep" type="Node" parent="BeehaveTree/Either/Sleep"]
+script = ExtResource("10_3qdq7")
+
+[node name="FindFood" type="Node" parent="BeehaveTree/Either"]
+script = ExtResource("4_0y2j8")
+
+[node name="IsHungryCondition" type="Node" parent="BeehaveTree/Either/FindFood"]
+script = ExtResource("5_7u07e")
+
+[node name="WalkToClosestFoodAction" type="Node" parent="BeehaveTree/Either/FindFood"]
+script = ExtResource("7_qslpf")
+
+[node name="IdleAction" type="Node" parent="BeehaveTree/Either/FindFood"]
+script = ExtResource("9_milg3")
+
+[node name="WalkAround" type="Node" parent="BeehaveTree/Either"]
+script = ExtResource("4_0y2j8")
+
+[node name="WalkAroundAction" type="Node" parent="BeehaveTree/Either/WalkAround"]
+script = ExtResource("8_rtp40")
+
+[node name="IdleAction" type="Node" parent="BeehaveTree/Either/WalkAround"]
+script = ExtResource("9_milg3")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 5.0
+target_desired_distance = 5.0
+path_max_distance = 50.0
+debug_enabled = true
+
+[node name="EggSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 3
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_dvbcp")
+
+[node name="AdultSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
+y_sort_enabled = true
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_7yjf2")
+autoplay = "default"
+frame_progress = 0.380996
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_b7s5w")
+
+[node name="Camera2D" type="Camera2D" parent="." groups=["CreatureCamera"]]
+zoom = Vector2(4, 4)
+limit_left = 0
+limit_top = 0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.0
+
+[node name="EmotionContainer" type="Node2D" parent="."]
+position = Vector2(0, -23)
+
+[node name="SingingBubble" parent="EmotionContainer" instance=ExtResource("10_t2ebw")]
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

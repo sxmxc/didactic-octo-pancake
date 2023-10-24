@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8uamh30l86kw"]
+
+[ext_resource type="PackedScene" uid="uid://cspvr47wvwpdy" path="res://scenes/creature/emotions/emotion_bubble.tscn" id="1_c0fu7"]
+
+[node name="SingingBubble" instance=ExtResource("1_c0fu7")]

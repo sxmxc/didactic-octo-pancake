@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxhvunlio0i71"]
+
+[ext_resource type="Texture2D" uid="uid://cmuwq5armf04u" path="res://assets/basic/sNest_32x32.png" id="1_b3lw1"]
+[ext_resource type="Script" path="res://scenes/ui/build_item_icon.gd" id="1_kcy0n"]
+
+[node name="BuildItemIcon" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_kcy0n")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+texture = ExtResource("1_b3lw1")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+offset_left = 1.0
+offset_top = 64.0
+offset_right = 37.0
+offset_bottom = 87.0
+text = "Item"
+horizontal_alignment = 1
+vertical_alignment = 1

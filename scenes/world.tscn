@@ -1,7 +1,8 @@
-[gd_scene load_steps=53 format=3 uid="uid://coy16s0wpy0ff"]
+[gd_scene load_steps=56 format=3 uid="uid://coy16s0wpy0ff"]
 
 [ext_resource type="Script" path="res://addons/beehave/blackboard.gd" id="1_rj3i3"]
 [ext_resource type="Script" path="res://scenes/world.gd" id="1_xse1y"]
+[ext_resource type="Script" path="res://scenes/ui/DropArea.gd" id="2_qhaud"]
 [ext_resource type="Texture2D" uid="uid://b0eu20dffb0tp" path="res://assets/basic/terrain_tiles_v2.png" id="3_86avt"]
 [ext_resource type="Texture2D" uid="uid://c3l6j2xc0q25w" path="res://assets/basic/assets_spritesheet_v2_free.png" id="4_hvsww"]
 [ext_resource type="Texture2D" uid="uid://vlyqw7pwkuc8" path="res://assets/basic/fence_tiles.png" id="5_2r4lu"]
@@ -12,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://drrcjuybklwl7" path="res://assets/FOOD WL.png" id="10_700jb"]
 [ext_resource type="Texture2D" uid="uid://dbr1iidgsppie" path="res://assets/Progress02.png" id="10_svpx3"]
 [ext_resource type="Texture2D" uid="uid://dl2ye3xx60h0x" path="res://assets/Icon_Large_Star.png" id="11_j3ndm"]
+[ext_resource type="Script" path="res://scenes/UI.gd" id="13_eeuep"]
 [ext_resource type="Texture2D" uid="uid://chbybml00m3s8" path="res://assets/ui/controlbar-background.svg" id="16_lbs5v"]
 [ext_resource type="Texture2D" uid="uid://bxchergwc7l3v" path="res://assets/ui/worldview-buttons.png" id="17_1yor5"]
 [ext_resource type="Texture2D" uid="uid://dg10xa0macwvp" path="res://assets/ui/focus-view-buttons.png" id="17_5b0d0"]
@@ -20,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://de0hsrfmu22y7" path="res://assets/Progress03.png" id="20_85rbl"]
 [ext_resource type="Texture2D" uid="uid://chwbnvdklciby" path="res://assets/ui/focus-view-buttons-pressed.png" id="22_bi0qh"]
 [ext_resource type="Script" path="res://scenes/ui/CreatureContainer.gd" id="24_4lx77"]
+[ext_resource type="Script" path="res://scenes/ui/BuildContainer.gd" id="27_4hh07"]
 [ext_resource type="PackedScene" uid="uid://cyv1ty5tg8nyl" path="res://buildables/nests/nest.tscn" id="27_l21be"]
 [ext_resource type="Texture2D" uid="uid://bqfr07p54au1w" path="res://assets/TL_Creatures.png" id="27_plnee"]
 [ext_resource type="Script" path="res://scenes/SpaceBackground.gd" id="28_x4xo3"]
@@ -1584,6 +1587,24 @@ region = Rect2(694, 41, 171, 171)
 script = ExtResource("1_xse1y")
 tick_frequency = 2
 
+[node name="DropArea" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 238.0
+offset_top = 95.0
+offset_right = 900.0
+offset_bottom = 665.0
+script = ExtResource("2_qhaud")
+metadata/_edit_use_anchors_ = true
+
+[node name="NoDropArea" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 207.0
+offset_top = 662.0
+offset_right = 927.0
+offset_bottom = 1271.0
+
 [node name="Blackboard" type="Node" parent="."]
 script = ExtResource("1_rj3i3")
 
@@ -1646,6 +1667,12 @@ position = Vector2(0, -476)
 anchor_mode = 0
 enabled = false
 
+[node name="BuildCamera" type="Camera2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(571, 633)
+enabled = false
+zoom = Vector2(1.5, 1.5)
+
 [node name="SpaceBackground" type="ParallaxBackground" parent="."]
 script = ExtResource("28_x4xo3")
 scroll_speed = 10
@@ -1682,6 +1709,7 @@ motion_mirroring = Vector2(4096, 4096)
 texture = ExtResource("32_er7k1")
 
 [node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("13_eeuep")
 
 [node name="CurrentCreatureStats" type="NinePatchRect" parent="UI"]
 unique_name_in_owner = true
@@ -1898,6 +1926,7 @@ patch_margin_left = 21
 patch_margin_top = 47
 patch_margin_right = 18
 patch_margin_bottom = 16
+script = ExtResource("27_4hh07")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/WorldViewMenu/BuildContainer"]
 layout_mode = 1
@@ -1981,6 +2010,7 @@ texture_pressed = SubResource("AtlasTexture_djh1s")
 stretch_mode = 3
 
 [connection signal="pressed" from="UI/WorldViewMenu/MainContainer/HBoxContainer/CreatureButton" to="UI/WorldViewMenu/CreatureContainer" method="_on_creature_button_pressed"]
-[connection signal="pressed" from="UI/WorldViewMenu/MainContainer/HBoxContainer/NewCreatureButton" to="." method="_on_new_creature_button_pressed"]
-[connection signal="pressed" from="UI/FocusViewMenu/MainContainer/HBoxContainer/WorldViewButton" to="." method="_on_world_view_button_pressed"]
-[connection signal="pressed" from="UI/FocusViewMenu/MainContainer/HBoxContainer/ActionButton" to="." method="_on_action_button_pressed"]
+[connection signal="pressed" from="UI/WorldViewMenu/MainContainer/HBoxContainer/NewCreatureButton" to="UI" method="_on_new_creature_button_pressed"]
+[connection signal="pressed" from="UI/WorldViewMenu/MainContainer/HBoxContainer/BuildButton" to="UI/WorldViewMenu/BuildContainer" method="_on_build_button_pressed"]
+[connection signal="pressed" from="UI/FocusViewMenu/MainContainer/HBoxContainer/WorldViewButton" to="UI" method="_on_world_view_button_pressed"]
+[connection signal="pressed" from="UI/FocusViewMenu/MainContainer/HBoxContainer/ActionButton" to="UI" method="_on_action_button_pressed"]

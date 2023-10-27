@@ -5,6 +5,9 @@
 
 [node name="Nest" type="Node2D" groups=["Nest"]]
 script = ExtResource("1_m4b6s")
+buildable_name = "Basic Nest"
+buildable_key = "BasicNest"
+menu_icon_texture = ExtResource("1_4brwt")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1

@@ -1,6 +1,9 @@
-extends Buildable
+extends Node2D
+class_name Buildable
 
-var owned_by_creature : Creature = null
+@export var buildable_name : String = ""
+@export var buildable_key : String = ""
+@export var menu_icon_texture : Texture2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

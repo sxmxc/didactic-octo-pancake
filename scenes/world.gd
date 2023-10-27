@@ -27,6 +27,7 @@ var namegen : NameGenerator = NameGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	randomize()
 	Eventbus.focus_view_requested.connect(_on_focus_view_requested)
 	Eventbus.world_view_requested.connect(_on_world_view_requested)
 	Eventbus.build_view_requested.connect(_on_build_view_requested)
@@ -98,6 +99,7 @@ func _on_build_view_requested():
 	
 func _on_new_creature_requested():
 	var new_creature : Creature = creature_scene.instantiate()
-	new_creature.creature_nickname = namegen.new_name()[3]
+	var name_array : Array = namegen.new_name()
+	new_creature.creature_nickname = name_array[randi_range(0,name_array.size()-1)]
 	new_creature.name = new_creature.creature_nickname
 	spawn_creature(new_creature)

@@ -45,9 +45,9 @@ func new_name():
 	#myArray = names_Loaded.v_RWFemaleFirstNames	#this also works; because the variable is exported? No, export not needed.
 													#I have not yet figured out how to properly use exported variables.
 	#Pack an array with all the output names we have generated. This will be returned to the emitter_Button that called new_name()
-	outputNames.push_back( pick_random_element(rWFemaleFirstNames,v_RWSurNames,nullArray,nullArray,nullArray, false, false, false, false) )	#entry[0]: Real World Female Name
-		
-	outputNames.push_back( pick_random_element(rWMaleFirstNames,v_RWSurNames,nullArray,nullArray,nullArray, false, false, false, false) )	#entry[1]: Real World Male Name
+	#outputNames.push_back( pick_random_element(rWFemaleFirstNames,v_RWSurNames,nullArray,nullArray,nullArray, false, false, false, false) )	#entry[0]: Real World Female Name
+		#
+	#outputNames.push_back( pick_random_element(rWMaleFirstNames,v_RWSurNames,nullArray,nullArray,nullArray, false, false, false, false) )	#entry[1]: Real World Male Name
 		
 	outputNames.push_back( pick_random_element(v_Emi1,v_Emi2,v_Emi3,nullArray,nullArray, true, true, false, false) )	#entry[2]: Emi's Random name generator
 	

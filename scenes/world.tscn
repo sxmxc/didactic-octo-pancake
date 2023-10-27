@@ -24,7 +24,7 @@
 [ext_resource type="Script" path="res://scenes/ui/CreatureContainer.gd" id="24_4lx77"]
 [ext_resource type="Script" path="res://scenes/ui/BuildContainer.gd" id="27_4hh07"]
 [ext_resource type="PackedScene" uid="uid://cyv1ty5tg8nyl" path="res://buildables/nests/nest.tscn" id="27_l21be"]
-[ext_resource type="Texture2D" uid="uid://bqfr07p54au1w" path="res://assets/TL_Creatures.png" id="27_plnee"]
+[ext_resource type="PackedScene" uid="uid://b2yhlposmux4c" path="res://scenes/ui/creature_icon.tscn" id="27_ul6s3"]
 [ext_resource type="Script" path="res://scenes/SpaceBackground.gd" id="28_x4xo3"]
 [ext_resource type="Texture2D" uid="uid://b17bh8piiajfm" path="res://assets/space/Nebula Aqua-Pink.png" id="29_8jkcj"]
 [ext_resource type="Texture2D" uid="uid://bqt670lks5ssd" path="res://assets/space/Stars Small_1.png" id="30_4ojnq"]
@@ -1511,6 +1511,10 @@ sources/1 = SubResource("TileSetAtlasSource_d77a5")
 sources/4 = SubResource("TileSetAtlasSource_ls8kv")
 pattern_0 = SubResource("TileMapPattern_3rh1b")
 
+[sub_resource type="LabelSettings" id="LabelSettings_7jtxg"]
+font_size = 32
+font_color = Color(0, 0, 0, 1)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_b4p6s"]
 atlas = ExtResource("10_700jb")
 region = Rect2(40, 121, 27, 24)
@@ -1546,10 +1550,6 @@ region = Rect2(700, 41, 171, 171)
 [sub_resource type="AtlasTexture" id="AtlasTexture_kknjc"]
 atlas = ExtResource("17_e5sdm")
 region = Rect2(698, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_l0w8d"]
-atlas = ExtResource("27_plnee")
-region = Rect2(7, 265, 18, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hudri"]
 atlas = ExtResource("17_5b0d0")
@@ -1723,6 +1723,17 @@ patch_margin_left = 21
 patch_margin_top = 47
 patch_margin_right = 18
 patch_margin_bottom = 16
+
+[node name="NameLabel" type="Label" parent="UI/CurrentCreatureStats"]
+layout_mode = 2
+offset_left = -1.0
+offset_top = 1.0
+offset_right = 418.0
+offset_bottom = 46.0
+text = "Creature Name"
+label_settings = SubResource("LabelSettings_7jtxg")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/CurrentCreatureStats"]
 layout_mode = 1
@@ -1899,13 +1910,9 @@ layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="UI/WorldViewMenu/CreatureContainer/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(64, 64)
+[node name="CreatureIcon" parent="UI/WorldViewMenu/CreatureContainer/MarginContainer/HBoxContainer" instance=ExtResource("27_ul6s3")]
 layout_mode = 2
 size_flags_vertical = 4
-texture = SubResource("AtlasTexture_l0w8d")
-expand_mode = 1
-stretch_mode = 5
 
 [node name="BuildContainer" type="NinePatchRect" parent="UI/WorldViewMenu"]
 visible = false

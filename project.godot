@@ -39,7 +39,7 @@ window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/beehave/plugin.cfg", "res://addons/panku_console/plugin.cfg")
+enabled=PackedStringArray("res://addons/beehave/plugin.cfg", "res://addons/panku_console/plugin.cfg", "res://addons/randomnamesgenerator/plugin.cfg")
 
 [input_devices]
 

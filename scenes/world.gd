@@ -23,6 +23,7 @@ signal tick
 @export var creature_scene : PackedScene = creature_library["Creature0"]
 
 var world_clock : Timer
+var namegen : NameGenerator = NameGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -36,9 +37,11 @@ func _ready():
 	world_clock.connect("timeout", _on_timer_timeout)
 	world_clock.wait_time = tick_frequency
 	var new_creature : Creature = creature_scene.instantiate()
+	new_creature.creature_nickname = namegen.new_name()[3]
+	new_creature.name = new_creature.creature_nickname
 	world_clock.start()
 	spawn_creature(new_creature)
-	ui.focused_creature = new_creature
+	Eventbus.focus_view_requested.emit(new_creature)
 	player.learn_buildable(buildable_library["BasicNest"].instantiate())
 	pass # Replace with function body.
 
@@ -95,4 +98,6 @@ func _on_build_view_requested():
 	
 func _on_new_creature_requested():
 	var new_creature : Creature = creature_scene.instantiate()
+	new_creature.creature_nickname = namegen.new_name()[3]
+	new_creature.name = new_creature.creature_nickname
 	spawn_creature(new_creature)

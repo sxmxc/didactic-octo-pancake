@@ -137,8 +137,9 @@ func get_save_data() -> Dictionary:
 
 
 func _on_input_event(_viewport, event, _shape_idx):
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.pressed:
-				Eventbus.focus_view_requested.emit(self)
+	pass # Replace with function body.
+
+
+func _on_touch_screen_button_pressed():
+	Eventbus.focus_view_requested.emit(self)
 	pass # Replace with function body.

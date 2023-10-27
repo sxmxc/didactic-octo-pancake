@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://boqc2y4amjeqp"]
+[gd_scene load_steps=24 format=3 uid="uid://boqc2y4amjeqp"]
 
 [ext_resource type="Script" path="res://scenes/creature/Creature.gd" id="1_4jpvp"]
 [ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="2_6f3ey"]
@@ -72,6 +72,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_b7s5w"]
 radius = 8.24621
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_dyisl"]
+radius = 16.0
+
 [node name="Creature" type="CharacterBody2D" groups=["Creature"]]
 z_index = 2
 y_sort_enabled = true
@@ -85,7 +88,7 @@ movement_range = 200
 [node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard")]
 script = ExtResource("2_6f3ey")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@18216")
+blackboard = NodePath("@Node@26494")
 
 [node name="Either" type="Node" parent="BeehaveTree"]
 script = ExtResource("3_l1ib0")
@@ -158,4 +161,7 @@ position = Vector2(0, -23)
 
 [node name="SingingBubble" parent="EmotionContainer" instance=ExtResource("10_t2ebw")]
 
-[connection signal="input_event" from="." to="." method="_on_input_event"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="."]
+shape = SubResource("CircleShape2D_dyisl")
+
+[connection signal="pressed" from="TouchScreenButton" to="." method="_on_touch_screen_button_pressed"]

@@ -34,17 +34,23 @@ func _on_timer_timeout():
 	tick.emit()
 
 func spawn_creature(creature: Creature):
-	%WorldMap.add_child(creature)
-	creature.set_owner(self)
-	creature.position = %EggSpawn.position
-	creature.register_worldmap(get_node("%WorldMap"))
-	creature.register_blackboard(world_bb)
-	creature.date_born = Time.get_unix_time_from_system()
-	world_bb.set_value(creature.name + "_hunger", creature.stats.hunger)
-	world_bb.set_value(creature.name + "_energy", creature.stats.energy)
-	world_bb.set_value(creature.name+"_bed", %EggSpawn.position)
-	world_clock.connect("timeout", creature._on_world_tick)
-	player.adopt_creature(creature)
+	for target in get_tree().get_nodes_in_group("Nest"):
+		if target.owned_by_creature == null:
+			print("Adding egg to available nest")
+			%WorldMap.add_child(creature)
+			target.owned_by_creature = creature
+			creature.set_owner(self)
+			creature.position = target.position
+			creature.register_worldmap(get_node("%WorldMap"))
+			creature.register_blackboard(world_bb)
+			creature.date_born = Time.get_unix_time_from_system()
+			world_bb.set_value(creature.name + "_hunger", creature.stats.hunger)
+			world_bb.set_value(creature.name + "_energy", creature.stats.energy)
+			world_bb.set_value(creature.name+"_bed", target.position)
+			world_clock.connect("timeout", creature._on_world_tick)
+			player.adopt_creature(creature)
+			return
+	print("No available nests")
 
 
 func _on_home_button_pressed():
@@ -80,6 +86,7 @@ func _on_action_button_pressed():
 			var food = meat_scene.instantiate()
 			target.add_child(food)
 			return
+	print("No available food containers")
 	pass # Replace with function body.
 
 func _on_energy_updated():

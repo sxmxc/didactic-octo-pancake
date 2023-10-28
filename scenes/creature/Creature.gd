@@ -120,6 +120,7 @@ func _age_up():
 		"adult":
 			pass
 	print("Happy Birthday %s!" % name)
+	Eventbus.notification_requested.emit("Happy Birthday %s!" % name)
 	
 func show_emotion(emotion: String):
 	if emotion_bubbles.has(emotion):

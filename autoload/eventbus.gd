@@ -9,4 +9,4 @@ signal build_view_requested
 signal focus_view_requested(creature: Creature)
 signal new_creature_requested
 
-
+signal notification_requested(notification: String)

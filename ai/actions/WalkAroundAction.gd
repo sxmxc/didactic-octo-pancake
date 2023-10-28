@@ -15,9 +15,10 @@ func tick(actor, blackboard: Blackboard):
 			actor.global_position.y + actor.movement_range))))
 	if !blackboard.has_value(actor.name + "_target"):
 		blackboard.set_value(actor.name + "_target", random_tile_target)
-		
 		actor.set_movement_target(blackboard.get_value(actor.name + "_target"))
+		actor.creature_anim.play("walking")
 		return RUNNING
+		
 	if actor.navigation_agent.is_navigation_finished():
 		blackboard.erase_value(actor.name + "_target")
 		return SUCCESS

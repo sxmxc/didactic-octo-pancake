@@ -3,6 +3,7 @@ extends ActionLeaf
 
 func tick(actor, blackboard: Blackboard):
 	if !actor.is_sleeping:
+		actor.creature_anim.play("sleeping")
 		actor.show_emotion("sleepy")
 		actor.is_sleeping = true
 		return RUNNING

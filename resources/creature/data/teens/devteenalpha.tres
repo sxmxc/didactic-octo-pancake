@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TeenSpecies" load_steps=2 format=3 uid="uid://bwkqkq3tut6ya"]
+
+[ext_resource type="Script" path="res://resources/creature/teen_species.gd" id="1_esj1q"]
+
+[resource]
+script = ExtResource("1_esj1q")
+adult_posibilities = Array[Resource("res://resources/creature/adult_species.gd")]([])
+species_name = ""
+mistakes_needed = 0
+happiness_needed = 0

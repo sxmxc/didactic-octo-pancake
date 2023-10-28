@@ -3,15 +3,14 @@ extends ActionLeaf
 var wait_time : float = 120
 var wait_timer : float = wait_time
 func tick(actor, _blackboard: Blackboard):
-	var anim_sprite : AnimatedSprite2D = actor.sprite
 	if wait_timer <= 0:
-		anim_sprite.play("default")
+		actor.creature_anim.play("walking")
 		actor.show_emotion("happy")
 		wait_timer = wait_time
 		return SUCCESS
 	else:
-		if anim_sprite.animation == "default":
-			anim_sprite.play("idle")
+		if actor.creature_anim.current_animation == "walking":
+			actor.creature_anim.play("idleing")
 			actor.show_emotion("idle")
 		wait_timer -= 1
 		return RUNNING

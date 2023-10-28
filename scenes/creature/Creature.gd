@@ -12,6 +12,7 @@ class_name Creature extends CharacterBody2D
 }
 var current_life_stage = "egg"
 @export var seconds_to_age : int = age_chart[current_life_stage]
+
 @export var stats: Dictionary = {
 	"strength": 0,
 	"intelligence": 0,
@@ -30,9 +31,12 @@ var current_life_stage = "egg"
 	"idle": preload("res://scenes/creature/emotions/idle_bubble.tscn"),
 	"hungry": preload("res://scenes/creature/emotions/hungry_bubble.tscn")
 }
+@export var species : Species
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 @onready var bt: BeehaveTree = get_node("BeehaveTree")
-@onready var sprite : AnimatedSprite2D = get_node("AdultSprite2D")
+@onready var egg_sprite: Sprite2D = get_node("EggSprite")
+@onready var creature_sprite : Sprite2D = get_node("CreatureSprite")
+@onready var creature_anim : AnimationPlayer = get_node("AnimationPlayer")
 @onready var emotion_container = get_node("EmotionContainer")
 @onready var current_emotion : EmotionBubble = emotion_container.get_child(0)
 @onready var camera : Camera2D = get_node("Camera2D")
@@ -71,9 +75,9 @@ func _physics_process(_delta):
 		_on_navigation_agent_2d_velocity_computed(new_velocity)
 	
 	if get_last_motion().x < 0:
-		sprite.flip_h = true
+		creature_sprite.flip_h = true
 	else:
-		sprite.flip_h = false
+		creature_sprite.flip_h = false
 		
 
 func _on_navigation_agent_2d_velocity_computed(safe_velocity):
@@ -106,11 +110,11 @@ func _age_up():
 	seconds_to_age = age_chart[current_life_stage]
 	match  current_life_stage:
 		"egg":
-			get_node("EggSprite2D").visible = true
-			get_node("AdultSprite2D").visible = false
+			egg_sprite.visible = true
+			creature_sprite.visible = false
 		"baby":
-			get_node("EggSprite2D").visible = false
-			get_node("AdultSprite2D").visible = true
+			egg_sprite.visible = false
+			creature_sprite.visible = true
 		"teen":
 			pass
 		"adult":
@@ -135,6 +139,14 @@ func get_save_data() -> Dictionary:
 	}
 	return data
 
+func get_icon_image() -> Texture2D:
+	if current_life_stage == "egg":
+		return $EggSprite.texture
+	else:
+		var text_atlas := AtlasTexture.new()
+		text_atlas.atlas = $CreatureSprite.texture
+		text_atlas.region = Rect2i(0,0,32,32)
+		return text_atlas
 
 func _on_input_event(_viewport, event, _shape_idx):
 	pass # Replace with function body.

@@ -1873,6 +1873,7 @@ stretch_mode = 3
 [node name="CreatureContainer" type="NinePatchRect" parent="UI/WorldViewMenu"]
 visible = false
 show_behind_parent = true
+texture_filter = 5
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -1912,7 +1913,6 @@ alignment = 1
 
 [node name="CreatureIcon" parent="UI/WorldViewMenu/CreatureContainer/MarginContainer/HBoxContainer" instance=ExtResource("27_ul6s3")]
 layout_mode = 2
-size_flags_vertical = 4
 
 [node name="BuildContainer" type="NinePatchRect" parent="UI/WorldViewMenu"]
 visible = false

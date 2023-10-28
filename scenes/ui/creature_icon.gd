@@ -1,7 +1,7 @@
 extends Control
 
 @onready var texture_rect : TextureRect = get_node("TextureRect")
-@onready var name_label : Label = get_node("Label")
+@onready var name_label : Label = get_node("TextureRect/Label")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -13,5 +13,5 @@ func _process(delta):
 
 func initialize(creature: Creature):
 	await ready
-	texture_rect.texture = creature.sprite.sprite_frames.get_frame_texture("default",0)
+	texture_rect.texture = creature.get_icon_image()
 	name_label.text = creature.creature_nickname

@@ -19,12 +19,6 @@ func _on_open():
 		child.queue_free()
 	for creature : Creature in get_tree().get_nodes_in_group("Creature"):
 		var icon = creature_icon.instantiate()
-		#var item = TextureRect.new()
-		#item.custom_minimum_size = Vector2(64,64)
-		#item.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
-		#item.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		#item.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		#item.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.initialize(creature)
 		icon.gui_input.connect(Callable(focus_view_request).bind(creature))
 		creature_list.add_child(icon)

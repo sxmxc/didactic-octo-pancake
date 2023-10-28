@@ -1,0 +1,298 @@
+[gd_scene load_steps=18 format=3 uid="uid://i12tclm2wdmd"]
+
+[ext_resource type="Texture2D" uid="uid://chbybml00m3s8" path="res://assets/ui/controlbar-background.svg" id="1_kia4l"]
+[ext_resource type="Script" path="res://scenes/ui/world_view_menu.gd" id="2_mjasc"]
+[ext_resource type="Texture2D" uid="uid://bxchergwc7l3v" path="res://assets/ui/worldview-buttons.png" id="2_nhpuk"]
+[ext_resource type="Texture2D" uid="uid://dsky673i0obg4" path="res://assets/ui/worldview-buttons-pressed.png" id="3_bv3om"]
+[ext_resource type="Texture2D" uid="uid://dynqd7wfxak5s" path="res://assets/Msg04.png" id="4_uu3dp"]
+[ext_resource type="Script" path="res://scenes/ui/CreatureContainer.gd" id="5_tansi"]
+[ext_resource type="PackedScene" uid="uid://b2yhlposmux4c" path="res://scenes/ui/creature_icon.tscn" id="6_v1107"]
+[ext_resource type="Script" path="res://scenes/ui/BuildContainer.gd" id="7_vfqr7"]
+[ext_resource type="PackedScene" uid="uid://dxhvunlio0i71" path="res://scenes/ui/build_item_icon.tscn" id="9_h0blf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oyy8l"]
+atlas = ExtResource("2_nhpuk")
+region = Rect2(41, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q3ob2"]
+atlas = ExtResource("3_bv3om")
+region = Rect2(41, 50, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6bft6"]
+atlas = ExtResource("2_nhpuk")
+region = Rect2(261, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kkke1"]
+atlas = ExtResource("3_bv3om")
+region = Rect2(261, 50, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0prlt"]
+atlas = ExtResource("2_nhpuk")
+region = Rect2(480, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4kmpq"]
+atlas = ExtResource("3_bv3om")
+region = Rect2(479, 45, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8cutt"]
+atlas = ExtResource("2_nhpuk")
+region = Rect2(700, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kknjc"]
+atlas = ExtResource("3_bv3om")
+region = Rect2(698, 41, 171, 171)
+
+[node name="WorldViewMenu" type="NinePatchRect"]
+texture_filter = 6
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = -243.0
+offset_right = 16.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("1_kia4l")
+patch_margin_left = 10
+patch_margin_top = 142
+patch_margin_right = 7
+patch_margin_bottom = 8
+script = ExtResource("2_mjasc")
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+texture_filter = 6
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="HomeButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = SubResource("AtlasTexture_oyy8l")
+texture_pressed = SubResource("AtlasTexture_q3ob2")
+stretch_mode = 3
+
+[node name="CreatureButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 6
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = SubResource("AtlasTexture_6bft6")
+texture_pressed = SubResource("AtlasTexture_kkke1")
+stretch_mode = 3
+
+[node name="NewCreatureButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = SubResource("AtlasTexture_0prlt")
+texture_pressed = SubResource("AtlasTexture_4kmpq")
+stretch_mode = 3
+
+[node name="BuildButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = SubResource("AtlasTexture_8cutt")
+texture_pressed = SubResource("AtlasTexture_kknjc")
+stretch_mode = 3
+
+[node name="CreatureContainer" type="NinePatchRect" parent="."]
+visible = false
+show_behind_parent = true
+texture_filter = 5
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -255.0
+offset_right = -5.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("4_uu3dp")
+region_rect = Rect2(17, 11, 282, 271)
+patch_margin_left = 21
+patch_margin_top = 47
+patch_margin_right = 18
+patch_margin_bottom = 16
+script = ExtResource("5_tansi")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CreatureContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 21.0
+offset_top = 44.0
+offset_right = -17.0
+grow_horizontal = 2
+grow_vertical = 2
+vertical_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="CreatureContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CreatureContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="CreatureIcon" parent="CreatureContainer/ScrollContainer/MarginContainer/HBoxContainer" instance=ExtResource("6_v1107")]
+layout_mode = 2
+
+[node name="BuildContainer" type="TabContainer" parent="."]
+visible = false
+show_behind_parent = true
+layout_mode = 0
+offset_right = 1077.0
+offset_bottom = 350.0
+theme_override_constants/side_margin = 20
+script = ExtResource("7_vfqr7")
+
+[node name="All" type="NinePatchRect" parent="BuildContainer"]
+layout_mode = 2
+texture = ExtResource("4_uu3dp")
+region_rect = Rect2(17, 11, 282, 271)
+patch_margin_left = 21
+patch_margin_top = 47
+patch_margin_right = 18
+patch_margin_bottom = 16
+
+[node name="MarginContainer" type="MarginContainer" parent="BuildContainer/All"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 43.0
+offset_right = -16.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BuildContainer/All/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BuildItemIcon" parent="BuildContainer/All/MarginContainer/HBoxContainer" instance=ExtResource("9_h0blf")]
+layout_mode = 2
+
+[node name="Beds" type="NinePatchRect" parent="BuildContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("4_uu3dp")
+region_rect = Rect2(17, 11, 282, 271)
+patch_margin_left = 21
+patch_margin_top = 47
+patch_margin_right = 18
+patch_margin_bottom = 16
+
+[node name="MarginContainer" type="MarginContainer" parent="BuildContainer/Beds"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 43.0
+offset_right = -16.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BuildContainer/Beds/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BuildItemIcon" parent="BuildContainer/Beds/MarginContainer/HBoxContainer" instance=ExtResource("9_h0blf")]
+layout_mode = 2
+
+[node name="Food" type="NinePatchRect" parent="BuildContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("4_uu3dp")
+region_rect = Rect2(17, 11, 282, 271)
+patch_margin_left = 21
+patch_margin_top = 47
+patch_margin_right = 18
+patch_margin_bottom = 16
+
+[node name="MarginContainer" type="MarginContainer" parent="BuildContainer/Food"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 43.0
+offset_right = -16.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BuildContainer/Food/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BuildItemIcon" parent="BuildContainer/Food/MarginContainer/HBoxContainer" instance=ExtResource("9_h0blf")]
+layout_mode = 2
+
+[node name="Decoration" type="NinePatchRect" parent="BuildContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("4_uu3dp")
+region_rect = Rect2(17, 11, 282, 271)
+patch_margin_left = 21
+patch_margin_top = 47
+patch_margin_right = 18
+patch_margin_bottom = 16
+
+[node name="MarginContainer" type="MarginContainer" parent="BuildContainer/Decoration"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 43.0
+offset_right = -16.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BuildContainer/Decoration/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BuildItemIcon" parent="BuildContainer/Decoration/MarginContainer/HBoxContainer" instance=ExtResource("9_h0blf")]
+layout_mode = 2
+
+[connection signal="pressed" from="MainContainer/HBoxContainer/CreatureButton" to="CreatureContainer" method="_on_creature_button_pressed"]
+[connection signal="pressed" from="MainContainer/HBoxContainer/NewCreatureButton" to="." method="_on_new_creature_button_pressed"]
+[connection signal="pressed" from="MainContainer/HBoxContainer/BuildButton" to="BuildContainer" method="_on_build_button_pressed"]

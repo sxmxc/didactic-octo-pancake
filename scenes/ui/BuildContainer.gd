@@ -1,6 +1,6 @@
 extends UIDrawer
 
-@onready var item_list := get_node("MarginContainer/HBoxContainer")
+@onready var item_list := get_node("All/MarginContainer/HBoxContainer")
 @export var build_item_icon_scene : PackedScene = preload("res://scenes/ui/build_item_icon.tscn")
 
 # Called when the node enters the scene tree for the first time.
@@ -24,9 +24,11 @@ func _on_build_button_pressed():
 
 func _on_open():
 	Eventbus.build_view_requested.emit()
+	if !owner.get_parent().get_node("%Player"):
+		return
 	for child in item_list.get_children():
 		child.queue_free()
-	for buildable : Buildable in get_parent().get_node("%Player").get_known_buildables():
+	for buildable : Buildable in owner.get_parent().get_node("%Player").get_known_buildables():
 		var item = build_item_icon_scene.instantiate()
 		item.set_item(buildable)
 		item_list.add_child(item)

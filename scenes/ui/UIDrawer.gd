@@ -1,4 +1,4 @@
-extends NinePatchRect
+extends Control
 class_name UIDrawer
 
 var starting_position := Vector2(0,0)
@@ -26,7 +26,7 @@ func open():
 	if tween:
 		tween.kill()
 	tween = get_tree().create_tween()
-	tween.tween_property(self, "position", Vector2(0,position.y - 200), .1)
+	tween.tween_property(self, "position", Vector2(0,position.y - 300), .1)
 	opened = true
 	pass
 

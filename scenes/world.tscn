@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://coy16s0wpy0ff"]
+[gd_scene load_steps=35 format=3 uid="uid://coy16s0wpy0ff"]
 
 [ext_resource type="Script" path="res://addons/beehave/blackboard.gd" id="1_rj3i3"]
 [ext_resource type="Script" path="res://scenes/world.gd" id="1_xse1y"]
@@ -15,17 +15,11 @@
 [ext_resource type="Texture2D" uid="uid://dl2ye3xx60h0x" path="res://assets/Icon_Large_Star.png" id="11_j3ndm"]
 [ext_resource type="Script" path="res://scenes/UI.gd" id="13_eeuep"]
 [ext_resource type="Script" path="res://scenes/ui/NotificationBox.gd" id="15_1hkcs"]
-[ext_resource type="Texture2D" uid="uid://chbybml00m3s8" path="res://assets/ui/controlbar-background.svg" id="16_lbs5v"]
-[ext_resource type="Texture2D" uid="uid://bxchergwc7l3v" path="res://assets/ui/worldview-buttons.png" id="17_1yor5"]
-[ext_resource type="Texture2D" uid="uid://dg10xa0macwvp" path="res://assets/ui/focus-view-buttons.png" id="17_5b0d0"]
-[ext_resource type="Texture2D" uid="uid://dsky673i0obg4" path="res://assets/ui/worldview-buttons-pressed.png" id="17_e5sdm"]
 [ext_resource type="Texture2D" uid="uid://efnh0b3qg2ia" path="res://assets/SliderBar_ProgressBar.png" id="18_iqwpv"]
 [ext_resource type="Texture2D" uid="uid://de0hsrfmu22y7" path="res://assets/Progress03.png" id="20_85rbl"]
-[ext_resource type="Texture2D" uid="uid://chwbnvdklciby" path="res://assets/ui/focus-view-buttons-pressed.png" id="22_bi0qh"]
-[ext_resource type="Script" path="res://scenes/ui/CreatureContainer.gd" id="24_4lx77"]
-[ext_resource type="Script" path="res://scenes/ui/BuildContainer.gd" id="27_4hh07"]
+[ext_resource type="PackedScene" uid="uid://i12tclm2wdmd" path="res://scenes/ui/world_view_menu.tscn" id="24_0bwgy"]
+[ext_resource type="PackedScene" uid="uid://cfo8abfi7e2no" path="res://scenes/ui/focus_view_menu.tscn" id="25_nm4ac"]
 [ext_resource type="PackedScene" uid="uid://cyv1ty5tg8nyl" path="res://buildables/nests/nest.tscn" id="27_l21be"]
-[ext_resource type="PackedScene" uid="uid://b2yhlposmux4c" path="res://scenes/ui/creature_icon.tscn" id="27_ul6s3"]
 [ext_resource type="Script" path="res://scenes/SpaceBackground.gd" id="28_x4xo3"]
 [ext_resource type="Texture2D" uid="uid://b17bh8piiajfm" path="res://assets/space/Nebula Aqua-Pink.png" id="29_8jkcj"]
 [ext_resource type="Texture2D" uid="uid://bqt670lks5ssd" path="res://assets/space/Stars Small_1.png" id="30_4ojnq"]
@@ -1520,70 +1514,6 @@ font_color = Color(0, 0, 0, 1)
 atlas = ExtResource("10_700jb")
 region = Rect2(40, 121, 27, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_oyy8l"]
-atlas = ExtResource("17_1yor5")
-region = Rect2(41, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_q3ob2"]
-atlas = ExtResource("17_e5sdm")
-region = Rect2(41, 50, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6bft6"]
-atlas = ExtResource("17_1yor5")
-region = Rect2(261, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kkke1"]
-atlas = ExtResource("17_e5sdm")
-region = Rect2(261, 50, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0prlt"]
-atlas = ExtResource("17_1yor5")
-region = Rect2(480, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4kmpq"]
-atlas = ExtResource("17_e5sdm")
-region = Rect2(479, 45, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8cutt"]
-atlas = ExtResource("17_1yor5")
-region = Rect2(700, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kknjc"]
-atlas = ExtResource("17_e5sdm")
-region = Rect2(698, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hudri"]
-atlas = ExtResource("17_5b0d0")
-region = Rect2(41, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dwjc1"]
-atlas = ExtResource("22_bi0qh")
-region = Rect2(41, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6nay2"]
-atlas = ExtResource("17_5b0d0")
-region = Rect2(256, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pb672"]
-atlas = ExtResource("22_bi0qh")
-region = Rect2(256, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4qx85"]
-atlas = ExtResource("17_5b0d0")
-region = Rect2(484, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4dlte"]
-atlas = ExtResource("22_bi0qh")
-region = Rect2(481, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wdrho"]
-atlas = ExtResource("17_5b0d0")
-region = Rect2(703, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_djh1s"]
-atlas = ExtResource("22_bi0qh")
-region = Rect2(694, 41, 171, 171)
-
 [node name="World" type="Node2D"]
 script = ExtResource("1_xse1y")
 tick_frequency = 2
@@ -1816,219 +1746,8 @@ texture_under = ExtResource("18_iqwpv")
 texture_progress = ExtResource("10_svpx3")
 texture_progress_offset = Vector2(0, -2)
 
-[node name="WorldViewMenu" type="NinePatchRect" parent="UI"]
+[node name="WorldViewMenu" parent="UI" instance=ExtResource("24_0bwgy")]
 unique_name_in_owner = true
-visible = false
-texture_filter = 6
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = -243.0
-offset_right = 16.0
-offset_bottom = 12.0
-grow_horizontal = 2
-grow_vertical = 0
-texture = ExtResource("16_lbs5v")
-patch_margin_left = 10
-patch_margin_top = 142
-patch_margin_right = 7
-patch_margin_bottom = 8
 
-[node name="MainContainer" type="MarginContainer" parent="UI/WorldViewMenu"]
-texture_filter = 6
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 4
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_bottom = 25
-
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/WorldViewMenu/MainContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="HomeButton" type="TextureButton" parent="UI/WorldViewMenu/MainContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_oyy8l")
-texture_pressed = SubResource("AtlasTexture_q3ob2")
-stretch_mode = 3
-
-[node name="CreatureButton" type="TextureButton" parent="UI/WorldViewMenu/MainContainer/HBoxContainer"]
-texture_filter = 6
-layout_mode = 2
-size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_6bft6")
-texture_pressed = SubResource("AtlasTexture_kkke1")
-stretch_mode = 3
-
-[node name="NewCreatureButton" type="TextureButton" parent="UI/WorldViewMenu/MainContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_0prlt")
-texture_pressed = SubResource("AtlasTexture_4kmpq")
-stretch_mode = 3
-
-[node name="BuildButton" type="TextureButton" parent="UI/WorldViewMenu/MainContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_8cutt")
-texture_pressed = SubResource("AtlasTexture_kknjc")
-stretch_mode = 3
-
-[node name="CreatureContainer" type="NinePatchRect" parent="UI/WorldViewMenu"]
-visible = false
-show_behind_parent = true
-texture_filter = 5
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -255.0
-offset_right = -5.0
-offset_bottom = -75.0
-grow_horizontal = 2
-grow_vertical = 0
-texture = ExtResource("6_eu372")
-region_rect = Rect2(17, 11, 282, 271)
-patch_margin_left = 21
-patch_margin_top = 47
-patch_margin_right = 18
-patch_margin_bottom = 16
-script = ExtResource("24_4lx77")
-
-[node name="MarginContainer" type="MarginContainer" parent="UI/WorldViewMenu/CreatureContainer"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 43.0
-offset_right = -16.0
-offset_bottom = -9.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
-
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/WorldViewMenu/CreatureContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="CreatureIcon" parent="UI/WorldViewMenu/CreatureContainer/MarginContainer/HBoxContainer" instance=ExtResource("27_ul6s3")]
-layout_mode = 2
-
-[node name="BuildContainer" type="NinePatchRect" parent="UI/WorldViewMenu"]
-visible = false
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -255.0
-offset_right = -5.0
-offset_bottom = -75.0
-grow_horizontal = 2
-grow_vertical = 0
-texture = ExtResource("6_eu372")
-region_rect = Rect2(17, 11, 282, 271)
-patch_margin_left = 21
-patch_margin_top = 47
-patch_margin_right = 18
-patch_margin_bottom = 16
-script = ExtResource("27_4hh07")
-
-[node name="MarginContainer" type="MarginContainer" parent="UI/WorldViewMenu/BuildContainer"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 43.0
-offset_right = -16.0
-offset_bottom = -9.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
-
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/WorldViewMenu/BuildContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="FocusViewMenu" type="NinePatchRect" parent="UI"]
+[node name="FocusViewMenu" parent="UI" instance=ExtResource("25_nm4ac")]
 unique_name_in_owner = true
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = -243.0
-offset_right = 16.0
-offset_bottom = 12.0
-grow_horizontal = 2
-grow_vertical = 0
-texture = ExtResource("16_lbs5v")
-patch_margin_left = 10
-patch_margin_top = 142
-patch_margin_right = 7
-patch_margin_bottom = 8
-
-[node name="MainContainer" type="MarginContainer" parent="UI/FocusViewMenu"]
-texture_filter = 6
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 4
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_bottom = 25
-
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/FocusViewMenu/MainContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="WorldViewButton" type="TextureButton" parent="UI/FocusViewMenu/MainContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_hudri")
-texture_pressed = SubResource("AtlasTexture_dwjc1")
-stretch_mode = 3
-
-[node name="CreatureInfoButton" type="TextureButton" parent="UI/FocusViewMenu/MainContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_6nay2")
-texture_pressed = SubResource("AtlasTexture_pb672")
-stretch_mode = 3
-
-[node name="ActionButton" type="TextureButton" parent="UI/FocusViewMenu/MainContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_4qx85")
-texture_pressed = SubResource("AtlasTexture_4dlte")
-stretch_mode = 3
-
-[node name="EvolutionTreeButton" type="TextureButton" parent="UI/FocusViewMenu/MainContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_wdrho")
-texture_pressed = SubResource("AtlasTexture_djh1s")
-stretch_mode = 3
-
-[connection signal="pressed" from="UI/WorldViewMenu/MainContainer/HBoxContainer/CreatureButton" to="UI/WorldViewMenu/CreatureContainer" method="_on_creature_button_pressed"]
-[connection signal="pressed" from="UI/WorldViewMenu/MainContainer/HBoxContainer/NewCreatureButton" to="UI" method="_on_new_creature_button_pressed"]
-[connection signal="pressed" from="UI/WorldViewMenu/MainContainer/HBoxContainer/BuildButton" to="UI/WorldViewMenu/BuildContainer" method="_on_build_button_pressed"]
-[connection signal="pressed" from="UI/FocusViewMenu/MainContainer/HBoxContainer/WorldViewButton" to="UI" method="_on_world_view_button_pressed"]
-[connection signal="pressed" from="UI/FocusViewMenu/MainContainer/HBoxContainer/ActionButton" to="UI" method="_on_action_button_pressed"]

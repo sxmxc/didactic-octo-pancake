@@ -1,0 +1,107 @@
+[gd_scene load_steps=13 format=3 uid="uid://cfo8abfi7e2no"]
+
+[ext_resource type="Texture2D" uid="uid://chbybml00m3s8" path="res://assets/ui/controlbar-background.svg" id="1_qncii"]
+[ext_resource type="Script" path="res://scenes/ui/focus_view_menu.gd" id="2_0ofne"]
+[ext_resource type="Texture2D" uid="uid://dg10xa0macwvp" path="res://assets/ui/focus-view-buttons.png" id="2_i6ukn"]
+[ext_resource type="Texture2D" uid="uid://chwbnvdklciby" path="res://assets/ui/focus-view-buttons-pressed.png" id="3_yaxha"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hudri"]
+atlas = ExtResource("2_i6ukn")
+region = Rect2(41, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dwjc1"]
+atlas = ExtResource("3_yaxha")
+region = Rect2(41, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6nay2"]
+atlas = ExtResource("2_i6ukn")
+region = Rect2(256, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pb672"]
+atlas = ExtResource("3_yaxha")
+region = Rect2(256, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4qx85"]
+atlas = ExtResource("2_i6ukn")
+region = Rect2(484, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4dlte"]
+atlas = ExtResource("3_yaxha")
+region = Rect2(481, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wdrho"]
+atlas = ExtResource("2_i6ukn")
+region = Rect2(703, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_djh1s"]
+atlas = ExtResource("3_yaxha")
+region = Rect2(694, 41, 171, 171)
+
+[node name="FocusViewMenu" type="NinePatchRect"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = -243.0
+offset_right = 16.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("1_qncii")
+patch_margin_left = 10
+patch_margin_top = 142
+patch_margin_right = 7
+patch_margin_bottom = 8
+script = ExtResource("2_0ofne")
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+texture_filter = 6
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="WorldViewButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = SubResource("AtlasTexture_hudri")
+texture_pressed = SubResource("AtlasTexture_dwjc1")
+stretch_mode = 3
+
+[node name="CreatureInfoButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = SubResource("AtlasTexture_6nay2")
+texture_pressed = SubResource("AtlasTexture_pb672")
+stretch_mode = 3
+
+[node name="ActionButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = SubResource("AtlasTexture_4qx85")
+texture_pressed = SubResource("AtlasTexture_4dlte")
+stretch_mode = 3
+
+[node name="EvolutionTreeButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = SubResource("AtlasTexture_wdrho")
+texture_pressed = SubResource("AtlasTexture_djh1s")
+stretch_mode = 3
+
+[connection signal="pressed" from="MainContainer/HBoxContainer/WorldViewButton" to="." method="_on_world_view_button_pressed"]
+[connection signal="pressed" from="MainContainer/HBoxContainer/ActionButton" to="." method="_on_action_button_pressed"]

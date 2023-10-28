@@ -1,6 +1,6 @@
 extends UIDrawer
 
-@onready var creature_list := get_node("MarginContainer/HBoxContainer")
+@onready var creature_list := get_node("ScrollContainer/MarginContainer/HBoxContainer")
 @export var creature_icon : PackedScene = preload("res://scenes/ui/creature_icon.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -28,6 +28,8 @@ func _on_close():
 	pass
 
 func focus_view_request(event, creature: Creature):
+	if event is InputEventScreenDrag:
+		return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:

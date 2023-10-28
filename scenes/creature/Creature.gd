@@ -6,9 +6,8 @@ class_name Creature extends CharacterBody2D
 @export var age_chart : Dictionary = {
 	"egg" : 30,
 	"baby" : 43200,
-	"child" : 86400,
-	"teen" : 129600,
-	"adult" : 172800
+	"teen" : 86400,
+	"adult": 129600,
 }
 var current_life_stage = "egg"
 @export var seconds_to_age : int = age_chart[current_life_stage]
@@ -21,6 +20,7 @@ var current_life_stage = "egg"
 	"energy": 200,
 	"care_mistakes": 0,
 	"seconds_alive": 0,
+	"is_dead": false,
 	"age": 0
 }
 @export var emotion_bubbles: Dictionary = {
@@ -49,6 +49,13 @@ var is_sleeping = false
 
 func _ready() -> void:
 	navigation_agent.velocity_computed.connect(Callable(_on_navigation_agent_2d_velocity_computed))
+	
+
+func set_species(spec: Species):
+	species = spec
+	creature_sprite.texture = species.spritesheet
+	if current_life_stage =="egg":
+		egg_sprite.texture = species.egg_texture
 
 func register_worldmap(map: TileMap):
 	world_map = map

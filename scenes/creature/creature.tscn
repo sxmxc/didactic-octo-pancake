@@ -21,6 +21,37 @@ radius = 8.24621
 [sub_resource type="CircleShape2D" id="CircleShape2D_dyisl"]
 radius = 16.0
 
+[sub_resource type="Animation" id="Animation_rs6cf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CreatureSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_4tn4i"]
+resource_name = "idleing"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CreatureSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 3]
+}
+
 [sub_resource type="Animation" id="Animation_i8wf4"]
 resource_name = "sleeping"
 tracks/0/type = "value"
@@ -53,37 +84,6 @@ tracks/0/keys = {
 "values": [0, 1, 2, 3]
 }
 
-[sub_resource type="Animation" id="Animation_4tn4i"]
-resource_name = "idleing"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CreatureSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [0, 3]
-}
-
-[sub_resource type="Animation" id="Animation_rs6cf"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CreatureSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_iva38"]
 _data = {
 "RESET": SubResource("Animation_rs6cf"),
@@ -106,7 +106,7 @@ movement_range = 200
 [node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard")]
 script = ExtResource("2_6f3ey")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@129431")
+blackboard = NodePath("@Node@32828")
 
 [node name="Either" type="Node" parent="BeehaveTree"]
 script = ExtResource("3_l1ib0")

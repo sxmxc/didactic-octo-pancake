@@ -20,6 +20,12 @@ signal tick
 	"Creature0" : preload("res://scenes/creature/creature.tscn")
 }
 
+@export var species_baby_library : Dictionary = {
+	"devbaby" : preload("res://resources/creature/data/babies/devbaby.tres"),
+	"devbabybeta": preload("res://resources/creature/data/babies/devbabybeta.tres"),
+	"ghostbaby": preload("res://resources/creature/data/babies/ghostbaby.tres"),
+}
+
 @export var creature_scene : PackedScene = creature_library["Creature0"]
 
 var world_clock : Timer
@@ -60,6 +66,10 @@ func spawn_creature(creature: Creature):
 			print("Adding egg to available nest")
 			world_map.add_child(creature)
 			target.owned_by_creature = creature
+			var available_species = species_baby_library.keys()
+			creature.set_species(species_baby_library[available_species[randi_range(0,available_species.size()-1)]])
+			if creature.species.species_name == "lil Ghost":
+				creature.stats.is_dead = true
 			creature.set_owner(self)
 			creature.position = target.position
 			creature.register_worldmap(world_map)

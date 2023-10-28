@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://i12tclm2wdmd"]
+[gd_scene load_steps=22 format=3 uid="uid://i12tclm2wdmd"]
 
 [ext_resource type="Texture2D" uid="uid://chbybml00m3s8" path="res://assets/ui/controlbar-background.svg" id="1_kia4l"]
 [ext_resource type="Script" path="res://scenes/ui/world_view_menu.gd" id="2_mjasc"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://dsky673i0obg4" path="res://assets/ui/worldview-buttons-pressed.png" id="3_bv3om"]
 [ext_resource type="Texture2D" uid="uid://dynqd7wfxak5s" path="res://assets/Msg04.png" id="4_uu3dp"]
 [ext_resource type="Script" path="res://scenes/ui/CreatureContainer.gd" id="5_tansi"]
+[ext_resource type="Texture2D" uid="uid://dg10xa0macwvp" path="res://assets/ui/focus-view-buttons.png" id="5_uaups"]
+[ext_resource type="Texture2D" uid="uid://chwbnvdklciby" path="res://assets/ui/focus-view-buttons-pressed.png" id="6_4kpo4"]
 [ext_resource type="PackedScene" uid="uid://b2yhlposmux4c" path="res://scenes/ui/creature_icon.tscn" id="6_v1107"]
 [ext_resource type="Script" path="res://scenes/ui/BuildContainer.gd" id="7_vfqr7"]
 [ext_resource type="PackedScene" uid="uid://dxhvunlio0i71" path="res://scenes/ui/build_item_icon.tscn" id="9_h0blf"]
@@ -41,6 +43,14 @@ region = Rect2(700, 41, 171, 171)
 [sub_resource type="AtlasTexture" id="AtlasTexture_kknjc"]
 atlas = ExtResource("3_bv3om")
 region = Rect2(698, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ubklk"]
+atlas = ExtResource("5_uaups")
+region = Rect2(484, 41, 171, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7605n"]
+atlas = ExtResource("6_4kpo4")
+region = Rect2(481, 41, 171, 171)
 
 [node name="WorldViewMenu" type="NinePatchRect"]
 texture_filter = 6
@@ -108,6 +118,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 texture_normal = SubResource("AtlasTexture_8cutt")
 texture_pressed = SubResource("AtlasTexture_kknjc")
+stretch_mode = 3
+
+[node name="FeedButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = SubResource("AtlasTexture_ubklk")
+texture_pressed = SubResource("AtlasTexture_7605n")
 stretch_mode = 3
 
 [node name="CreatureContainer" type="NinePatchRect" parent="."]
@@ -296,3 +314,4 @@ layout_mode = 2
 [connection signal="pressed" from="MainContainer/HBoxContainer/CreatureButton" to="CreatureContainer" method="_on_creature_button_pressed"]
 [connection signal="pressed" from="MainContainer/HBoxContainer/NewCreatureButton" to="." method="_on_new_creature_button_pressed"]
 [connection signal="pressed" from="MainContainer/HBoxContainer/BuildButton" to="BuildContainer" method="_on_build_button_pressed"]
+[connection signal="pressed" from="MainContainer/HBoxContainer/FeedButton" to="." method="_on_feed_button_pressed"]

@@ -15,7 +15,7 @@ func _can_drop_data(at_position, data):
 		return true
 
 func _drop_data(at_position, data):
-	if get_parent().buildable_library.has(data.buildable_key):
-		var new_item = get_parent().buildable_library[data.buildable_key].instantiate()
-		new_item.global_position = world_map.map_to_local(world_map.local_to_map(get_global_mouse_position()))
-		get_parent().add_child(new_item)
+	if Data.buildable_library.has(data.buildable_key):
+		var new_item = Data.buildable_library[data.buildable_key].instantiate()
+		world_map.add_child(new_item)
+		new_item.global_position = get_global_mouse_position()

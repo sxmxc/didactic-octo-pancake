@@ -8,25 +8,10 @@ signal tick
 @onready var world_camera : Camera2D = %WorldCamera
 @onready var build_camera : Camera2D = %BuildCamera
 @onready var ui = get_node("UI")
-@onready var drop_area = get_node("DropArea")
+@onready var drop_area = get_node("%DropArea")
 @onready var world_map = %WorldMap
 
-
-@export var buildable_library : Dictionary = {
-	"BasicNest" : preload("res://buildables/nests/nest.tscn")
-}
-
-@export var creature_library : Dictionary = {
-	"Creature0" : preload("res://scenes/creature/creature.tscn")
-}
-
-@export var species_baby_library : Dictionary = {
-	"devbaby" : preload("res://resources/creature/data/babies/devbaby.tres"),
-	"devbabybeta": preload("res://resources/creature/data/babies/devbabybeta.tres"),
-	"ghostbaby": preload("res://resources/creature/data/babies/ghostbaby.tres"),
-}
-
-@export var creature_scene : PackedScene = creature_library["Creature0"]
+@export var creature_scene : PackedScene = Data.creature_library["Creature0"]
 
 var world_clock : Timer
 var namegen : NameGenerator = NameGenerator.new()
@@ -49,7 +34,7 @@ func _ready():
 	world_clock.start()
 	spawn_creature(new_creature)
 	Eventbus.focus_view_requested.emit(new_creature)
-	player.learn_buildable(buildable_library["BasicNest"].instantiate())
+	player.learn_buildable(Data.buildable_library["BasicNest"].instantiate())
 	pass # Replace with function body.
 
 
@@ -66,12 +51,12 @@ func spawn_creature(creature: Creature):
 			print("Adding egg to available nest")
 			world_map.add_child(creature)
 			target.owned_by_creature = creature
-			var available_species = species_baby_library.keys()
-			creature.set_species(species_baby_library[available_species[randi_range(0,available_species.size()-1)]])
+			var available_species = Data.species_baby_library.keys()
+			creature.set_species(Data.species_baby_library[available_species[randi_range(0,available_species.size()-1)]])
 			if creature.species.species_name == "lil Ghost":
 				creature.stats.is_dead = true
 			creature.set_owner(self)
-			creature.position = target.position
+			creature.position = target.global_position
 			creature.register_worldmap(world_map)
 			creature.register_blackboard(world_bb)
 			creature.date_born = Time.get_unix_time_from_system()

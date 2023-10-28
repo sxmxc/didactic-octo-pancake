@@ -23,6 +23,7 @@ config/icon="res://assets/logo.png"
 BeehaveGlobalMetrics="*res://addons/beehave/metrics/beehave_global_metrics.gd"
 BeehaveGlobalDebugger="*res://addons/beehave/debug/global_debugger.gd"
 Eventbus="*res://autoload/eventbus.gd"
+Data="*res://autoload/data.gd"
 Panku="*res://addons/panku_console/console.tscn"
 
 [display]

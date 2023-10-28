@@ -1,5 +1,5 @@
 extends NinePatchRect
-
+@export var meat_scene: PackedScene = preload("res://scenes/food/meat.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,4 +13,15 @@ func _process(delta):
 func _on_new_creature_button_pressed():
 	print("New creature requested")
 	Eventbus.new_creature_requested.emit()
+	pass # Replace with function body.
+
+
+func _on_feed_button_pressed():
+	for target in get_tree().get_nodes_in_group("food_container"):
+		if target.get_child_count() == 0:
+			print("Adding food to available container")
+			var food = meat_scene.instantiate()
+			target.add_child(food)
+			return
+	print("No available food containers")
 	pass # Replace with function body.

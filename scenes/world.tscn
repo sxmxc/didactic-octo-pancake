@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://coy16s0wpy0ff"]
+[gd_scene load_steps=42 format=3 uid="uid://coy16s0wpy0ff"]
 
 [ext_resource type="Script" path="res://addons/beehave/blackboard.gd" id="1_rj3i3"]
 [ext_resource type="Script" path="res://scenes/world.gd" id="1_xse1y"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://c3vdewcni1jk1" path="res://assets/Progress01.png" id="9_jwvjn"]
 [ext_resource type="Texture2D" uid="uid://drrcjuybklwl7" path="res://assets/FOOD WL.png" id="10_700jb"]
 [ext_resource type="Texture2D" uid="uid://dbr1iidgsppie" path="res://assets/Progress02.png" id="10_svpx3"]
+[ext_resource type="Texture2D" uid="uid://bw072abea5or7" path="res://assets/food_bowl.png" id="11_6afm6"]
 [ext_resource type="Texture2D" uid="uid://dl2ye3xx60h0x" path="res://assets/Icon_Large_Star.png" id="11_j3ndm"]
 [ext_resource type="Script" path="res://scenes/UI.gd" id="13_eeuep"]
 [ext_resource type="Script" path="res://scenes/ui/NotificationBox.gd" id="15_1hkcs"]
@@ -1627,22 +1628,26 @@ unique_name_in_owner = true
 script = ExtResource("6_tfixf")
 
 [node name="Nest" parent="." instance=ExtResource("27_l21be")]
-position = Vector2(91, 255)
+position = Vector2(284, 431)
 
-[node name="FoodSpawn" type="Marker2D" parent="." groups=["food_container"]]
-position = Vector2(968, 382)
+[node name="Foodbowl" type="Sprite2D" parent="."]
+position = Vector2(880, 324)
+texture = ExtResource("11_6afm6")
 
-[node name="FoodSpawn2" type="Marker2D" parent="." groups=["food_container"]]
-position = Vector2(966, 440)
+[node name="FoodSpawn" type="Marker2D" parent="Foodbowl" groups=["food_container"]]
+position = Vector2(-52, -10)
 
-[node name="FoodSpawn3" type="Marker2D" parent="." groups=["food_container"]]
-position = Vector2(966, 502)
+[node name="FoodSpawn2" type="Marker2D" parent="Foodbowl" groups=["food_container"]]
+position = Vector2(-2, -38)
 
-[node name="FoodSpawn4" type="Marker2D" parent="." groups=["food_container"]]
-position = Vector2(966, 564)
+[node name="FoodSpawn3" type="Marker2D" parent="Foodbowl" groups=["food_container"]]
+position = Vector2(50, -18)
 
-[node name="FoodSpawn5" type="Marker2D" parent="." groups=["food_container"]]
-position = Vector2(964, 628)
+[node name="FoodSpawn4" type="Marker2D" parent="Foodbowl" groups=["food_container"]]
+position = Vector2(34, 26)
+
+[node name="FoodSpawn5" type="Marker2D" parent="Foodbowl" groups=["food_container"]]
+position = Vector2(-28, 30)
 
 [node name="WorldCamera" type="Camera2D" parent="."]
 unique_name_in_owner = true

@@ -23,6 +23,7 @@ func _ready():
 	Eventbus.world_view_requested.connect(_on_world_view_requested)
 	Eventbus.build_view_requested.connect(_on_build_view_requested)
 	Eventbus.new_creature_requested.connect(_on_new_creature_requested)
+	Eventbus.feed_request.connect(_on_feed_requested)
 	drop_area.world_map = world_map
 	world_clock = Timer.new()
 	add_child(world_clock)
@@ -67,11 +68,12 @@ func spawn_creature(creature: Creature):
 			player.adopt_creature(creature)
 			return
 	print("No available nests")
+	Eventbus.notification_requested.emit("No available nests.")
 
 func _on_focus_view_requested(creature: Creature):
 	print("Focus view reqeusted for " + creature.name)
 	creature.camera.make_current()
-	ui.focused_creature = creature
+	ui.set_focus(creature)
 	Eventbus.energy_updated.emit()
 	Eventbus.hunger_updated.emit()
 	%WorldViewMenu.visible = false
@@ -98,3 +100,12 @@ func _on_new_creature_requested():
 	new_creature.creature_nickname = name_array[randi_range(0,name_array.size()-1)]
 	new_creature.name = new_creature.creature_nickname
 	spawn_creature(new_creature)
+
+func _on_feed_requested(food: Food):
+	for target in get_tree().get_nodes_in_group("food_container"):
+		if target.get_child_count() == 0:
+			print("Adding food to available container")
+			target.add_child(food)
+			return
+	Eventbus.notification_requested.emit("No available food containers for food type.")
+	print("No available food containers")

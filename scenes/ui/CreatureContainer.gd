@@ -28,13 +28,10 @@ func _on_close():
 	pass
 
 func focus_view_request(event, creature: Creature):
-	if event is InputEventScreenDrag:
-		return
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.pressed:
-				Eventbus.focus_view_requested.emit(creature)
-				close()
+	if event is InputEventScreenTouch:
+		print("Creature input event: %s" % event)
+		Eventbus.focus_view_requested.emit(creature)
+		close()
 
 func _on_creature_button_pressed():
 	if !opened:

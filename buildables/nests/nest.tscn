@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://buildables/nests/nest.gd" id="1_m4b6s"]
 
 [node name="Nest" type="Node2D" groups=["Nest"]]
+scale = Vector2(2, 2)
 script = ExtResource("1_m4b6s")
 buildable_name = "Basic Nest"
 buildable_key = "BasicNest"

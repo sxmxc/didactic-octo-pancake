@@ -1,6 +1,7 @@
 extends NinePatchRect
 
 @export var meat_scene: PackedScene = preload("res://scenes/food/meat.tscn")
+var focused_creature : Creature = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,15 +14,16 @@ func _process(delta):
 
 
 func _on_world_view_button_pressed():
+	focused_creature = null
+	%InfoPanel.focused_creature = null
 	Eventbus.world_view_requested.emit()
 	pass # Replace with function body.
 
 func _on_action_button_pressed():
-	for target in get_tree().get_nodes_in_group("food_container"):
-		if target.get_child_count() == 0:
-			print("Adding food to available container")
-			var food = meat_scene.instantiate()
-			target.add_child(food)
-			return
-	print("No available food containers")
+	var food = meat_scene.instantiate()
+	Eventbus.feed_request.emit(food)
 	pass # Replace with function body.
+
+func set_focus(creature: Creature):
+	focused_creature = creature
+	%InfoPanel.focused_creature = creature

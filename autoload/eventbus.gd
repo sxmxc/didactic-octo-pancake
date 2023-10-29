@@ -9,4 +9,6 @@ signal build_view_requested
 signal focus_view_requested(creature: Creature)
 signal new_creature_requested
 
+signal feed_request(food: Food)
+
 signal notification_requested(notification: String)

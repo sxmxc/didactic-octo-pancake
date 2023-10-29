@@ -95,6 +95,7 @@ _data = {
 [node name="Creature" type="CharacterBody2D" groups=["Creature"]]
 z_index = 2
 y_sort_enabled = true
+scale = Vector2(3, 3)
 collision_layer = 0
 input_pickable = true
 motion_mode = 1
@@ -106,7 +107,7 @@ movement_range = 200
 [node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard")]
 script = ExtResource("2_6f3ey")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@17520")
+blackboard = NodePath("@Node@135182")
 
 [node name="Either" type="Node" parent="BeehaveTree"]
 script = ExtResource("3_l1ib0")

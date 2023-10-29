@@ -24,7 +24,6 @@ BeehaveGlobalMetrics="*res://addons/beehave/metrics/beehave_global_metrics.gd"
 BeehaveGlobalDebugger="*res://addons/beehave/debug/global_debugger.gd"
 Eventbus="*res://autoload/eventbus.gd"
 Data="*res://autoload/data.gd"
-Panku="*res://addons/panku_console/console.tscn"
 
 [display]
 
@@ -40,7 +39,15 @@ window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/beehave/plugin.cfg", "res://addons/panku_console/plugin.cfg", "res://addons/randomnamesgenerator/plugin.cfg")
+enabled=PackedStringArray("res://addons/beehave/plugin.cfg", "res://addons/randomnamesgenerator/plugin.cfg")
+
+[input]
+
+single_touch={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(45, 16),"global_position":Vector2(49, 57),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
 
 [input_devices]
 

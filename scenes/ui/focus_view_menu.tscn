@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://cfo8abfi7e2no"]
+[gd_scene load_steps=15 format=3 uid="uid://cfo8abfi7e2no"]
 
 [ext_resource type="Texture2D" uid="uid://chbybml00m3s8" path="res://assets/ui/controlbar-background.svg" id="1_qncii"]
 [ext_resource type="Script" path="res://scenes/ui/focus_view_menu.gd" id="2_0ofne"]
 [ext_resource type="Texture2D" uid="uid://dg10xa0macwvp" path="res://assets/ui/focus-view-buttons.png" id="2_i6ukn"]
 [ext_resource type="Texture2D" uid="uid://chwbnvdklciby" path="res://assets/ui/focus-view-buttons-pressed.png" id="3_yaxha"]
+[ext_resource type="Script" path="res://scenes/ui/InfoPanel.gd" id="5_y8hed"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hudri"]
 atlas = ExtResource("2_i6ukn")
@@ -36,6 +37,9 @@ region = Rect2(703, 41, 171, 171)
 [sub_resource type="AtlasTexture" id="AtlasTexture_djh1s"]
 atlas = ExtResource("3_yaxha")
 region = Rect2(694, 41, 171, 171)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8u7gr"]
+font_size = 32
 
 [node name="FocusViewMenu" type="NinePatchRect"]
 anchors_preset = 12
@@ -103,5 +107,159 @@ texture_normal = SubResource("AtlasTexture_wdrho")
 texture_pressed = SubResource("AtlasTexture_djh1s")
 stretch_mode = 3
 
+[node name="InfoPanel" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.979816
+anchor_bottom = 0.945098
+script = ExtResource("5_y8hed")
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="InfoPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="GridContainer" type="GridContainer" parent="InfoPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 25
+columns = 3
+
+[node name="NameEntry" type="HBoxContainer" parent="InfoPanel/MarginContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InfoPanel/MarginContainer/GridContainer/NameEntry"]
+layout_mode = 2
+text = "Name:"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="Value" type="Label" parent="InfoPanel/MarginContainer/GridContainer/NameEntry"]
+layout_mode = 2
+text = "Value"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="BirthEntry" type="HBoxContainer" parent="InfoPanel/MarginContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InfoPanel/MarginContainer/GridContainer/BirthEntry"]
+layout_mode = 2
+text = "Birth:"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="Value" type="Label" parent="InfoPanel/MarginContainer/GridContainer/BirthEntry"]
+layout_mode = 2
+text = "Value"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="AgeEntry" type="HBoxContainer" parent="InfoPanel/MarginContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InfoPanel/MarginContainer/GridContainer/AgeEntry"]
+layout_mode = 2
+text = "Age:"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="Value" type="Label" parent="InfoPanel/MarginContainer/GridContainer/AgeEntry"]
+layout_mode = 2
+text = "Value"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="LifeStageEntry" type="HBoxContainer" parent="InfoPanel/MarginContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InfoPanel/MarginContainer/GridContainer/LifeStageEntry"]
+layout_mode = 2
+text = "Life Stage:"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="Value" type="Label" parent="InfoPanel/MarginContainer/GridContainer/LifeStageEntry"]
+layout_mode = 2
+text = "Value"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="HappinessEntry" type="HBoxContainer" parent="InfoPanel/MarginContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InfoPanel/MarginContainer/GridContainer/HappinessEntry"]
+layout_mode = 2
+text = "Happiness:"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="Value" type="Label" parent="InfoPanel/MarginContainer/GridContainer/HappinessEntry"]
+layout_mode = 2
+text = "Value"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="StrengthEntry" type="HBoxContainer" parent="InfoPanel/MarginContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InfoPanel/MarginContainer/GridContainer/StrengthEntry"]
+layout_mode = 2
+text = "Strength:"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="Value" type="Label" parent="InfoPanel/MarginContainer/GridContainer/StrengthEntry"]
+layout_mode = 2
+text = "Value"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="IntelligenceEntry" type="HBoxContainer" parent="InfoPanel/MarginContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InfoPanel/MarginContainer/GridContainer/IntelligenceEntry"]
+layout_mode = 2
+text = "Intelligence:"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="Value" type="Label" parent="InfoPanel/MarginContainer/GridContainer/IntelligenceEntry"]
+layout_mode = 2
+text = "Value"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="MistakesEntry" type="HBoxContainer" parent="InfoPanel/MarginContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InfoPanel/MarginContainer/GridContainer/MistakesEntry"]
+layout_mode = 2
+text = "Care Mistakes:"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="Value" type="Label" parent="InfoPanel/MarginContainer/GridContainer/MistakesEntry"]
+layout_mode = 2
+text = "Value"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="DeadEntry" type="HBoxContainer" parent="InfoPanel/MarginContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InfoPanel/MarginContainer/GridContainer/DeadEntry"]
+layout_mode = 2
+text = "Is Dead:"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="Value" type="Label" parent="InfoPanel/MarginContainer/GridContainer/DeadEntry"]
+layout_mode = 2
+text = "Value"
+label_settings = SubResource("LabelSettings_8u7gr")
+
 [connection signal="pressed" from="MainContainer/HBoxContainer/WorldViewButton" to="." method="_on_world_view_button_pressed"]
+[connection signal="pressed" from="MainContainer/HBoxContainer/CreatureInfoButton" to="InfoPanel" method="_on_creature_info_button_pressed"]
 [connection signal="pressed" from="MainContainer/HBoxContainer/ActionButton" to="." method="_on_action_button_pressed"]

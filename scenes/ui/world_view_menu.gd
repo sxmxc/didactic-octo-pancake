@@ -17,11 +17,6 @@ func _on_new_creature_button_pressed():
 
 
 func _on_feed_button_pressed():
-	for target in get_tree().get_nodes_in_group("food_container"):
-		if target.get_child_count() == 0:
-			print("Adding food to available container")
-			var food = meat_scene.instantiate()
-			target.add_child(food)
-			return
-	print("No available food containers")
+	var food = meat_scene.instantiate()
+	Eventbus.feed_request.emit(food)
 	pass # Replace with function body.

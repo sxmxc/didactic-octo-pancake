@@ -37,3 +37,6 @@ func _on_hunger_updated():
 func _on_focus_requested(creature: Creature):
 	%CurrentCreatureStats.get_node("NameLabel").text = creature.creature_nickname
 
+func set_focus(creature: Creature):
+	focused_creature = creature
+	%FocusViewMenu.set_focus(creature)

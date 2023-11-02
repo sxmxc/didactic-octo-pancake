@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://coy16s0wpy0ff"]
+[gd_scene load_steps=46 format=3 uid="uid://coy16s0wpy0ff"]
 
 [ext_resource type="Script" path="res://addons/beehave/blackboard.gd" id="1_rj3i3"]
 [ext_resource type="Script" path="res://scenes/world.gd" id="1_xse1y"]
@@ -21,6 +21,9 @@
 [ext_resource type="Script" path="res://scenes/ui/NotificationBox.gd" id="15_1hkcs"]
 [ext_resource type="Texture2D" uid="uid://efnh0b3qg2ia" path="res://assets/SliderBar_ProgressBar.png" id="18_iqwpv"]
 [ext_resource type="Texture2D" uid="uid://de0hsrfmu22y7" path="res://assets/Progress03.png" id="20_85rbl"]
+[ext_resource type="Texture2D" uid="uid://o2rjde15ycie" path="res://assets/credits-currency.png" id="20_v2g5r"]
+[ext_resource type="Texture2D" uid="uid://cvy24ljsd13kg" path="res://assets/rupee.png" id="21_18i1c"]
+[ext_resource type="Texture2D" uid="uid://djd5i6y2teoty" path="res://assets/metal-bar.png" id="22_11ls4"]
 [ext_resource type="PackedScene" uid="uid://i12tclm2wdmd" path="res://scenes/ui/world_view_menu.tscn" id="24_0bwgy"]
 [ext_resource type="PackedScene" uid="uid://cfo8abfi7e2no" path="res://scenes/ui/focus_view_menu.tscn" id="25_nm4ac"]
 [ext_resource type="PackedScene" uid="uid://cyv1ty5tg8nyl" path="res://buildables/nests/nest.tscn" id="27_l21be"]
@@ -1550,6 +1553,9 @@ sources/1 = SubResource("TileSetAtlasSource_d77a5")
 sources/4 = SubResource("TileSetAtlasSource_ls8kv")
 pattern_0 = SubResource("TileMapPattern_3rh1b")
 
+[sub_resource type="LabelSettings" id="LabelSettings_hg2dh"]
+font_size = 32
+
 [sub_resource type="LabelSettings" id="LabelSettings_7jtxg"]
 font_size = 32
 font_color = Color(0, 0, 0, 1)
@@ -1727,6 +1733,85 @@ offset_bottom = 552.0
 grow_horizontal = 0
 mouse_filter = 2
 script = ExtResource("15_1hkcs")
+
+[node name="PlayerWallet" type="Panel" parent="UI"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = -1
+anchor_left = 0.0453704
+anchor_top = 0.0109375
+anchor_right = 0.415741
+anchor_bottom = 0.106771
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/PlayerWallet"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PlayerWallet/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/PlayerWallet/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "Player Wallet"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/PlayerWallet/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="UI/PlayerWallet/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("20_v2g5r")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="UI/PlayerWallet/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_hg2dh")
+horizontal_alignment = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="UI/PlayerWallet/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="UI/PlayerWallet/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+texture = ExtResource("21_18i1c")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="UI/PlayerWallet/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_hg2dh")
+horizontal_alignment = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="UI/PlayerWallet/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="UI/PlayerWallet/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+texture = ExtResource("22_11ls4")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="UI/PlayerWallet/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_hg2dh")
+horizontal_alignment = 2
 
 [node name="CurrentCreatureStats" type="NinePatchRect" parent="UI"]
 unique_name_in_owner = true

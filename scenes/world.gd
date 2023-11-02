@@ -36,6 +36,7 @@ func _ready():
 	spawn_creature(new_creature)
 	Eventbus.focus_view_requested.emit(new_creature)
 	player.learn_buildable(Data.buildable_library["BasicNest"].instantiate())
+	player.learn_buildable(Data.buildable_library["BasicFoodBowl"].instantiate())
 	pass # Replace with function body.
 
 
@@ -79,12 +80,14 @@ func _on_focus_view_requested(creature: Creature):
 	%WorldViewMenu.visible = false
 	%FocusViewMenu.visible = true
 	%CurrentCreatureStats.visible = true
+	%PlayerWallet.visible = false
 
 func _on_world_view_requested():
 	if !world_camera.is_current():
 		%CurrentCreatureStats.visible = false
 		%WorldViewMenu.visible = true
 		%FocusViewMenu.visible = false
+		%PlayerWallet.visible = true
 		world_camera.enabled = true
 		world_camera.make_current()
 

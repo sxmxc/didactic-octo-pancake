@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfew2qfxgyl8b"]
+
+[ext_resource type="Script" path="res://buildables/food_containers/food_container.gd" id="1_whm1k"]
+[ext_resource type="Texture2D" uid="uid://bw072abea5or7" path="res://assets/food_bowl.png" id="2_qymq3"]
+
+[node name="FoodContainer" type="Node2D"]
+script = ExtResource("1_whm1k")
+buildable_name = "Basic Food Bowl"
+buildable_key = "BasicFoodBowl"
+menu_icon_texture = ExtResource("2_qymq3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_qymq3")
+
+[node name="FoodSpawn" type="Marker2D" parent="." groups=["food_container"]]
+position = Vector2(-52, -10)
+
+[node name="FoodSpawn2" type="Marker2D" parent="." groups=["food_container"]]
+position = Vector2(-2, -38)
+
+[node name="FoodSpawn3" type="Marker2D" parent="." groups=["food_container"]]
+position = Vector2(50, -18)
+
+[node name="FoodSpawn4" type="Marker2D" parent="." groups=["food_container"]]
+position = Vector2(34, 26)
+
+[node name="FoodSpawn5" type="Marker2D" parent="." groups=["food_container"]]
+position = Vector2(-28, 30)

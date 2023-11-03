@@ -1,16 +1,17 @@
-[gd_scene load_steps=22 format=3 uid="uid://i12tclm2wdmd"]
+[gd_scene load_steps=25 format=3 uid="uid://i12tclm2wdmd"]
 
-[ext_resource type="Texture2D" uid="uid://chbybml00m3s8" path="res://assets/ui/controlbar-background.svg" id="1_kia4l"]
+[ext_resource type="Texture2D" uid="uid://d3hg4w46u4w2k" path="res://assets/ui/menu_panel.png" id="1_l2d51"]
 [ext_resource type="Script" path="res://scenes/ui/world_view_menu.gd" id="2_mjasc"]
 [ext_resource type="Texture2D" uid="uid://bxchergwc7l3v" path="res://assets/ui/worldview-buttons.png" id="2_nhpuk"]
 [ext_resource type="Texture2D" uid="uid://dsky673i0obg4" path="res://assets/ui/worldview-buttons-pressed.png" id="3_bv3om"]
-[ext_resource type="Texture2D" uid="uid://dynqd7wfxak5s" path="res://assets/Msg04.png" id="4_uu3dp"]
 [ext_resource type="Script" path="res://scenes/ui/CreatureContainer.gd" id="5_tansi"]
 [ext_resource type="Texture2D" uid="uid://dg10xa0macwvp" path="res://assets/ui/focus-view-buttons.png" id="5_uaups"]
 [ext_resource type="Texture2D" uid="uid://chwbnvdklciby" path="res://assets/ui/focus-view-buttons-pressed.png" id="6_4kpo4"]
 [ext_resource type="PackedScene" uid="uid://b2yhlposmux4c" path="res://scenes/ui/creature_icon.tscn" id="6_v1107"]
+[ext_resource type="Texture2D" uid="uid://b1sn5k1cu02cn" path="res://assets/ui/drawer_panel.png" id="7_1d7p0"]
 [ext_resource type="Script" path="res://scenes/ui/BuildContainer.gd" id="7_vfqr7"]
 [ext_resource type="PackedScene" uid="uid://dxhvunlio0i71" path="res://scenes/ui/build_item_icon.tscn" id="9_h0blf"]
+[ext_resource type="Texture2D" uid="uid://rutj4t3ikalg" path="res://assets/ui/panel.png" id="11_7r4u3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oyy8l"]
 atlas = ExtResource("2_nhpuk")
@@ -52,23 +53,27 @@ region = Rect2(484, 41, 171, 171)
 atlas = ExtResource("6_4kpo4")
 region = Rect2(481, 41, 171, 171)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dluv1"]
+bg_color = Color(0.8, 0.8, 0.8, 1)
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ww7q"]
+bg_color = Color(0.8, 0.8, 0.8, 1)
+
 [node name="WorldViewMenu" type="NinePatchRect"]
 texture_filter = 6
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 6.0
+offset_left = -9.0
 offset_top = -243.0
-offset_right = 16.0
-offset_bottom = 12.0
+offset_right = 11.0
+offset_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("1_kia4l")
-patch_margin_left = 10
-patch_margin_top = 142
-patch_margin_right = 7
-patch_margin_bottom = 8
+texture = ExtResource("1_l2d51")
 script = ExtResource("2_mjasc")
 
 [node name="MainContainer" type="MarginContainer" parent="."]
@@ -77,6 +82,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 34.0
+offset_right = -12.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
@@ -133,31 +141,24 @@ visible = false
 show_behind_parent = true
 texture_filter = 5
 layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -255.0
-offset_right = -5.0
-offset_bottom = -75.0
+anchors_preset = -1
+anchor_top = 0.0725806
+anchor_right = 0.995413
+anchor_bottom = 1.00806
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("4_uu3dp")
-region_rect = Rect2(17, 11, 282, 271)
-patch_margin_left = 21
-patch_margin_top = 47
-patch_margin_right = 18
-patch_margin_bottom = 16
+texture = ExtResource("7_1d7p0")
 script = ExtResource("5_tansi")
+metadata/_edit_use_anchors_ = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CreatureContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 21.0
+offset_left = 51.0
 offset_top = 44.0
-offset_right = -17.0
+offset_right = -53.0
 grow_horizontal = 2
 grow_vertical = 2
 vertical_scroll_mode = 0
@@ -178,20 +179,22 @@ layout_mode = 2
 [node name="BuildContainer" type="TabContainer" parent="."]
 visible = false
 show_behind_parent = true
-layout_mode = 0
-offset_right = 1077.0
-offset_bottom = 350.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.0604839
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
 theme_override_constants/side_margin = 20
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_dluv1")
+theme_override_styles/panel = SubResource("StyleBoxFlat_2ww7q")
 script = ExtResource("7_vfqr7")
+metadata/_edit_use_anchors_ = true
 
 [node name="All" type="NinePatchRect" parent="BuildContainer"]
 layout_mode = 2
-texture = ExtResource("4_uu3dp")
-region_rect = Rect2(17, 11, 282, 271)
-patch_margin_left = 21
-patch_margin_top = 47
-patch_margin_right = 18
-patch_margin_bottom = 16
+texture = ExtResource("11_7r4u3")
 
 [node name="MarginContainer" type="MarginContainer" parent="BuildContainer/All"]
 layout_mode = 1
@@ -218,12 +221,7 @@ layout_mode = 2
 [node name="Beds" type="NinePatchRect" parent="BuildContainer"]
 visible = false
 layout_mode = 2
-texture = ExtResource("4_uu3dp")
-region_rect = Rect2(17, 11, 282, 271)
-patch_margin_left = 21
-patch_margin_top = 47
-patch_margin_right = 18
-patch_margin_bottom = 16
+texture = ExtResource("11_7r4u3")
 
 [node name="MarginContainer" type="MarginContainer" parent="BuildContainer/Beds"]
 layout_mode = 1
@@ -250,12 +248,7 @@ layout_mode = 2
 [node name="Food" type="NinePatchRect" parent="BuildContainer"]
 visible = false
 layout_mode = 2
-texture = ExtResource("4_uu3dp")
-region_rect = Rect2(17, 11, 282, 271)
-patch_margin_left = 21
-patch_margin_top = 47
-patch_margin_right = 18
-patch_margin_bottom = 16
+texture = ExtResource("11_7r4u3")
 
 [node name="MarginContainer" type="MarginContainer" parent="BuildContainer/Food"]
 layout_mode = 1
@@ -282,12 +275,7 @@ layout_mode = 2
 [node name="Decoration" type="NinePatchRect" parent="BuildContainer"]
 visible = false
 layout_mode = 2
-texture = ExtResource("4_uu3dp")
-region_rect = Rect2(17, 11, 282, 271)
-patch_margin_left = 21
-patch_margin_top = 47
-patch_margin_right = 18
-patch_margin_bottom = 16
+texture = ExtResource("11_7r4u3")
 
 [node name="MarginContainer" type="MarginContainer" parent="BuildContainer/Decoration"]
 layout_mode = 1

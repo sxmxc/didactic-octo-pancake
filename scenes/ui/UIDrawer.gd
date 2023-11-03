@@ -26,7 +26,7 @@ func open():
 	if tween:
 		tween.kill()
 	tween = get_tree().create_tween()
-	tween.tween_property(self, "position", Vector2(0,position.y - 300), .1)
+	tween.tween_property(self, "position", Vector2(0,position.y - get_parent().size.y + 50), .1)
 	opened = true
 	pass
 

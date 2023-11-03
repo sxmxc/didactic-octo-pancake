@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://coy16s0wpy0ff"]
+[gd_scene load_steps=49 format=3 uid="uid://coy16s0wpy0ff"]
 
 [ext_resource type="Script" path="res://addons/beehave/blackboard.gd" id="1_rj3i3"]
 [ext_resource type="Script" path="res://scenes/world.gd" id="1_xse1y"]
@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://c3l6j2xc0q25w" path="res://assets/basic/assets_spritesheet_v2_free.png" id="4_hvsww"]
 [ext_resource type="Texture2D" uid="uid://blwejf81cpunc" path="res://assets/habs/hab_front.png" id="4_idxeu"]
 [ext_resource type="Texture2D" uid="uid://vlyqw7pwkuc8" path="res://assets/basic/fence_tiles.png" id="5_2r4lu"]
-[ext_resource type="Texture2D" uid="uid://dynqd7wfxak5s" path="res://assets/Msg04.png" id="6_eu372"]
 [ext_resource type="Script" path="res://scenes/player/Player.gd" id="6_tfixf"]
 [ext_resource type="Texture2D" uid="uid://dfqogqw5xwi3s" path="res://assets/Icon_Small_HeartFull.png" id="7_qop3m"]
 [ext_resource type="Texture2D" uid="uid://c3vdewcni1jk1" path="res://assets/Progress01.png" id="9_jwvjn"]
@@ -24,7 +23,9 @@
 [ext_resource type="Texture2D" uid="uid://o2rjde15ycie" path="res://assets/credits-currency.png" id="20_v2g5r"]
 [ext_resource type="Texture2D" uid="uid://cvy24ljsd13kg" path="res://assets/rupee.png" id="21_18i1c"]
 [ext_resource type="Texture2D" uid="uid://djd5i6y2teoty" path="res://assets/metal-bar.png" id="22_11ls4"]
+[ext_resource type="Texture2D" uid="uid://rutj4t3ikalg" path="res://assets/ui/panel.png" id="23_bl0cy"]
 [ext_resource type="PackedScene" uid="uid://i12tclm2wdmd" path="res://scenes/ui/world_view_menu.tscn" id="24_0bwgy"]
+[ext_resource type="Texture2D" uid="uid://b1sn5k1cu02cn" path="res://assets/ui/drawer_panel.png" id="24_2jnhk"]
 [ext_resource type="PackedScene" uid="uid://cfo8abfi7e2no" path="res://scenes/ui/focus_view_menu.tscn" id="25_nm4ac"]
 [ext_resource type="PackedScene" uid="uid://cyv1ty5tg8nyl" path="res://buildables/nests/nest.tscn" id="27_l21be"]
 [ext_resource type="Script" path="res://scenes/SpaceBackground.gd" id="28_x4xo3"]
@@ -1553,6 +1554,21 @@ sources/1 = SubResource("TileSetAtlasSource_d77a5")
 sources/4 = SubResource("TileSetAtlasSource_ls8kv")
 pattern_0 = SubResource("TileMapPattern_3rh1b")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yd7ew"]
+texture = ExtResource("23_bl0cy")
+texture_margin_left = 16.0
+texture_margin_top = 64.0
+texture_margin_right = 37.0
+texture_margin_bottom = 87.0
+expand_margin_left = 1.0
+expand_margin_top = 29.0
+expand_margin_right = 25.0
+expand_margin_bottom = 70.0
+region_rect = Rect2(2, 0, 806, 603)
+
+[sub_resource type="LabelSettings" id="LabelSettings_s54pd"]
+font_color = Color(0, 0, 0, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_hg2dh"]
 font_size = 32
 
@@ -1741,29 +1757,59 @@ anchors_preset = -1
 anchor_left = 0.0453704
 anchor_top = 0.0109375
 anchor_right = 0.415741
-anchor_bottom = 0.106771
+anchor_bottom = 0.113542
+offset_left = -1.00003
+offset_right = -1.00003
+theme_override_styles/panel = SubResource("StyleBoxTexture_yd7ew")
 metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="UI/PlayerWallet"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -105.0
+offset_top = -18.0
+offset_right = 108.0
+offset_bottom = 25.0
+grow_horizontal = 2
+texture = ExtResource("24_2jnhk")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="UI/PlayerWallet/TextureRect2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = -19.5
+offset_right = 88.0
+offset_bottom = 19.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"HeaderLarge"
+text = "Player Wallet"
+label_settings = SubResource("LabelSettings_s54pd")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/PlayerWallet"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 34.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/PlayerWallet/MarginContainer"]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/PlayerWallet/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_type_variation = &"HeaderLarge"
-text = "Player Wallet"
-horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/PlayerWallet/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -1816,22 +1862,40 @@ horizontal_alignment = 2
 [node name="CurrentCreatureStats" type="NinePatchRect" parent="UI"]
 unique_name_in_owner = true
 texture_filter = 3
-offset_top = 2.0
-offset_right = 419.0
-offset_bottom = 253.0
-texture = ExtResource("6_eu372")
-region_rect = Rect2(17, 11, 282, 271)
-patch_margin_left = 21
-patch_margin_top = 47
-patch_margin_right = 18
-patch_margin_bottom = 16
+offset_left = 32.0
+offset_top = 26.0
+offset_right = 451.0
+offset_bottom = 318.0
+texture = ExtResource("23_bl0cy")
+patch_margin_left = 18
+patch_margin_top = 64
+patch_margin_right = 35
 
-[node name="NameLabel" type="Label" parent="UI/CurrentCreatureStats"]
-layout_mode = 2
-offset_left = -1.0
-offset_top = 1.0
-offset_right = 418.0
-offset_bottom = 46.0
+[node name="TextureRect" type="TextureRect" parent="UI/CurrentCreatureStats"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -127.0
+offset_right = 127.0
+offset_bottom = 39.0
+grow_horizontal = 2
+texture = ExtResource("24_2jnhk")
+expand_mode = 1
+
+[node name="NameLabel" type="Label" parent="UI/CurrentCreatureStats/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -118.5
+offset_top = -22.5
+offset_right = 118.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
 text = "Creature Name"
 label_settings = SubResource("LabelSettings_7jtxg")
 horizontal_alignment = 1
@@ -1842,7 +1906,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 45.0
+offset_left = 16.0
+offset_top = 56.0
+offset_right = -27.0
+offset_bottom = -37.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1

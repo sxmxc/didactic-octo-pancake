@@ -34,10 +34,10 @@
 [ext_resource type="Texture2D" uid="uid://d23fjmt6e8ci5" path="res://assets/space/Stars-Big_1_1_PC.png" id="31_kfu7k"]
 [ext_resource type="Texture2D" uid="uid://pq472i2l8ani" path="res://assets/space/Stars-Big_1_2_PC.png" id="32_er7k1"]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_st3td"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_on1rg"]
 _surfaces = [{
 "2d": true,
-"aabb": AABB(-524.5, -490, 0, 1049, 980, 0),
+"aabb": AABB(-524.5, -494, 0, 1049, 988, 0),
 "attribute_data": PackedByteArray(0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0),
 "format": 34393296913,
 "index_count": 6,
@@ -45,43 +45,44 @@ _surfaces = [{
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 4,
-"vertex_data": PackedByteArray(0, 32, 3, 68, 0, 0, 245, 67, 0, 32, 3, 196, 0, 0, 245, 67, 0, 32, 3, 196, 0, 0, 245, 195, 0, 32, 3, 68, 0, 0, 245, 195)
+"vertex_data": PackedByteArray(0, 32, 3, 68, 0, 0, 247, 67, 0, 32, 3, 196, 0, 0, 247, 67, 0, 32, 3, 196, 0, 0, 247, 195, 0, 32, 3, 68, 0, 0, 247, 195)
 }]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_5ms6n"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_ptcgx"]
 _surfaces = [{
 "2d": true,
-"aabb": AABB(-506.5, -466.5, 0, 1013, 933, 0),
-"attribute_data": PackedByteArray(0, 0, 128, 63, 228, 228, 93, 63, 47, 45, 114, 63, 0, 0, 128, 63, 220, 149, 147, 61, 0, 0, 128, 63, 0, 0, 0, 0, 255, 224, 92, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0),
+"aabb": AABB(-503.5, -465.5, 0, 1007, 931, 0),
+"attribute_data": PackedByteArray(0, 0, 128, 63, 226, 185, 116, 63, 97, 158, 127, 63, 226, 185, 116, 63, 36, 165, 112, 63, 0, 0, 128, 63, 189, 131, 163, 61, 0, 0, 128, 63, 0, 0, 0, 0, 210, 251, 115, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0),
+"format": 34393296913,
+"index_count": 15,
+"index_data": PackedByteArray(6, 0, 0, 0, 1, 0, 1, 0, 2, 0, 3, 0, 3, 0, 4, 0, 5, 0, 5, 0, 6, 0, 1, 0, 1, 0, 3, 0, 5, 0),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 7,
+"vertex_data": PackedByteArray(0, 192, 251, 67, 0, 64, 212, 67, 0, 0, 251, 67, 0, 64, 212, 67, 204, 140, 221, 67, 0, 192, 232, 67, 205, 140, 211, 195, 0, 192, 232, 67, 0, 192, 251, 195, 102, 230, 210, 67, 0, 192, 251, 195, 0, 192, 232, 195, 0, 192, 251, 67, 0, 192, 232, 195)
+}]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_0exco"]
+_surfaces = [{
+"2d": true,
+"aabb": AABB(-525.5, -28, 0, 1051, 56, 0),
+"attribute_data": PackedByteArray(0, 0, 128, 63, 110, 219, 182, 61, 14, 180, 112, 63, 0, 0, 128, 63, 209, 63, 142, 61, 0, 0, 128, 63, 0, 0, 0, 0, 88, 124, 197, 61, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0),
 "format": 34393296913,
 "index_count": 12,
 "index_data": PackedByteArray(5, 0, 0, 0, 1, 0, 1, 0, 2, 0, 3, 0, 3, 0, 4, 0, 5, 0, 5, 0, 1, 0, 3, 0),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 6,
-"vertex_data": PackedByteArray(0, 64, 253, 67, 154, 25, 171, 67, 102, 230, 225, 67, 0, 64, 233, 67, 0, 192, 216, 195, 0, 64, 233, 67, 0, 64, 253, 195, 0, 64, 169, 67, 0, 64, 253, 195, 0, 64, 233, 195, 0, 64, 253, 67, 0, 64, 233, 195)
-}]
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_at37b"]
-_surfaces = [{
-"2d": true,
-"aabb": AABB(-525.5, -235, 0, 1051, 470, 0),
-"attribute_data": PackedByteArray(0, 0, 128, 63, 182, 164, 212, 60, 186, 241, 114, 63, 135, 140, 189, 62, 155, 185, 114, 63, 135, 140, 189, 62, 138, 254, 113, 63, 44, 136, 201, 62, 226, 104, 113, 63, 44, 136, 201, 62, 132, 236, 111, 63, 124, 42, 203, 62, 132, 236, 111, 63, 119, 32, 205, 62, 76, 163, 88, 63, 46, 2, 122, 63, 21, 158, 85, 63, 46, 2, 122, 63, 170, 69, 70, 63, 158, 141, 122, 63, 170, 69, 70, 63, 72, 225, 122, 63, 174, 220, 66, 63, 181, 103, 124, 63, 174, 220, 66, 63, 42, 253, 122, 63, 157, 33, 66, 63, 218, 90, 121, 63, 157, 33, 66, 63, 129, 208, 117, 63, 71, 122, 62, 63, 182, 125, 89, 63, 71, 122, 62, 63, 124, 220, 84, 63, 228, 136, 74, 63, 205, 204, 204, 62, 172, 135, 41, 63, 205, 204, 204, 62, 186, 95, 85, 62, 110, 17, 208, 62, 186, 95, 85, 62, 15, 86, 211, 62, 41, 136, 131, 62, 78, 218, 90, 63, 41, 136, 131, 62, 24, 240, 94, 63, 248, 114, 120, 62, 126, 164, 123, 63, 248, 114, 120, 62, 179, 98, 125, 63, 41, 208, 121, 62, 247, 23, 126, 63, 204, 189, 120, 62, 144, 116, 127, 63, 80, 221, 119, 62, 144, 116, 127, 63, 125, 146, 119, 62, 0, 0, 128, 63, 45, 50, 54, 62, 0, 0, 128, 63, 43, 221, 28, 62, 46, 219, 126, 63, 43, 221, 28, 62, 37, 243, 124, 63, 189, 142, 130, 61, 90, 238, 214, 62, 189, 142, 130, 61, 127, 225, 211, 62, 100, 108, 121, 61, 61, 88, 205, 62, 100, 108, 121, 61, 72, 108, 201, 62, 198, 38, 124, 61, 202, 21, 196, 62, 0, 0, 0, 0, 141, 11, 237, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0),
-"format": 34393296913,
-"index_count": 114,
-"index_data": PackedByteArray(39, 0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 9, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 14, 0, 15, 0, 16, 0, 20, 0, 21, 0, 22, 0, 24, 0, 25, 0, 26, 0, 27, 0, 28, 0, 29, 0, 29, 0, 30, 0, 31, 0, 31, 0, 32, 0, 33, 0, 33, 0, 34, 0, 35, 0, 36, 0, 37, 0, 38, 0, 38, 0, 39, 0, 1, 0, 2, 0, 4, 0, 5, 0, 5, 0, 7, 0, 8, 0, 9, 0, 11, 0, 12, 0, 12, 0, 14, 0, 16, 0, 20, 0, 22, 0, 23, 0, 24, 0, 26, 0, 27, 0, 27, 0, 29, 0, 31, 0, 31, 0, 33, 0, 35, 0, 38, 0, 1, 0, 2, 0, 5, 0, 8, 0, 9, 0, 9, 0, 12, 0, 16, 0, 20, 0, 23, 0, 24, 0, 24, 0, 27, 0, 31, 0, 31, 0, 35, 0, 36, 0, 36, 0, 38, 0, 2, 0, 5, 0, 9, 0, 16, 0, 20, 0, 24, 0, 31, 0, 36, 0, 2, 0, 5, 0, 5, 0, 16, 0, 17, 0, 19, 0, 20, 0, 31, 0, 36, 0, 5, 0, 17, 0, 19, 0, 31, 0, 36, 0, 36, 0, 17, 0, 18, 0, 18, 0, 19, 0, 36, 0),
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 40,
-"vertex_data": PackedByteArray(0, 96, 3, 68, 205, 204, 94, 195, 52, 243, 235, 67, 0, 0, 116, 194, 0, 128, 235, 67, 0, 0, 116, 194, 0, 0, 234, 67, 0, 0, 72, 194, 204, 204, 232, 67, 0, 0, 72, 194, 0, 192, 229, 67, 0, 0, 66, 194, 0, 192, 229, 67, 204, 204, 58, 194, 52, 243, 181, 67, 0, 0, 96, 67, 0, 192, 175, 67, 0, 0, 96, 67, 0, 64, 144, 67, 0, 0, 97, 67, 0, 64, 144, 67, 154, 153, 97, 67, 0, 64, 137, 67, 102, 102, 100, 67, 0, 64, 137, 67, 204, 204, 97, 67, 0, 192, 135, 67, 204, 204, 94, 67, 0, 192, 135, 67, 204, 76, 88, 67, 0, 64, 128, 67, 204, 76, 36, 67, 0, 64, 128, 67, 204, 204, 27, 67, 0, 0, 153, 67, 0, 0, 60, 194, 0, 128, 42, 67, 0, 0, 60, 194, 0, 64, 153, 195, 0, 0, 48, 194, 0, 64, 153, 195, 0, 0, 36, 194, 0, 128, 127, 195, 204, 204, 38, 67, 0, 128, 127, 195, 204, 76, 46, 67, 0, 64, 135, 195, 0, 0, 99, 67, 0, 64, 135, 195, 52, 51, 102, 67, 205, 140, 134, 195, 0, 128, 103, 67, 154, 25, 135, 195, 0, 0, 106, 67, 205, 140, 135, 195, 0, 0, 106, 67, 51, 179, 135, 195, 0, 0, 107, 67, 0, 64, 169, 195, 0, 0, 107, 67, 0, 64, 182, 195, 102, 230, 104, 67, 0, 64, 182, 195, 102, 102, 101, 67, 0, 64, 229, 195, 204, 204, 22, 194, 0, 64, 229, 195, 0, 0, 34, 194, 0, 192, 230, 195, 0, 0, 58, 194, 0, 192, 230, 195, 104, 102, 72, 194, 102, 102, 230, 195, 0, 0, 92, 194, 0, 96, 3, 196, 102, 102, 93, 195, 0, 96, 3, 196, 0, 0, 107, 195, 0, 96, 3, 68, 0, 0, 107, 195)
+"vertex_data": PackedByteArray(0, 96, 3, 68, 0, 0, 184, 193, 154, 89, 231, 67, 0, 0, 224, 65, 0, 64, 226, 195, 0, 0, 224, 65, 0, 96, 3, 196, 205, 204, 180, 193, 0, 96, 3, 196, 0, 0, 224, 193, 0, 96, 3, 68, 0, 0, 224, 193)
 }]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_0te1p"]
-vertices = PackedVector2Array(1040, 959, 980, 1109, 127, 1114, 58, 973, 56, 221, 1040, 221)
+vertices = PackedVector2Array(1016, 1093, 977, 1120, 132, 1121, 76, 1093, 73, 268, 1016, 267)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(46, 211, 1050, 211, 1050, 961, 987, 1119, 121, 1125, 49, 975)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(41, 237, 1049, 235, 1048, 1110, 987, 1152, 125, 1154, 45, 1113)])
 parsed_collision_mask = 4278190081
 source_geometry_group_name = &"navigation_polygon_source_group"
+agent_radius = 32.0
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_3rh1b"]
 tile_data = PackedInt32Array(0, 1, 0, 65536, 1, 1, 131072, 1, 2, 1, 65537, 0, 65537, 65537, 1, 131073, 65537, 2)
@@ -1587,20 +1588,19 @@ tick_frequency = 2
 [node name="Habitat" type="Node2D" parent="."]
 
 [node name="HabBack" type="MeshInstance2D" parent="Habitat"]
-position = Vector2(551, 485)
-mesh = SubResource("ArrayMesh_st3td")
+position = Vector2(546, 625)
+mesh = SubResource("ArrayMesh_on1rg")
 texture = ExtResource("2_8xl1v")
 
-[node name="HabGround" type="MeshInstance2D" parent="Habitat" groups=["navigation_polygon_source_group"]]
-position = Vector2(550.75, 673)
-scale = Vector2(0.994571, 1)
-mesh = SubResource("ArrayMesh_5ms6n")
+[node name="HabFloor" type="MeshInstance2D" parent="Habitat" groups=["navigation_polygon_source_group"]]
+position = Vector2(546, 704)
+mesh = SubResource("ArrayMesh_ptcgx")
 texture = ExtResource("3_hl8hq")
 
 [node name="HabFront" type="MeshInstance2D" parent="Habitat"]
-z_index = 20
-position = Vector2(546, 1205)
-mesh = SubResource("ArrayMesh_at37b")
+z_index = 3
+position = Vector2(546, 1139)
+mesh = SubResource("ArrayMesh_0exco")
 texture = ExtResource("4_idxeu")
 
 [node name="Blackboard" type="Node" parent="."]
@@ -1678,9 +1678,9 @@ enabled = false
 
 [node name="BuildCamera" type="Camera2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(571, 633)
+position = Vector2(555, 924)
 enabled = false
-zoom = Vector2(1.5, 1.5)
+zoom = Vector2(1.125, 1.125)
 
 [node name="SpaceBackground" type="ParallaxBackground" parent="."]
 script = ExtResource("28_x4xo3")
@@ -1727,6 +1727,9 @@ anchor_left = 0.05
 anchor_top = 0.110937
 anchor_right = 0.968518
 anchor_bottom = 0.503646
+offset_top = 18.001
+offset_right = 0.000488281
+offset_bottom = 141.0
 script = ExtResource("2_qhaud")
 
 [node name="NoDropArea" type="Control" parent="Drop"]

@@ -1,0 +1,98 @@
+[gd_scene load_steps=4 format=3 uid="uid://doudpq4dbl4ce"]
+
+[ext_resource type="Script" path="res://scenes/ui/PopUpPanel.gd" id="1_guh6u"]
+[ext_resource type="Texture2D" uid="uid://dwjct0wltgxpe" path="res://assets/ui/alert_panel.png" id="2_6vng2"]
+[ext_resource type="Texture2D" uid="uid://dtrcaxvit71nq" path="res://assets/ui/alert_cancel.png" id="3_m0uhk"]
+
+[node name="PopUpPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -415.0
+offset_top = -306.0
+offset_right = 415.0
+offset_bottom = 306.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_guh6u")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_6vng2")
+stretch_mode = 5
+
+[node name="TextureCancelButton" type="TextureButton" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.886724
+anchor_top = 0.0115894
+anchor_right = 0.98782
+anchor_bottom = 0.15894
+grow_horizontal = 0
+texture_normal = ExtResource("3_m0uhk")
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0518072
+anchor_top = 0.176471
+anchor_right = 0.904819
+anchor_bottom = 0.54085
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="ContentLabel" type="RichTextLabel" parent="TextureRect/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "Wrought gesticulation vengeful loss dread, nothing I know not why malodorous misdeeds disposition darkness alone venerable shuttered rapture. Obscure enjoins singularly prodigiously cadence servant sarcophagus tempestuous impassive merciful. Radiance fearful elation crimson my fateful solitary. "
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0542169
+anchor_top = 0.691176
+anchor_right = 0.895181
+anchor_bottom = 0.864379
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Spacer" type="Control" parent="TextureRect/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AcceptButton" type="Button" parent="TextureRect/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "Ok"
+
+[node name="CancelButton" type="Button" parent="TextureRect/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "Cancel"
+
+[node name="Spacer2" type="Control" parent="TextureRect/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="pressed" from="TextureRect/TextureCancelButton" to="." method="_on_texture_button_pressed"]
+[connection signal="pressed" from="TextureRect/HBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
+[connection signal="pressed" from="TextureRect/HBoxContainer/CancelButton" to="." method="_on_texture_button_pressed"]

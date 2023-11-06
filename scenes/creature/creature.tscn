@@ -8,12 +8,12 @@
 [ext_resource type="Script" path="res://ai/actions/MoveToBedAction.gd" id="6_7urcs"]
 [ext_resource type="Script" path="res://ai/actions/WalkToFoodAction.gd" id="7_qslpf"]
 [ext_resource type="Script" path="res://ai/actions/WalkAroundAction.gd" id="8_rtp40"]
-[ext_resource type="Texture2D" uid="uid://d4n35pl3x5ipp" path="res://assets/egg.png" id="9_fefmi"]
 [ext_resource type="Script" path="res://ai/conditions/IsSleepyCondition.gd" id="9_g5f5m"]
 [ext_resource type="Script" path="res://ai/actions/IdleAction.gd" id="9_milg3"]
 [ext_resource type="Script" path="res://ai/actions/SleepAction.gd" id="10_3qdq7"]
 [ext_resource type="PackedScene" uid="uid://b8uamh30l86kw" path="res://scenes/creature/emotions/singing_bubble.tscn" id="10_t2ebw"]
-[ext_resource type="Texture2D" uid="uid://bg27ma6ae0ik6" path="res://assets/creature_sprites/creature3.png" id="13_nli4w"]
+[ext_resource type="Texture2D" uid="uid://dl2tkas57ybjj" path="res://assets/egg2.png" id="12_hwdmr"]
+[ext_resource type="Texture2D" uid="uid://cjc4t2yce08hc" path="res://assets/creature_sprites/squid.png" id="13_h8edg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b7s5w"]
 radius = 8.24621
@@ -38,37 +38,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_4tn4i"]
 resource_name = "idleing"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CreatureSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [0, 3]
-}
-
-[sub_resource type="Animation" id="Animation_i8wf4"]
-resource_name = "sleeping"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CreatureSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [3]
-}
-
-[sub_resource type="Animation" id="Animation_1xeca"]
-resource_name = "walking"
 length = 2.0
 loop_mode = 1
 tracks/0/type = "value"
@@ -81,7 +50,39 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5, 1, 1.5),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3]
+"values": [0, 3, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_i8wf4"]
+resource_name = "sleeping"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CreatureSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 2]
+}
+
+[sub_resource type="Animation" id="Animation_1xeca"]
+resource_name = "walking"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CreatureSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [5, 6, 7, 8]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_iva38"]
@@ -107,7 +108,7 @@ movement_range = 200
 [node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard")]
 script = ExtResource("2_6f3ey")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@37882")
+blackboard = NodePath("@Node@28575")
 
 [node name="Either" type="Node" parent="BeehaveTree"]
 script = ExtResource("3_l1ib0")
@@ -152,13 +153,13 @@ path_max_distance = 50.0
 debug_enabled = true
 
 [node name="EggSprite" type="Sprite2D" parent="."]
-scale = Vector2(0.063, 0.063)
-texture = ExtResource("9_fefmi")
+texture = ExtResource("12_hwdmr")
 
 [node name="CreatureSprite" type="Sprite2D" parent="."]
 visible = false
-texture = ExtResource("13_nli4w")
+texture = ExtResource("13_h8edg")
 hframes = 5
+vframes = 2
 region_rect = Rect2(0, 0, 32, 32)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

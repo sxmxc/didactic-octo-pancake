@@ -32,6 +32,7 @@ func _on_close():
 func update():
 	if !focused_creature:
 		return
+	%SpeciesEntry.get_node("Value").text = focused_creature.species.species_name
 	%NameEntry.get_node("Value").text = focused_creature.creature_nickname
 	%BirthEntry.get_node("Value").text = Time.get_date_string_from_unix_time(focused_creature.date_born)
 	%AgeEntry.get_node("Value").text = "%s" % focused_creature.stats.age
@@ -40,5 +41,8 @@ func update():
 	%MistakesEntry.get_node("Value").text = "%s" % focused_creature.stats.care_mistakes
 	%StrengthEntry.get_node("Value").text = "%s" % focused_creature.stats.strength
 	%IntelligenceEntry.get_node("Value").text = "%s" % focused_creature.stats.intelligence
-	%DeadEntry.get_node("Value").text = "%s" % focused_creature.stats.is_dead
+	if focused_creature.current_life_stage == "egg":
+		%DeadEntry.get_node("Value").text = "%s" % "???"
+	else:
+		%DeadEntry.get_node("Value").text = "%s" % focused_creature.stats.is_dead
 	

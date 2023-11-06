@@ -147,6 +147,20 @@ layout_mode = 2
 theme_override_constants/h_separation = 25
 columns = 3
 
+[node name="SpeciesEntry" type="HBoxContainer" parent="InfoPanel/MarginContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InfoPanel/MarginContainer/GridContainer/SpeciesEntry"]
+layout_mode = 2
+text = "Species:"
+label_settings = SubResource("LabelSettings_8u7gr")
+
+[node name="Value" type="Label" parent="InfoPanel/MarginContainer/GridContainer/SpeciesEntry"]
+layout_mode = 2
+text = "Value"
+label_settings = SubResource("LabelSettings_8u7gr")
+
 [node name="NameEntry" type="HBoxContainer" parent="InfoPanel/MarginContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2

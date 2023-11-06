@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BabySpecies" load_steps=4 format=3 uid="uid://dhiib7gwl30bw"]
+
+[ext_resource type="Texture2D" uid="uid://nr53llk3uo7m" path="res://assets/squid_egg.png" id="1_lymr0"]
+[ext_resource type="Script" path="res://resources/creature/baby_species.gd" id="1_xuj2x"]
+[ext_resource type="Texture2D" uid="uid://cjc4t2yce08hc" path="res://assets/creature_sprites/squid.png" id="3_4udil"]
+
+[resource]
+script = ExtResource("1_xuj2x")
+teen_posibilities = Array[Resource("res://resources/creature/teen_species.gd")]([])
+egg_texture = ExtResource("1_lymr0")
+species_name = "Lilsquid"
+spritesheet = ExtResource("3_4udil")
+requirements = {
+"care_mistakes": 0,
+"happiness": 0,
+"intelligence": 0,
+"is_dead": false,
+"strength": 0
+}

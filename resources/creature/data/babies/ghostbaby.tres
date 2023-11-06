@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BabySpecies" load_steps=5 format=3 uid="uid://x4ofpur6owe2"]
 
-[ext_resource type="Texture2D" uid="uid://d4n35pl3x5ipp" path="res://assets/egg.png" id="1_2w234"]
+[ext_resource type="Texture2D" uid="uid://dl2tkas57ybjj" path="res://assets/egg2.png" id="1_3y05n"]
 [ext_resource type="Script" path="res://resources/creature/baby_species.gd" id="1_kfx3k"]
 [ext_resource type="Texture2D" uid="uid://co1s0pdy1o7x2" path="res://assets/creature_sprites/creature-ghost.png" id="2_bwq8d"]
 [ext_resource type="Resource" uid="uid://bewuc2ybgv8cn" path="res://resources/creature/data/teens/ghostteen.tres" id="3_te0y7"]
@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("1_kfx3k")
 teen_posibilities = Array[Resource("res://resources/creature/teen_species.gd")]([ExtResource("3_te0y7")])
-egg_texture = ExtResource("1_2w234")
+egg_texture = ExtResource("1_3y05n")
 species_name = "lil Ghost"
 spritesheet = ExtResource("2_bwq8d")
 requirements = {

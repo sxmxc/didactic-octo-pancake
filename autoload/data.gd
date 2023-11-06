@@ -13,6 +13,7 @@ extends Node2D
 	"devbaby" : preload("res://resources/creature/data/babies/devbaby.tres"),
 	"devbabybeta": preload("res://resources/creature/data/babies/devbabybeta.tres"),
 	"ghostbaby": preload("res://resources/creature/data/babies/ghostbaby.tres"),
+	'lilsquid': preload("res://resources/creature/data/babies/lilsquid.tres")
 }
 
 # Called when the node enters the scene tree for the first time.

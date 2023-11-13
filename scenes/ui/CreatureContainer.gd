@@ -31,9 +31,11 @@ func focus_view_request(event, creature: Creature):
 	if event is InputEventScreenTouch:
 		print("Creature input event: %s" % event)
 		Eventbus.focus_view_requested.emit(creature)
+		SoundManager.play_ui_sound(Data.sfx_library["click"])
 		close()
 
 func _on_creature_button_pressed():
+	SoundManager.play_ui_sound(Data.sfx_library["click"])
 	if !opened:
 		open()
 	else:

@@ -14,3 +14,6 @@ signal new_creature_requested
 signal feed_request(food: Food)
 
 signal notification_requested(notification: String)
+
+func _ready():
+	print("EventBus Ready")

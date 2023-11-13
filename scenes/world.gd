@@ -37,6 +37,8 @@ func _ready():
 	Eventbus.focus_view_requested.emit(new_creature)
 	player.learn_buildable(Data.buildable_library["BasicNest"].instantiate())
 	player.learn_buildable(Data.buildable_library["BasicFoodBowl"].instantiate())
+	SoundManager.play_music(Data.music_library["harbor"], 1)
+	SoundManager.track_finished.connect(func(): SoundManager.play_music(Data.music_library["harbor"], 1) )
 	pass # Replace with function body.
 
 

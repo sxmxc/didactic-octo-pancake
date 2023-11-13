@@ -16,6 +16,7 @@ func _process(delta):
 
 
 func _on_build_button_pressed():
+	SoundManager.play_ui_sound(Data.sfx_library["click"])
 	if !opened:
 		open()
 	else:

@@ -12,11 +12,13 @@ func _process(delta):
 	
 func _on_new_creature_button_pressed():
 	print("New creature requested")
+	SoundManager.play_ui_sound(Data.sfx_library["click"])
 	Eventbus.new_creature_requested.emit()
 	pass # Replace with function body.
 
 
 func _on_feed_button_pressed():
 	var food = meat_scene.instantiate()
+	SoundManager.play_ui_sound(Data.sfx_library["click"])
 	Eventbus.feed_request.emit(food)
 	pass # Replace with function body.

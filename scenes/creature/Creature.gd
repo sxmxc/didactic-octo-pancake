@@ -127,6 +127,7 @@ func _age_up():
 		"adult":
 			pass
 	print("Happy Birthday %s!" % name)
+	SoundManager.play_ui_sound(Data.sfx_library["happy_jingle"])
 	Eventbus.notification_requested.emit("Happy Birthday %s!" % name)
 	Eventbus.popup_requested.emit("Happy Birthday %s!" % name)
 	

@@ -19,3 +19,4 @@ func _drop_data(at_position, data):
 		var new_item = Data.buildable_library[data.buildable_key].instantiate()
 		world_map.add_child(new_item)
 		new_item.global_position = get_global_mouse_position()
+		SoundManager.play_sound(Data.sfx_library["click"])

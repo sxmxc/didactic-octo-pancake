@@ -16,8 +16,20 @@ extends Node2D
 	'lilsquid': preload("res://resources/creature/data/babies/lilsquid.tres")
 }
 
+@export var music_library : Dictionary = {
+	"awesomeness": preload("res://assets/audio/music/awesomeness.wav"), 
+	"harbor": preload("res://assets/audio/music/harbor.mp3"), 
+	"old_city": preload("res://assets/audio/music/old city theme.ogg")
+}
+
+@export var sfx_library : Dictionary = {
+	"click": preload("res://addons/kenney_ui_audio/click5.wav"),
+	"happy_jingle": preload("res://addons/kenney music jingles/Pizzicato jingles/jingles_pizzi_10.ogg")
+}
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	print("Data Libraries Ready")
 	pass # Replace with function body.
 
 

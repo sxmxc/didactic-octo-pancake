@@ -12,7 +12,7 @@ config_version=5
 
 config/name="digi-tamogotcha-mon"
 config/tags=PackedStringArray("gd4")
-run/main_scene="res://scenes/world.tscn"
+run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/image="res://assets/pxvoidmoose.png"
 boot_splash/use_filter=false
@@ -22,8 +22,11 @@ config/icon="res://assets/logo.png"
 
 BeehaveGlobalMetrics="*res://addons/beehave/metrics/beehave_global_metrics.gd"
 BeehaveGlobalDebugger="*res://addons/beehave/debug/global_debugger.gd"
-Eventbus="*res://autoload/eventbus.gd"
 Data="*res://autoload/data.gd"
+SoundManager="*res://addons/sound_manager/sound_manager.gd"
+Eventbus="*res://autoload/eventbus.gd"
+SceneManager="*res://addons/scene_manager/scene_manager.gd"
+Game="*res://autoload/game.gd"
 
 [display]
 
@@ -39,7 +42,7 @@ window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/beehave/plugin.cfg", "res://addons/randomnamesgenerator/plugin.cfg")
+enabled=PackedStringArray("res://addons/beehave/plugin.cfg", "res://addons/randomnamesgenerator/plugin.cfg", "res://addons/scene_manager/plugin.cfg", "res://addons/sound_manager/plugin.cfg")
 
 [input]
 

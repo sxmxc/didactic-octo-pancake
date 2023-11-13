@@ -1,0 +1,133 @@
+[gd_scene load_steps=9 format=3 uid="uid://cy7g7w76i2uqk"]
+
+[ext_resource type="Texture2D" uid="uid://rutj4t3ikalg" path="res://assets/ui/panel.png" id="1_m2xky"]
+[ext_resource type="Texture2D" uid="uid://b1sn5k1cu02cn" path="res://assets/ui/drawer_panel.png" id="2_sqtud"]
+[ext_resource type="Texture2D" uid="uid://o2rjde15ycie" path="res://assets/credits-currency.png" id="3_fbewe"]
+[ext_resource type="Texture2D" uid="uid://cvy24ljsd13kg" path="res://assets/rupee.png" id="4_7jnuw"]
+[ext_resource type="Texture2D" uid="uid://djd5i6y2teoty" path="res://assets/metal-bar.png" id="5_70a0n"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yd7ew"]
+texture = ExtResource("1_m2xky")
+texture_margin_left = 16.0
+texture_margin_top = 64.0
+texture_margin_right = 37.0
+texture_margin_bottom = 87.0
+expand_margin_left = 1.0
+expand_margin_top = 29.0
+expand_margin_right = 25.0
+expand_margin_bottom = 70.0
+region_rect = Rect2(2, 0, 806, 603)
+
+[sub_resource type="LabelSettings" id="LabelSettings_s54pd"]
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hg2dh"]
+font_size = 32
+
+[node name="PlayerWallet" type="Panel"]
+visible = false
+anchors_preset = -1
+anchor_left = 0.0453704
+anchor_top = 0.0109375
+anchor_right = 0.415741
+anchor_bottom = 0.113542
+offset_left = -1.00003
+offset_right = -1.00003
+theme_override_styles/panel = SubResource("StyleBoxTexture_yd7ew")
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -105.0
+offset_top = -18.0
+offset_right = 108.0
+offset_bottom = 25.0
+grow_horizontal = 2
+texture = ExtResource("2_sqtud")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="TextureRect2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = -19.5
+offset_right = 88.0
+offset_bottom = 19.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"HeaderLarge"
+text = "Player Wallet"
+label_settings = SubResource("LabelSettings_s54pd")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 34.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_fbewe")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_hg2dh")
+horizontal_alignment = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+texture = ExtResource("4_7jnuw")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_hg2dh")
+horizontal_alignment = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+texture = ExtResource("5_70a0n")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_hg2dh")
+horizontal_alignment = 2

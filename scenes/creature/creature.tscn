@@ -108,7 +108,7 @@ movement_range = 200
 [node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard")]
 script = ExtResource("2_6f3ey")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@28575")
+blackboard = NodePath("@Node@17476")
 
 [node name="Either" type="Node" parent="BeehaveTree"]
 script = ExtResource("3_l1ib0")

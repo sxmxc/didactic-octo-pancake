@@ -14,12 +14,14 @@ func _process(delta):
 
 
 func _on_world_view_button_pressed():
+	SoundManager.play_ui_sound(Data.sfx_library["click"])
 	focused_creature = null
 	%InfoPanel.focused_creature = null
 	Eventbus.world_view_requested.emit()
 	pass # Replace with function body.
 
 func _on_action_button_pressed():
+	SoundManager.play_ui_sound(Data.sfx_library["click"])
 	var food = meat_scene.instantiate()
 	Eventbus.feed_request.emit(food)
 	pass # Replace with function body.

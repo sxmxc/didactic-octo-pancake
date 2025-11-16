@@ -1,6 +1,6 @@
 meta:
   version: 1
-  last_updated: 2024-06-01
+  last_updated: 2024-06-04
   notes: >-
     Structured backlog with priorities, blockers, and subtasks so agents can
     quickly gauge sequencing constraints.
@@ -8,6 +8,36 @@ areas:
   - id: core_mechanics
     title: Core mechanics
     tasks:
+      - id: core.egg_inventory_weighted_spawns
+        title: Egg inventory + weighted hatching
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: >-
+          Eggs currently spawn randomly without player agency, but design now calls for
+          pack-like drops (1/3/5 bundles) that players earn via daily/periodic rewards
+          or purchase with soft currency, then consume to spawn new creatures using
+          weighted RNG per egg tier.
+        entrypoints:
+          - autoload/data.gd (inventory + currency definitions)
+          - autoload/game.gd (reward cadence + egg consumption flow)
+          - scenes/world.gd (spawn loop integration)
+          - scenes/ui/* (reward/pack purchase UX)
+          - README.md / TODO.yaml (document pack naming + acquisition rules)
+        blockers: []
+        subtasks:
+          - description: Introduce an egg inventory resource that tracks owned egg bundles
+              and individual egg tokens with rarity weights.
+          - description: Design "pack" alternatives (rename TBD) that grant 1, 3, or 5 eggs
+              through daily login rewards, achievements, or in-game currency purchases.
+          - description: Update spawn logic so creatures only hatch when an egg token is
+              consumed, respecting weighted RNG tables per egg tier.
+          - description: Surface reward cadence, inventory counts, and hatch odds in the UI
+              so players understand acquisition and consumption flows.
+        definition_of_done: >-
+          Eggs no longer appear for free; players earn/stock egg tokens via login rewards or
+          purchases, inventory counts gate spawns, and weighted RNG tables determine hatch
+          results with clear documentation.
       - id: core.stat_training_loops
         title: Stat training loops
         priority: high
@@ -225,3 +255,120 @@ areas:
         definition_of_done: >-
           Players can close the app, return hours later, and see creatures updated
           based on elapsed time without losing progress or corrupting saves.
+  - id: online_services
+    title: Online services & auth
+    tasks:
+      - id: online.storefront_architecture_eval
+        title: Storefront architecture decision
+        priority: high
+        status: todo
+        owner: unassigned
+        problem: >-
+          Talo supplies auth, analytics, and persistence, but it lacks a built-in storefront.
+          We need a documented decision on whether to extend Talo, add a companion service, or
+          replace it entirely before investing in purchase flows.
+        entrypoints:
+          - README.md (documented options + recommendation)
+          - TODO.yaml (task breakdown once a direction is chosen)
+          - backend/talo/* (evaluate extension points)
+          - docs for proposed companion service (`backend/storefront/`)
+        blockers: []
+        subtasks:
+          - description: Audit Talo server functions to confirm whether commerce logic can be embedded
+              directly alongside the official backend.
+          - description: Spike a proposal for a `backend/storefront/` companion that signs purchases and
+              syncs inventory back into Talo via REST.
+          - description: Outline risks, staffing needs, and migration criteria should we abandon Talo
+              entirely for a bespoke backend.
+        definition_of_done: >-
+          README captures the decision matrix plus a recommendation, TODO.yaml references the selected path,
+          and future tasks clearly state how purchases, auth, and analytics will split across services.
+      - id: online.server_authority_talo
+        title: Server authoritative backend (Talo)
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: >-
+          The sim currently trusts local state even though Talo already provides a Dockerized,
+          Godot-ready backend (auth, leaderboards, analytics, remote config). We need to wire the
+          official service into our project so authoritative state, device/OAuth auth, and data
+          visualization all flow through Talo instead of bespoke code.
+        entrypoints:
+          - README.md (document architecture + auth expectations)
+          - TODO.yaml (track backend milestones)
+          - backend/talo/docker-compose.yml (official stack + env samples)
+          - addons/talo_client/* (Godot plug-in wiring)
+          - autoload/game.gd (client networking hooks)
+        blockers: []
+        subtasks:
+          - description: Vendor the upstream Talo Docker compose + env files into `backend/talo/`, document how to boot the
+              stack locally, and confirm the dashboard is reachable.
+          - description: Configure the Talo Godot add-on under `addons/talo_client/` so the sim can authenticate per-device,
+              fallback to OAuth when necessary, and exchange inventory/save payloads with the backend.
+          - description: Map Talo features (leaderboards, remote config, analytics, presence) onto our gameplay loops, update
+              README.md with trust boundaries/failure modes, and ensure eggs/inventory sync through authoritative endpoints.
+        definition_of_done: >-
+          A Talo service owns the canonical game state, runs via Docker locally, clients authenticate
+          per-device or via OAuth through the Godot plug-in, and documentation covers setup plus
+          which Talo features back each gameplay surface.
+      - id: online.storefront_egg_packs
+        title: Storefront + egg pack purchases
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: >-
+          Egg bundles are supposed to be inventory-gated, but there's no authoritative storefront
+          that validates soft-currency spends or tracks which device bought a pack. We need a
+          UI flow and Talo endpoints that mint/consume bundles, prevent dupes, and provide a
+          foundation for daily deals or seasonal packs.
+        entrypoints:
+          - scenes/ui/storefront/* (new UI panels + pack carousel)
+          - autoload/game.gd (store commands + inventory refresh)
+          - addons/talo_client/* (authenticated purchase calls)
+          - backend/storefront/* (companion purchase authority service)
+          - backend/talo/functions/storefront/* (inventory sync hooks when Talo hosts logic directly)
+          - README.md / TODO.yaml (document pack tiers + costs)
+        blockers:
+          - core.egg_inventory_weighted_spawns
+          - online.server_authority_talo
+          - online.storefront_architecture_eval
+        subtasks:
+          - description: Author a Godot storefront menu that lists available egg bundles (1/3/5) and
+              surfaces costs, probabilities, and limited-time offers.
+          - description: Implement Talo endpoints that debit soft currency, mint pack items, log
+              transaction IDs, and respond with updated inventory counts.
+          - description: Sync UI to authoritative inventory after each purchase, showing success/failure
+              messages and persisting receipts for audits.
+        definition_of_done: >-
+          Players can only obtain egg bundles through the storefront, purchases are validated by Talo,
+          inventory updates atomically, and documentation explains SKU names, currencies, and logging.
+      - id: online.monetization_foundation
+        title: Monetization + real-currency hooks
+        priority: low
+        status: todo
+        owner: unassigned
+        problem: >-
+          The roadmap now calls for optional real-money purchases (buy egg packs directly or purchase
+          premium currency). There is no pricing model, payment provider plan, or entitlement flow, so
+          we need a blueprint that keeps soft and hard currency in sync with Talo.
+        entrypoints:
+          - README.md (monetization overview + compliance notes)
+          - TODO.yaml (task tracking)
+          - backend/storefront/payments/* (gateway integrations or mocks)
+          - backend/talo/payments/* (Talo-side entitlements or storage sync)
+          - scenes/ui/storefront/* (toggle between soft/hard currency pricing)
+          - autoload/game.gd (currency balances + receipt validation)
+        blockers:
+          - online.storefront_egg_packs
+          - online.storefront_architecture_eval
+        subtasks:
+          - description: Define SKU tables for soft-currency bundles, premium currency, and direct egg
+              purchases, including price tiers for USD (or platform equivalents).
+          - description: Select/pay mock gateways (Stripe test mode, Steam wallet, platform IAP) and
+              describe how Talo will verify receipts before granting items.
+          - description: Document refund/chargeback handling plus how real-money purchases convert into
+              in-game egg inventory or currency balances.
+        definition_of_done: >-
+          Pricing tables, gateway integration plans, and entitlement validation steps are documented,
+          Talo exposes placeholders/hooks for real-currency receipts, and the storefront can surface
+          both soft- and hard-currency options even if final payment SDKs are stubbed.

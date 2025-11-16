@@ -42,8 +42,9 @@ func _ready():
 	player.learn_buildable(Data.buildable_library["BasicNest"].instantiate())
 	player.learn_buildable(Data.buildable_library["BasicFoodBowl"].instantiate())
 	player.add_to_wallet("gold", 500)
-	SoundManager.play_music(Data.music_library["harbor"], 1)
-	SoundManager.track_finished.connect(func(): SoundManager.play_music(Data.music_library["harbor"], 1) )
+	SoundManager.play_music(Data.music_library["cozy"], 1)
+	var rand = randi_range(0,Data.music_library.keys().size()-1)
+	SoundManager.track_finished.connect(func(): SoundManager.play_music(Data.music_library[Data.music_library.keys()[rand]], 1) )
 	pass # Replace with function body.
 
 

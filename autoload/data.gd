@@ -17,9 +17,10 @@ extends Node2D
 }
 
 @export var music_library : Dictionary = {
-	"awesomeness": preload("res://assets/audio/music/awesomeness.wav"), 
-	"harbor": preload("res://assets/audio/music/harbor.mp3"), 
-	"old_city": preload("res://assets/audio/music/old city theme.ogg")
+	"awesomeness": preload("uid://5q722kjnkccy"), 
+	"harbor": preload("uid://bm6ddxpp2d085"), 
+	"old_city": preload("uid://xrtkos44v4vs"),
+	"cozy": preload("uid://bvdb2f3a8gqhn")
 }
 
 @export var sfx_library : Dictionary = {

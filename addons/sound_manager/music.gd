@@ -19,7 +19,8 @@ func play(resource: AudioStream, volume: float = 0.0, crossfade_duration: float 
 	# Otherwise we need to prep another player and handle its introduction
 	player = prepare(resource, override_bus)
 	fade_volume(player, -80.0, volume, crossfade_duration)
-	player.finished.connect(_on_stream_completed)
+	if not player.finished.is_connected(_on_stream_completed):
+		player.finished.connect(_on_stream_completed)
 
 	# Remember this track name
 	track_history.insert(0, resource.resource_path)

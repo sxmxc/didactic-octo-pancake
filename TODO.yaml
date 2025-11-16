@@ -1,0 +1,227 @@
+meta:
+  version: 1
+  last_updated: 2024-06-01
+  notes: >-
+    Structured backlog with priorities, blockers, and subtasks so agents can
+    quickly gauge sequencing constraints.
+areas:
+  - id: core_mechanics
+    title: Core mechanics
+    tasks:
+      - id: core.stat_training_loops
+        title: Stat training loops
+        priority: high
+        status: todo
+        owner: unassigned
+        problem: >-
+          Creatures can lose hunger/energy over time but have no way to raise
+          strength, intelligence, or other stats.
+        entrypoints:
+          - scenes/world.gd (world tick + event wiring)
+          - scenes/creature/creature.gd (stat container + behavior tree integration)
+          - buildables/* (training stations)
+          - autoload/eventbus.gd (signals)
+          - resources/stats/creature_stats.gd
+        blockers:
+          - sim.training_payoff_model
+        subtasks:
+          - description: Author at least one Gym Pod/Study Desk buildable and register it in autoload/data.gd.
+          - description: Extend idle AI so creatures can claim nearby training stations and emit "training" signals.
+          - description: Increment stats during training sessions while draining hunger/energy on the world tick.
+          - description: Broadcast progress through Eventbus so UI panels can reflect multiple concurrent trainings.
+        definition_of_done: >-
+          Stats visibly increase after training, UI reflects progress, and the system
+          works for any number of creatures.
+      - id: core.evolution_requirement_checks
+        title: Evolution requirement checks
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: Species resources store requirement dictionaries, yet age-ups never evaluate them.
+        entrypoints:
+          - resources/creature/data/**/*.tres
+          - scenes/creature/creature.gd::_age_up
+          - resources/stats/creature_stats.gd
+        blockers:
+          - core.care_mistake_tracking
+        subtasks:
+          - description: Evaluate requirement dictionaries whenever a creature crosses an age threshold.
+          - description: Select a valid teen/adult resource (support randomness or weighting) and swap sprites/stats.
+          - description: Emit UI + notification signals detailing why a branch triggered.
+        definition_of_done: >-
+          Evolution outcomes reflect stat training and care history; requirements are
+          easy to tweak per species.
+      - id: core.care_mistake_tracking
+        title: Care mistake tracking
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: CreatureStats exposes care_mistakes but nothing increments it.
+        entrypoints:
+          - scenes/creature/creature.gd
+          - scenes/world.gd
+          - autoload/eventbus.gd
+        blockers: []
+        subtasks:
+          - description: Define neglect thresholds (starving hunger bar, sickness ignored, etc.).
+          - description: Increment counters when thresholds are crossed and broadcast updates for UI/analytics.
+          - description: Feed mistake values into evolution logic and document reset/decay rules.
+        definition_of_done: >-
+          Care mistakes rise under neglect, reset/decay rules are documented, and
+          evolution branches consume the value.
+      - id: core.trait_system
+        title: Trait system
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: Creatures have no personality traits to differentiate behavior, yet design calls for positive/negative traits that can be inherited, learned, and evolve over time (e.g., "glutton" worsening or improving).
+        entrypoints:
+          - scenes/creature/creature.gd (trait container + lifecycle hooks)
+          - resources/stats/creature_stats.gd (serialization + modifiers)
+          - autoload/eventbus.gd (signals for trait changes)
+          - README.md (document available traits and evolution rules)
+        blockers: []
+        subtasks:
+          - description: Define a trait data model that supports positive/negative effects, tiers, and evolution paths.
+          - description: Assign traits via weighted RNG at birth and expose hooks for scripted events to add/remove/upgrade traits.
+          - description: Ensure trait effects influence hunger, energy, training, or behaviors and surface notifications when they change.
+        definition_of_done: >-
+          Creatures can spawn or learn traits, traits visibly impact simulation stats/behaviors, and documentation explains how traits evolve or flip alignment.
+  - id: content_ux
+    title: Content & UX
+    tasks:
+      - id: content.evolution_data_pass
+        title: Evolution data pass
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: Only four baby species exist and one teen slot lacks a base form.
+        entrypoints:
+          - resources/creature/data/babies/*.tres
+          - resources/creature/data/teens/*.tres
+          - design docs
+        blockers: []
+        subtasks:
+          - description: Flesh out evolution diagram nodes as .tres resources (names may be temporary).
+          - description: Capture sprite references, requirement dictionaries, and metadata for each form.
+          - description: Document relationships so future agents can implement them quickly.
+        definition_of_done: >-
+          Each teen/adult node in the diagram has a resource with documented
+          requirements and owner sprites.
+      - id: content.item_roster_audit
+        title: Item roster audit
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: Starter buildables are debug conveniences and the long-term item list is undecided.
+        entrypoints:
+          - buildables/*
+          - autoload/data.gd
+          - design notes
+        blockers: []
+        subtasks:
+          - description: Draft a proposed item progression (core habitat, specialty training gear, cosmetic clutter).
+          - description: Note costs, unlock triggers, and desired effects for each tier.
+          - description: Capture rationale inside README/TODO for early/mid/late-game availability.
+        definition_of_done: >-
+          README/TODO captures an ordered list of candidate items plus rationale for
+          availability.
+      - id: content.naming_and_theming
+        title: Naming + theming review
+        priority: low
+        status: todo
+        owner: unassigned
+        problem: Species names are placeholders and may change with art direction.
+        entrypoints:
+          - resources/creature/data/**/*.tres
+          - assets/design reference image
+        blockers: []
+        subtasks:
+          - description: Propose naming conventions (e.g., elemental roots + suffix).
+          - description: Outline how recolors or variants are labeled consistently.
+          - description: Update design references if needed.
+        definition_of_done: >-
+          Documented naming guide plus a list of proposed replacements for existing
+          species.
+  - id: tooling
+    title: Tooling
+    tasks:
+      - id: tooling.evolution_tree_asset_ingestion
+        title: Evolution tree asset ingestion
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: The evolution-diagram image lives outside the repo.
+        entrypoints:
+          - assets/design/
+          - README.md
+        blockers: []
+        subtasks:
+          - description: Check the diagram into version control as both the editable source and exported PNG.
+          - description: Reference the asset from README once available.
+          - description: Document how to update/edit the source file.
+        definition_of_done: >-
+          Diagram sits in the repo, README links to it, and future contributors can
+          edit the source.
+  - id: simulation_balance
+    title: Simulation balance
+    tasks:
+      - id: sim.hunger_energy_decay_tuning
+        title: Hunger & energy decay tuning
+        priority: high
+        status: todo
+        owner: unassigned
+        problem: World tick fires every 10s and adjusts hunger/energy by fixed +/-1 (or +10 while sleeping), so creatures barely need attention.
+        entrypoints:
+          - scenes/world.gd
+          - scenes/creature/creature.gd::_on_world_tick
+          - resources/stats/creature_stats.gd
+        blockers: []
+        subtasks:
+          - description: Decide the target number of hunger/energy interactions per in-game hour and derive decay curves.
+          - description: Scale decay by life stage or species multipliers for difficulty pacing.
+          - description: Revisit sleep recovery so rest gradually restores energy and optionally slows hunger gain.
+        definition_of_done: >-
+          Documented decay formula plus code changes that create a meaningful care
+          cadence across all life stages.
+      - id: sim.training_payoff_model
+        title: Training payoff & upkeep model
+        priority: high
+        status: todo
+        owner: unassigned
+        problem: Strength/intelligence/happiness never change after hatching, so training buildables will have no systemic impact.
+        entrypoints:
+          - resources/stats/creature_stats.gd
+          - buildables/*
+          - scenes/creature/creature.gd
+          - scenes/ui/*
+        blockers:
+          - sim.hunger_energy_decay_tuning
+        subtasks:
+          - description: Define how training modifies stats over time and how bonuses decay when neglected.
+          - description: Link training sessions to hunger/energy drains or temporary buffs to introduce tradeoffs.
+          - description: Surface progress in the UI and propagate stats into evolution or combat placeholders.
+        definition_of_done: >-
+          Training introduces clear tradeoffs (resource drain vs. stat growth), and
+          documentation explains how to tune the reward curve and decay.
+      - id: sim.save_load_and_idle_catchup
+        title: Save/load & idle catch-up pipeline
+        priority: highest
+        status: todo
+        owner: unassigned
+        problem: Mobile builds rely on the OS keeping the process alive; once suspended or killed, progress is lost and decay ignores elapsed time.
+        entrypoints:
+          - autoload/data.gd
+          - autoload/game.gd
+          - autoload/eventbus.gd
+          - scenes/world.gd
+          - user://saves/ serialization helper (new)
+        blockers: []
+        subtasks:
+          - description: Define a canonical save payload (creature stats, buildables, inventory, timers, RNG seeds) plus last_tick_epoch_ms.
+          - description: Serialize on key actions and add a manual "Save & Sleep" flow for cautious players.
+          - description: On boot, load payloads, compute elapsed time, and run bounded catch-up loops for decay/training.
+          - description: Surface failures (corrupt save, version mismatch) with fallbacks and document how systems extend the payload.
+        definition_of_done: >-
+          Players can close the app, return hours later, and see creatures updated
+          based on elapsed time without losing progress or corrupting saves.

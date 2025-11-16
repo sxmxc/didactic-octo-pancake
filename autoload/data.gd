@@ -10,10 +10,10 @@ extends Node2D
 }
 
 @export var species_baby_library : Dictionary = {
-	"devbaby" : preload("res://resources/creature/data/babies/devbaby.tres"),
-	"devbabybeta": preload("res://resources/creature/data/babies/devbabybeta.tres"),
-	"ghostbaby": preload("res://resources/creature/data/babies/ghostbaby.tres"),
-	'lilsquid': preload("res://resources/creature/data/babies/lilsquid.tres")
+	"blop": preload("res://resources/creature/data/babies/blop.tres"),
+	"ghos": preload("res://resources/creature/data/babies/ghos.tres"),
+	"sprit": preload("res://resources/creature/data/babies/sprit.tres"),
+	"squip": preload("res://resources/creature/data/babies/squip.tres")
 }
 
 @export var music_library : Dictionary = {
@@ -24,7 +24,8 @@ extends Node2D
 
 @export var sfx_library : Dictionary = {
 	"click": preload("res://addons/kenney_ui_audio/click5.wav"),
-	"happy_jingle": preload("res://addons/kenney music jingles/Pizzicato jingles/jingles_pizzi_10.ogg")
+	"happy_jingle": preload("res://addons/kenney music jingles/Pizzicato jingles/jingles_pizzi_10.ogg"),
+	"error": preload("res://addons/kenney_ui_audio/click5.wav"),
 }
 
 # Called when the node enters the scene tree for the first time.

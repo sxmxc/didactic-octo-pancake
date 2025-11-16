@@ -1,7 +1,8 @@
 extends Control
 
-@onready var texture_rect : TextureRect = get_node("TextureRect")
-@onready var name_label : Label = get_node("TextureRect/Label")
+
+@onready var name_label = %NameLabel
+@onready var texture_rect = %TextureRect
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

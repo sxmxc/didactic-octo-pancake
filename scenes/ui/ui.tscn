@@ -1,0 +1,312 @@
+[gd_scene load_steps=25 format=3 uid="uid://cwbcbqyxgficy"]
+
+[ext_resource type="Script" uid="uid://b65uviys6pwx2" path="res://scenes/ui/UI.gd" id="1_o0qo1"]
+[ext_resource type="Script" uid="uid://brv2e8p0r5bnp" path="res://scenes/ui/notification_box.gd" id="2_mf3qm"]
+[ext_resource type="Texture2D" uid="uid://dxk1hu0t4u6wx" path="res://assets/ui/main_ui.png" id="3_hc5d0"]
+[ext_resource type="FontFile" uid="uid://bv3ikenl8cvud" path="res://assets/fonts/digital_7/digital-7.ttf" id="4_n3vwu"]
+[ext_resource type="Script" uid="uid://d36wjvx56uohs" path="res://addons/segmented_bar/segmented_bar.gd" id="5_jcn1r"]
+[ext_resource type="PackedScene" uid="uid://i12tclm2wdmd" path="res://scenes/ui/world_view_menu.tscn" id="13_a8shf"]
+[ext_resource type="Script" uid="uid://4y6ba0e3isek" path="res://scenes/ui/world_clock_ui.gd" id="14_0i47d"]
+[ext_resource type="PackedScene" uid="uid://cfo8abfi7e2no" path="res://scenes/ui/focus_view_menu.tscn" id="14_v47tu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h1mp1"]
+atlas = ExtResource("3_hc5d0")
+region = Rect2(0, 0, 96, 48)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7jtxg"]
+font = ExtResource("4_n3vwu")
+font_size = 12
+font_color = Color(0.3529412, 0.77254903, 0.30980393, 1)
+outline_size = 2
+outline_color = Color(0.07450981, 0.07450981, 0.07450981, 1)
+shadow_size = 0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7vp6q"]
+atlas = ExtResource("3_hc5d0")
+region = Rect2(20, 52, 9, 9)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y220t"]
+atlas = ExtResource("3_hc5d0")
+region = Rect2(55, 55, 35, 5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4kltc"]
+atlas = ExtResource("3_hc5d0")
+region = Rect2(90, 56, 5, 3)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jcn1r"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uegxj"]
+atlas = SubResource("CompressedTexture2D_jcn1r")
+region = Rect2(34, 52, 10, 10)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_uegxj"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hl07w"]
+atlas = SubResource("CompressedTexture2D_uegxj")
+region = Rect2(90, 56, 5, 3)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_y220t"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_swkix"]
+atlas = SubResource("CompressedTexture2D_y220t")
+region = Rect2(4, 52, 8, 9)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4kltc"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hc5d0"]
+atlas = SubResource("CompressedTexture2D_4kltc")
+region = Rect2(90, 56, 5, 3)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_42mrm"]
+atlas = ExtResource("3_hc5d0")
+region = Rect2(0, 0, 96, 48)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2h7mf"]
+texture = SubResource("AtlasTexture_42mrm")
+texture_margin_left = 6.0
+texture_margin_top = 5.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_qdy77"]
+font = ExtResource("4_n3vwu")
+font_size = 12
+font_color = Color(0.3529412, 0.77254903, 0.30980393, 1)
+outline_size = 2
+outline_color = Color(0.07450981, 0.07450981, 0.07450981, 1)
+shadow_size = 2
+
+[node name="UI" type="CanvasLayer"]
+script = ExtResource("1_o0qo1")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+texture_filter = 5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(1080, 1920)
+size_2d_override = Vector2i(270, 480)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="NotificationBox" type="VBoxContainer" parent="SubViewportContainer/SubViewport"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -135.5
+offset_bottom = 143.75
+grow_horizontal = 0
+mouse_filter = 2
+script = ExtResource("2_mf3qm")
+
+[node name="CurrentCreatureStats" type="NinePatchRect" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+texture_filter = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -135.0
+offset_top = 50.0
+offset_right = -36.5
+offset_bottom = 111.25
+grow_horizontal = 2
+texture = SubResource("AtlasTexture_h1mp1")
+patch_margin_left = 6
+patch_margin_top = 5
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/CurrentCreatureStats"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Creature Name"
+label_settings = SubResource("LabelSettings_7jtxg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health" type="Control" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer"]
+custom_minimum_size = Vector2(41.045, 9)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Icon" type="TextureRect" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer/Health"]
+layout_mode = 1
+offset_right = 9.0
+offset_bottom = 9.0
+texture = SubResource("AtlasTexture_7vp6q")
+stretch_mode = 2
+
+[node name="BarBackground" type="TextureRect" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer/Health"]
+layout_mode = 1
+offset_left = 5.75
+offset_top = 3.0
+offset_right = 40.75
+offset_bottom = 8.0
+texture = SubResource("AtlasTexture_y220t")
+stretch_mode = 2
+
+[node name="HealthBar" type="HBoxContainer" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer/Health"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 7.0
+offset_top = 3.75
+offset_right = 42.0
+offset_bottom = 6.75
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/separation = -1
+script = ExtResource("5_jcn1r")
+foreground_color = Color(0.3529412, 0.77254903, 0.30980393, 1)
+background_color = Color(0.76862746, 0.14117648, 0.1882353, 1)
+segment_texture = SubResource("AtlasTexture_4kltc")
+total_segments = 8
+seperation = -1
+metadata/_custom_type_script = "uid://d36wjvx56uohs"
+
+[node name="Hunger" type="Control" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer"]
+custom_minimum_size = Vector2(41.045, 9)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Icon" type="TextureRect" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer/Hunger"]
+layout_mode = 1
+offset_right = 9.0
+offset_bottom = 9.0
+texture = SubResource("AtlasTexture_uegxj")
+stretch_mode = 2
+
+[node name="BarBackground" type="TextureRect" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer/Hunger"]
+layout_mode = 1
+offset_left = 5.75
+offset_top = 3.0
+offset_right = 40.75
+offset_bottom = 8.0
+texture = SubResource("AtlasTexture_y220t")
+stretch_mode = 2
+
+[node name="HungerBar" type="HBoxContainer" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer/Hunger"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 6.75
+offset_top = 4.25
+offset_right = 40.0
+offset_bottom = 7.25
+theme_override_constants/separation = -1
+script = ExtResource("5_jcn1r")
+foreground_color = Color(0.76862746, 0.14117648, 0.1882353, 1)
+background_color = Color(0.3529412, 0.77254903, 0.30980393, 1)
+segment_texture = SubResource("AtlasTexture_hl07w")
+total_segments = 8
+seperation = -1
+metadata/_custom_type_script = "uid://d36wjvx56uohs"
+
+[node name="Energy" type="Control" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer"]
+custom_minimum_size = Vector2(41.045, 9)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Icon" type="TextureRect" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer/Energy"]
+layout_mode = 1
+offset_right = 9.0
+offset_bottom = 9.0
+texture = SubResource("AtlasTexture_swkix")
+stretch_mode = 2
+
+[node name="BarBackground" type="TextureRect" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer/Energy"]
+layout_mode = 1
+offset_left = 4.0
+offset_top = 2.5
+offset_right = 39.0
+offset_bottom = 7.5
+texture = SubResource("AtlasTexture_y220t")
+stretch_mode = 2
+
+[node name="EnergyBar" type="HBoxContainer" parent="SubViewportContainer/SubViewport/CurrentCreatureStats/VBoxContainer/Energy"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 5.25
+offset_top = 4.25
+offset_right = 38.25
+offset_bottom = 7.25
+theme_override_constants/separation = -1
+script = ExtResource("5_jcn1r")
+foreground_color = Color(0.3529412, 0.77254903, 0.30980393, 1)
+background_color = Color(0.76862746, 0.14117648, 0.1882353, 1)
+segment_texture = SubResource("AtlasTexture_hc5d0")
+total_segments = 8
+seperation = -1
+metadata/_custom_type_script = "uid://d36wjvx56uohs"
+
+[node name="WorldViewMenu" parent="SubViewportContainer/SubViewport" instance=ExtResource("13_a8shf")]
+unique_name_in_owner = true
+anchors_preset = 12
+anchor_left = 0.0
+anchor_right = 1.0
+offset_left = 0.0
+offset_top = -13.0
+offset_right = 0.0
+
+[node name="FocusViewMenu" parent="SubViewportContainer/SubViewport" instance=ExtResource("14_v47tu")]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 12
+anchor_left = 0.0
+anchor_right = 1.0
+offset_left = 0.0
+offset_top = -12.0
+offset_right = 0.0
+
+[node name="WorldClockUI" type="Panel" parent="SubViewportContainer/SubViewport"]
+offset_right = 98.5
+offset_bottom = 50.75
+theme_override_styles/panel = SubResource("StyleBoxTexture_2h7mf")
+script = ExtResource("14_0i47d")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/WorldClockUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TimeLabel" type="Label" parent="SubViewportContainer/SubViewport/WorldClockUI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "12:00 AM"
+label_settings = SubResource("LabelSettings_qdy77")
+horizontal_alignment = 1
+
+[node name="DateLabel" type="Label" parent="SubViewportContainer/SubViewport/WorldClockUI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Jan. 16 2025"
+label_settings = SubResource("LabelSettings_qdy77")
+horizontal_alignment = 1

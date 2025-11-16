@@ -1,22 +1,34 @@
-[gd_scene load_steps=22 format=3 uid="uid://boqc2y4amjeqp"]
+[gd_scene load_steps=29 format=3 uid="uid://boqc2y4amjeqp"]
 
-[ext_resource type="Script" path="res://scenes/creature/Creature.gd" id="1_4jpvp"]
-[ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="2_6f3ey"]
-[ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector.gd" id="3_l1ib0"]
-[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence_star.gd" id="4_0y2j8"]
-[ext_resource type="Script" path="res://ai/conditions/IsHungryCondition.gd" id="5_7u07e"]
-[ext_resource type="Script" path="res://ai/actions/MoveToBedAction.gd" id="6_7urcs"]
-[ext_resource type="Script" path="res://ai/actions/WalkToFoodAction.gd" id="7_qslpf"]
-[ext_resource type="Script" path="res://ai/actions/WalkAroundAction.gd" id="8_rtp40"]
-[ext_resource type="Script" path="res://ai/conditions/IsSleepyCondition.gd" id="9_g5f5m"]
-[ext_resource type="Script" path="res://ai/actions/IdleAction.gd" id="9_milg3"]
-[ext_resource type="Script" path="res://ai/actions/SleepAction.gd" id="10_3qdq7"]
+[ext_resource type="Script" uid="uid://b8bntixrs8joq" path="res://scenes/creature/creature.gd" id="1_4jpvp"]
+[ext_resource type="Script" uid="uid://bb0t2ovl7wifo" path="res://addons/beehave/nodes/beehave_tree.gd" id="2_6f3ey"]
+[ext_resource type="Script" uid="uid://evb4cyfmej2g" path="res://resources/stats/creature_stats.gd" id="2_odx68"]
+[ext_resource type="Script" uid="uid://8hn4kne15ac5" path="res://addons/beehave/nodes/composites/selector.gd" id="3_l1ib0"]
+[ext_resource type="Script" uid="uid://bbaojjriq676j" path="res://addons/beehave/nodes/composites/sequence_star.gd" id="4_0y2j8"]
+[ext_resource type="Script" uid="uid://c22mo17ekjffx" path="res://ai/conditions/IsHungryCondition.gd" id="5_7u07e"]
+[ext_resource type="Script" uid="uid://bugk8hfwtso2w" path="res://ai/actions/MoveToBedAction.gd" id="6_7urcs"]
+[ext_resource type="Script" uid="uid://b3w1p1x4w10ic" path="res://ai/actions/WalkToFoodAction.gd" id="7_qslpf"]
+[ext_resource type="Script" uid="uid://bnqy0u10ky81t" path="res://ai/actions/WalkAroundAction.gd" id="8_rtp40"]
+[ext_resource type="Script" uid="uid://b0pt4mx2jxp8o" path="res://ai/conditions/IsSleepyCondition.gd" id="9_g5f5m"]
+[ext_resource type="Script" uid="uid://qbyj18catmmc" path="res://ai/actions/IdleAction.gd" id="9_milg3"]
+[ext_resource type="Script" uid="uid://c0eicdo7ojrs6" path="res://ai/actions/SleepAction.gd" id="10_3qdq7"]
+[ext_resource type="Script" uid="uid://cr1k4g5ujf2hj" path="res://ai/actions/EatAction.gd" id="10_2425k"]
 [ext_resource type="PackedScene" uid="uid://b8uamh30l86kw" path="res://scenes/creature/emotions/singing_bubble.tscn" id="10_t2ebw"]
-[ext_resource type="Texture2D" uid="uid://dl2tkas57ybjj" path="res://assets/egg2.png" id="12_hwdmr"]
-[ext_resource type="Texture2D" uid="uid://cjc4t2yce08hc" path="res://assets/creature_sprites/squid.png" id="13_h8edg"]
+[ext_resource type="Texture2D" uid="uid://nr53llk3uo7m" path="res://assets/creatures/eggs/squid_egg.png" id="13_xi080"]
+[ext_resource type="Texture2D" uid="uid://bt27uqbu2bvid" path="res://assets/creatures/blop.png" id="14_x7fpl"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="15_q5slx"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="16_vdcvm"]
+
+[sub_resource type="Resource" id="Resource_ve8t1"]
+script = ExtResource("2_odx68")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hngdo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b7s5w"]
 radius = 8.24621
+
+[sub_resource type="Resource" id="Resource_pxteo"]
+script = ExtResource("16_vdcvm")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dyisl"]
 radius = 16.0
@@ -77,9 +89,9 @@ tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/path = NodePath("CreatureSprite:frame")
 tracks/0/interp = 1
-tracks/0/loop_wrap = true
+tracks/0/loop_wrap = false
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [5, 6, 7, 8]
@@ -87,16 +99,15 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_iva38"]
 _data = {
-"RESET": SubResource("Animation_rs6cf"),
-"idleing": SubResource("Animation_4tn4i"),
-"sleeping": SubResource("Animation_i8wf4"),
-"walking": SubResource("Animation_1xeca")
+&"RESET": SubResource("Animation_rs6cf"),
+&"idleing": SubResource("Animation_4tn4i"),
+&"sleeping": SubResource("Animation_i8wf4"),
+&"walking": SubResource("Animation_1xeca")
 }
 
 [node name="Creature" type="CharacterBody2D" groups=["Creature"]]
 z_index = 2
 y_sort_enabled = true
-scale = Vector2(3, 3)
 collision_layer = 0
 input_pickable = true
 motion_mode = 1
@@ -104,11 +115,13 @@ safe_margin = 0.001
 script = ExtResource("1_4jpvp")
 movement_speed = 30.0
 movement_range = 200
+stats = SubResource("Resource_ve8t1")
 
-[node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard")]
+[node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("2_6f3ey")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@17476")
+blackboard = NodePath("@Node@257367")
+actor = NodePath("..")
 
 [node name="Either" type="Node" parent="BeehaveTree"]
 script = ExtResource("3_l1ib0")
@@ -134,8 +147,8 @@ script = ExtResource("5_7u07e")
 [node name="WalkToClosestFoodAction" type="Node" parent="BeehaveTree/Either/FindFood"]
 script = ExtResource("7_qslpf")
 
-[node name="IdleAction" type="Node" parent="BeehaveTree/Either/FindFood"]
-script = ExtResource("9_milg3")
+[node name="EatAction" type="Node" parent="BeehaveTree/Either/FindFood"]
+script = ExtResource("10_2425k")
 
 [node name="WalkAround" type="Node" parent="BeehaveTree/Either"]
 script = ExtResource("4_0y2j8")
@@ -150,31 +163,37 @@ script = ExtResource("9_milg3")
 path_desired_distance = 5.0
 target_desired_distance = 5.0
 path_max_distance = 50.0
-debug_enabled = true
+simplify_path = true
+avoidance_enabled = true
 
 [node name="EggSprite" type="Sprite2D" parent="."]
-texture = ExtResource("12_hwdmr")
+texture = ExtResource("13_xi080")
 
 [node name="CreatureSprite" type="Sprite2D" parent="."]
 visible = false
-texture = ExtResource("13_h8edg")
-hframes = 5
-vframes = 2
+material = SubResource("ShaderMaterial_hngdo")
+texture = ExtResource("14_x7fpl")
 region_rect = Rect2(0, 0, 32, 32)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_b7s5w")
 
-[node name="Camera2D" type="Camera2D" parent="." groups=["CreatureCamera"]]
+[node name="Camera2D" type="Node2D" parent="." node_paths=PackedStringArray("follow_target") groups=["CreatureCamera"]]
+top_level = true
+script = ExtResource("15_q5slx")
+follow_mode = 2
+follow_target = NodePath("..")
 zoom = Vector2(4, 4)
+snap_to_pixel = true
+tween_resource = SubResource("Resource_pxteo")
+tween_on_load = false
+draw_limits = true
 limit_left = 0
 limit_top = 0
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
-drag_left_margin = 0.0
 
 [node name="EmotionContainer" type="Node2D" parent="."]
-position = Vector2(0, -23)
+position = Vector2(-1, -37)
 
 [node name="SingingBubble" parent="EmotionContainer" instance=ExtResource("10_t2ebw")]
 
@@ -183,7 +202,7 @@ shape = SubResource("CircleShape2D_dyisl")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_iva38")
+&"": SubResource("AnimationLibrary_iva38")
 }
 
 [connection signal="pressed" from="TouchScreenButton" to="." method="_on_touch_screen_button_pressed"]

@@ -1,6 +1,9 @@
 extends NinePatchRect
 
 @export var meat_scene: PackedScene = preload("res://scenes/food/meat.tscn")
+
+@onready var info_drawer: MenuInfoDrawer = %InfoDrawer
+
 var focused_creature : Creature = null
 
 # Called when the node enters the scene tree for the first time.
@@ -14,18 +17,21 @@ func _process(delta):
 
 
 func _on_world_view_button_pressed():
+	Tracer.info("Requesting world view")
 	SoundManager.play_ui_sound(Data.sfx_library["click"])
 	focused_creature = null
-	%InfoPanel.focused_creature = null
+	info_drawer.focused_creature = null
 	Eventbus.world_view_requested.emit()
+	
 	pass # Replace with function body.
 
 func _on_action_button_pressed():
 	SoundManager.play_ui_sound(Data.sfx_library["click"])
 	var food = meat_scene.instantiate()
 	Eventbus.feed_request.emit(food)
+	Tracer.info("Requesting food")
 	pass # Replace with function body.
 
 func set_focus(creature: Creature):
 	focused_creature = creature
-	%InfoPanel.focused_creature = creature
+	info_drawer.focused_creature = creature

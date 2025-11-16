@@ -3,6 +3,8 @@ class_name Buildable
 
 @export var buildable_name : String = ""
 @export var buildable_key : String = ""
+@export var buildable_cost : int = 0
+@export_enum("gold", "gem", "platinum") var build_cost_type : String = "gold"
 @export var menu_icon_texture : Texture2D
 
 # Called when the node enters the scene tree for the first time.

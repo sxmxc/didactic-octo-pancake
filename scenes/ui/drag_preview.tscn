@@ -9,12 +9,12 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="."]
-custom_minimum_size = Vector2(64, 64)
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 0
-offset_left = -32.0
-offset_top = -32.0
-offset_right = 32.0
-offset_bottom = 32.0
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
 pivot_offset = Vector2(32, 32)
 expand_mode = 1
 stretch_mode = 5

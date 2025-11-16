@@ -11,18 +11,7 @@ class_name Creature extends CharacterBody2D
 }
 var current_life_stage = "egg"
 @export var seconds_to_age : int = age_chart[current_life_stage]
-
-@export var stats: Dictionary = {
-	"strength": 0,
-	"intelligence": 0,
-	"happiness": 0,
-	"hunger": 100,
-	"energy": 200,
-	"care_mistakes": 0,
-	"seconds_alive": 0,
-	"is_dead": false,
-	"age": 0
-}
+@export var stats : CreatureStats
 @export var emotion_bubbles: Dictionary = {
 	"happy" : preload("res://scenes/creature/emotions/singing_bubble.tscn"), 
 	"love" : preload("res://scenes/creature/emotions/love_bubble.tscn"),
@@ -36,12 +25,11 @@ var current_life_stage = "egg"
 @onready var bt: BeehaveTree = get_node("BeehaveTree")
 @onready var egg_sprite: Sprite2D = get_node("EggSprite")
 @onready var creature_sprite : Sprite2D = get_node("CreatureSprite")
-@onready var creature_anim : AnimationPlayer = get_node("AnimationPlayer")
+#@onready var creature_anim : AnimationPlayer = get_node("AnimationPlayer")
 @onready var emotion_container = get_node("EmotionContainer")
 @onready var current_emotion : EmotionBubble = emotion_container.get_child(0)
-@onready var camera : Camera2D = get_node("Camera2D")
-
-var world_map: TileMap
+@onready var camera : PhantomCamera2D = get_node("Camera2D")
+var world_map: TileMapLayer
 var creature_nickname: StringName
 var creature_name: StringName
 var date_born
@@ -56,8 +44,9 @@ func set_species(spec: Species):
 	creature_sprite.texture = species.spritesheet
 	if current_life_stage =="egg":
 		egg_sprite.texture = species.egg_texture
+	stats = CreatureStats.new()
 
-func register_worldmap(map: TileMap):
+func register_worldmap(map: TileMapLayer):
 	world_map = map
 
 func register_blackboard(bb: Blackboard):
@@ -82,9 +71,9 @@ func _physics_process(_delta):
 		_on_navigation_agent_2d_velocity_computed(new_velocity)
 	
 	if get_last_motion().x < 0:
-		creature_sprite.flip_h = true
-	else:
 		creature_sprite.flip_h = false
+	else:
+		creature_sprite.flip_h = true
 		
 
 func _on_navigation_agent_2d_velocity_computed(safe_velocity):
@@ -97,22 +86,24 @@ func _on_world_tick():
 	stats.seconds_alive = int(round(current_time - date_born))
 	if stats.seconds_alive >= seconds_to_age:
 		_age_up()
-	stats.hunger -= 1
-	bt.blackboard.set_value(name + "_hunger", stats.hunger)
-	Eventbus.hunger_updated.emit()
+	stats.current_hunger = clampi(stats.current_hunger + 1, 0, stats.max_hunger)
+	bt.blackboard.set_value(name + "_current_hunger", stats.current_hunger)
+	Eventbus.current_hunger_updated.emit()
 	if current_life_stage == "egg":
 		return
 	if !is_sleeping:
-		stats.energy -= 1
-		bt.blackboard.set_value(name + "_energy", stats.energy)
-		Eventbus.energy_updated.emit()
+		stats.current_energy = clampi(stats.current_energy - 1, 0, stats.max_energy)
+		bt.blackboard.set_value(name + "_current_energy", stats.current_energy)
+		Eventbus.current_energy_updated.emit()
 	else:
-		stats.energy += 10
-		bt.blackboard.set_value(name + "_energy", stats.energy)
-		Eventbus.energy_updated.emit()
+		stats.current_energy = clampi(stats.current_energy + 10, 0, stats.max_energy)
+		bt.blackboard.set_value(name + "_current_energy", stats.current_energy)
+		Eventbus.current_energy_updated.emit()
 
 func _age_up():
 	stats.age += 1
+	if stats.age >= age_chart.keys().size() - 1:
+		stats.age = age_chart.keys().size() - 1
 	current_life_stage = age_chart.keys()[stats.age]
 	seconds_to_age = age_chart[current_life_stage]
 	match  current_life_stage:
@@ -126,9 +117,12 @@ func _age_up():
 			pass
 		"adult":
 			pass
-	print("Happy Birthday %s!" % name)
+	Tracer.info("Happy Birthday %s!" % name)
 	SoundManager.play_ui_sound(Data.sfx_library["happy_jingle"])
+	Eventbus.player_currency_earned.emit("gold", 100)
+	Tracer.debug("Requesting notification")
 	Eventbus.notification_requested.emit("Happy Birthday %s!" % name)
+	Tracer.debug("Requesting popup")
 	Eventbus.popup_requested.emit("Happy Birthday %s!" % name)
 	
 func show_emotion(emotion: String):
@@ -151,17 +145,15 @@ func get_save_data() -> Dictionary:
 
 func get_icon_image() -> Texture2D:
 	if current_life_stage == "egg":
-		return $EggSprite.texture
+		return egg_sprite.texture
 	else:
-		var text_atlas := AtlasTexture.new()
-		text_atlas.atlas = $CreatureSprite.texture
-		text_atlas.region = Rect2i(0,0,32,32)
-		return text_atlas
+		return creature_sprite.texture
 
-func _on_input_event(_viewport, event, _shape_idx):
+func _on_input_event(_viewport, _event, _shape_idx):
 	pass # Replace with function body.
 
 
 func _on_touch_screen_button_pressed():
+	Tracer.info("Requesting focus view for %s " % name)
 	Eventbus.focus_view_requested.emit(self)
 	pass # Replace with function body.

@@ -1,58 +1,46 @@
 [gd_scene load_steps=4 format=3 uid="uid://b2yhlposmux4c"]
 
-[ext_resource type="Script" path="res://scenes/ui/creature_icon.gd" id="1_sgc31"]
-[ext_resource type="Texture2D" uid="uid://g7hitc3i4jdv" path="res://icon.svg" id="2_7v2ao"]
+[ext_resource type="Script" uid="uid://b5p7xnl2lc0ym" path="res://scenes/ui/creature_icon.gd" id="1_sgc31"]
+[ext_resource type="Texture2D" uid="uid://bt27uqbu2bvid" path="res://assets/creatures/blop.png" id="2_hk8n7"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_mcgb7"]
-font_color = Color(1, 0.756863, 0.027451, 1)
+font_color = Color(0, 0, 0, 1)
 
 [node name="CreatureIcon" type="Control"]
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -33.5
-offset_top = -30.5
-offset_right = 33.5
-offset_bottom = 30.5
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 70.0
+offset_bottom = 70.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 1
 script = ExtResource("1_sgc31")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -32.0
-offset_top = -32.0
-offset_right = 32.0
-offset_bottom = 32.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_7v2ao")
-expand_mode = 1
-
-[node name="Label" type="Label" parent="TextureRect"]
+[node name="NameLabel" type="Label" parent="."]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -59.0
-offset_top = -24.0
-offset_right = 60.0
-offset_bottom = -1.0
+offset_left = -60.0
+offset_top = -14.0
+offset_right = 59.0
+offset_bottom = 9.0
 grow_horizontal = 2
 text = "Creature Name"
 label_settings = SubResource("LabelSettings_mcgb7")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_hk8n7")
+stretch_mode = 5

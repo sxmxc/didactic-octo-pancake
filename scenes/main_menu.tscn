@@ -1,18 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://dnvynqg2ii5s7"]
+[gd_scene load_steps=4 format=3 uid="uid://dnvynqg2ii5s7"]
 
-[ext_resource type="Script" path="res://scenes/main_menu.gd" id="1_vu6qp"]
-
-[sub_resource type="Gradient" id="Gradient_vjhxb"]
-colors = PackedColorArray(0.423529, 0.423529, 0.423529, 1, 0.8, 0.8, 0.8, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_p4pac"]
-gradient = SubResource("Gradient_vjhxb")
-fill_from = Vector2(0.504274, 1)
-fill_to = Vector2(0.508547, 0)
+[ext_resource type="Script" uid="uid://bt8cyywos6eiv" path="res://scenes/main_menu.gd" id="1_vu6qp"]
+[ext_resource type="FontFile" uid="uid://c7kiei2ng0vrk" path="res://assets/fonts/KiwiSoda.ttf" id="2_ekxnf"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3x6f7"]
-font_size = 256
-font_color = Color(0, 0, 0, 1)
+font = ExtResource("2_ekxnf")
+font_size = 300
+font_color = Color(0.47843137, 0.03529412, 0.98039216, 1)
+outline_size = 50
+outline_color = Color(0.85882354, 0.24705882, 0.99215686, 1)
+shadow_size = 50
+shadow_color = Color(0.07450981, 0.07450981, 0.07450981, 1)
+shadow_offset = Vector2(5, 5)
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -24,24 +23,34 @@ grow_vertical = 2
 script = ExtResource("1_vu6qp")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("GradientTexture2D_p4pac")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.8039216, 0.9764706, 1)
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -325.0
-offset_right = 325.0
-offset_bottom = 349.0
+offset_left = -384.0
+offset_top = 273.0
+offset_right = 404.0
+offset_bottom = 622.0
 grow_horizontal = 2
-text = "Title"
+text = "Mebits"
 label_settings = SubResource("LabelSettings_3x6f7")
 horizontal_alignment = 1
 vertical_alignment = 1

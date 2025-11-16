@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BabySpecies" load_steps=6 format=3 uid="uid://cnfxyt5s0af2j"]
+
+[ext_resource type="Texture2D" uid="uid://kbpwo0xmei" path="res://assets/creatures/eggs/metal_egg.png" id="1_1sbx3"]
+[ext_resource type="Script" uid="uid://d1bvgi477cu4t" path="res://resources/creature/baby_species.gd" id="1_y4syx"]
+[ext_resource type="Script" uid="uid://8hww1opqqhoy" path="res://resources/creature/teen_species.gd" id="2_akhro"]
+[ext_resource type="Texture2D" uid="uid://caj8i0628pa2r" path="res://assets/creatures/squip.png" id="3_fli88"]
+[ext_resource type="Resource" uid="uid://ceviijjxsnl7m" path="res://resources/creature/data/teens/squeemo.tres" id="5_4808c"]
+
+[resource]
+script = ExtResource("1_y4syx")
+teen_posibilities = Array[ExtResource("2_akhro")]([ExtResource("5_4808c")])
+egg_texture = ExtResource("1_1sbx3")
+species_name = "Squip"
+spritesheet = ExtResource("3_fli88")

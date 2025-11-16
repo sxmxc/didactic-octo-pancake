@@ -14,7 +14,6 @@ func play(resource: AudioStream, volume: float = 0.0, crossfade_duration: float 
 	# If the player already exists then just make sure the volume is right (it might have just been fading in or out)
 	if player != null:
 		fade_volume(player, player.volume_db, volume, crossfade_duration)
-		player.finished.connect(_on_stream_completed)
 		return player
 
 	# Otherwise we need to prep another player and handle its introduction

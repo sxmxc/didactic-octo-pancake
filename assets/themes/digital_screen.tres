@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dhfbv5f67585u"]
+
+[ext_resource type="FontFile" uid="uid://bv3ikenl8cvud" path="res://assets/fonts/digital_7/digital-7.ttf" id="1_y81ea"]
+
+[resource]
+default_font = ExtResource("1_y81ea")
+Label/colors/font_color = Color(0, 0.262745, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 1)

@@ -1,93 +1,331 @@
-[gd_scene load_steps=25 format=3 uid="uid://i12tclm2wdmd"]
+[gd_scene load_steps=37 format=3 uid="uid://i12tclm2wdmd"]
 
-[ext_resource type="Texture2D" uid="uid://d3hg4w46u4w2k" path="res://assets/ui/menu_panel.png" id="1_l2d51"]
-[ext_resource type="Script" path="res://scenes/ui/world_view_menu.gd" id="2_mjasc"]
-[ext_resource type="Texture2D" uid="uid://bxchergwc7l3v" path="res://assets/ui/worldview-buttons.png" id="2_nhpuk"]
-[ext_resource type="Texture2D" uid="uid://dsky673i0obg4" path="res://assets/ui/worldview-buttons-pressed.png" id="3_bv3om"]
-[ext_resource type="Script" path="res://scenes/ui/CreatureContainer.gd" id="5_tansi"]
-[ext_resource type="Texture2D" uid="uid://dg10xa0macwvp" path="res://assets/ui/focus-view-buttons.png" id="5_uaups"]
-[ext_resource type="Texture2D" uid="uid://chwbnvdklciby" path="res://assets/ui/focus-view-buttons-pressed.png" id="6_4kpo4"]
-[ext_resource type="PackedScene" uid="uid://b2yhlposmux4c" path="res://scenes/ui/creature_icon.tscn" id="6_v1107"]
-[ext_resource type="Texture2D" uid="uid://b1sn5k1cu02cn" path="res://assets/ui/drawer_panel.png" id="7_1d7p0"]
-[ext_resource type="Script" path="res://scenes/ui/BuildContainer.gd" id="7_vfqr7"]
-[ext_resource type="PackedScene" uid="uid://dxhvunlio0i71" path="res://scenes/ui/build_item_icon.tscn" id="9_h0blf"]
-[ext_resource type="Texture2D" uid="uid://rutj4t3ikalg" path="res://assets/ui/panel.png" id="11_7r4u3"]
+[ext_resource type="Texture2D" uid="uid://dxk1hu0t4u6wx" path="res://assets/ui/main_ui.png" id="1_654vr"]
+[ext_resource type="Script" uid="uid://y1qp34mxac0y" path="res://scenes/ui/world_view_menu.gd" id="2_mjasc"]
+[ext_resource type="FontFile" uid="uid://bkndep7suf0a1" path="res://assets/fonts/Pix32.ttf" id="7_12kny"]
+[ext_resource type="Script" uid="uid://dihb6b40llexs" path="res://scenes/ui/pull_out_drawer.gd" id="7_tfpvh"]
+[ext_resource type="Texture2D" uid="uid://rutj4t3ikalg" path="res://assets/ui/panel.png" id="8_mp625"]
+[ext_resource type="PackedScene" uid="uid://dxhvunlio0i71" path="res://scenes/ui/build_item_icon.tscn" id="9_p64m6"]
+[ext_resource type="PackedScene" uid="uid://b2yhlposmux4c" path="res://scenes/ui/creature_icon.tscn" id="10_yp21t"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_oyy8l"]
-atlas = ExtResource("2_nhpuk")
-region = Rect2(41, 41, 171, 171)
+[sub_resource type="AtlasTexture" id="AtlasTexture_40t42"]
+atlas = ExtResource("1_654vr")
+region = Rect2(0, 406, 270, 72)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_q3ob2"]
-atlas = ExtResource("3_bv3om")
-region = Rect2(41, 50, 171, 171)
+[sub_resource type="AtlasTexture" id="AtlasTexture_lofw8"]
+atlas = ExtResource("1_654vr")
+region = Rect2(0, 336, 270, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_6bft6"]
-atlas = ExtResource("2_nhpuk")
-region = Rect2(261, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kkke1"]
-atlas = ExtResource("3_bv3om")
-region = Rect2(261, 50, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0prlt"]
-atlas = ExtResource("2_nhpuk")
-region = Rect2(480, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4kmpq"]
-atlas = ExtResource("3_bv3om")
-region = Rect2(479, 45, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8cutt"]
-atlas = ExtResource("2_nhpuk")
-region = Rect2(700, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kknjc"]
-atlas = ExtResource("3_bv3om")
-region = Rect2(698, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ubklk"]
-atlas = ExtResource("5_uaups")
-region = Rect2(484, 41, 171, 171)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7605n"]
-atlas = ExtResource("6_4kpo4")
-region = Rect2(481, 41, 171, 171)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ww7q"]
+bg_color = Color(0.8, 0.8, 0.8, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dluv1"]
 bg_color = Color(0.8, 0.8, 0.8, 1)
 expand_margin_left = 10.0
 expand_margin_right = 10.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ww7q"]
-bg_color = Color(0.8, 0.8, 0.8, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_fwc0q"]
+atlas = ExtResource("1_654vr")
+region = Rect2(1, 241, 29, 31)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fwc0q"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fox4g"]
+atlas = SubResource("CompressedTexture2D_fwc0q")
+region = Rect2(50, 243, 29, 29)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4l8ib"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8w4v8"]
+atlas = SubResource("CompressedTexture2D_4l8ib")
+region = Rect2(1, 241, 29, 31)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fox4g"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4l8ib"]
+atlas = SubResource("CompressedTexture2D_fox4g")
+region = Rect2(50, 243, 29, 29)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_12kny"]
+atlas = ExtResource("1_654vr")
+region = Rect2(196, 106, 25, 18)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tfpvh"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mp625"]
+atlas = SubResource("CompressedTexture2D_tfpvh")
+region = Rect2(1, 241, 29, 31)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8w4v8"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tfpvh"]
+atlas = SubResource("CompressedTexture2D_8w4v8")
+region = Rect2(50, 243, 29, 29)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_p64m6"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yp21t"]
+atlas = SubResource("CompressedTexture2D_p64m6")
+region = Rect2(1, 241, 29, 31)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mp625"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p64m6"]
+atlas = SubResource("CompressedTexture2D_mp625")
+region = Rect2(50, 243, 29, 29)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_11j1f"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rq4lh"]
+atlas = SubResource("CompressedTexture2D_11j1f")
+region = Rect2(152, 102, 16, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qqgnj"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_11j1f"]
+atlas = SubResource("CompressedTexture2D_qqgnj")
+region = Rect2(1, 241, 29, 31)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_yp21t"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqgnj"]
+atlas = SubResource("CompressedTexture2D_yp21t")
+region = Rect2(50, 243, 29, 29)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qw614"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cev1w"]
+atlas = SubResource("CompressedTexture2D_qw614")
+region = Rect2(100, 102, 23, 19)
+
+[sub_resource type="LabelSettings" id="LabelSettings_41mni"]
+font = ExtResource("7_12kny")
+font_size = 12
+font_color = Color(0.07450981, 0.07450981, 0.07450981, 1)
+outline_color = Color(0.07450981, 0.07450981, 0.07450981, 1)
 
 [node name="WorldViewMenu" type="NinePatchRect"]
-texture_filter = 6
-anchors_preset = 12
+z_index = 1
+custom_minimum_size = Vector2(270, 80)
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -9.0
-offset_top = -243.0
-offset_right = 11.0
-offset_bottom = 5.0
+offset_left = -135.0
+offset_top = -80.0
+offset_right = 135.0
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("1_l2d51")
+texture = SubResource("AtlasTexture_40t42")
+region_rect = Rect2(0, 1, 270, 71)
+patch_margin_left = 24
+patch_margin_top = 12
+patch_margin_right = 22
 script = ExtResource("2_mjasc")
 
-[node name="MainContainer" type="MarginContainer" parent="."]
-texture_filter = 6
+[node name="PullOutDrawer" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+custom_minimum_size = Vector2(270, 80)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 5.0
-offset_top = 34.0
-offset_right = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_lofw8")
+region_rect = Rect2(0, 0, 270, 64)
+patch_margin_left = 24
+patch_margin_top = 18
+patch_margin_right = 22
+patch_margin_bottom = 1
+script = ExtResource("7_tfpvh")
+
+[node name="BuildContainer" type="TabContainer" parent="PullOutDrawer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.08219178
+anchor_right = 1.0
+anchor_bottom = 0.49315068
+offset_bottom = 31.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/side_margin = 20
+theme_override_styles/panel = SubResource("StyleBoxFlat_2ww7q")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_dluv1")
+current_tab = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="All" type="NinePatchRect" parent="PullOutDrawer/BuildContainer"]
+layout_mode = 2
+texture = ExtResource("8_mp625")
+metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="PullOutDrawer/BuildContainer/All"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="ItemList" type="HBoxContainer" parent="PullOutDrawer/BuildContainer/All/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="BuildItemIcon" parent="PullOutDrawer/BuildContainer/All/MarginContainer/ItemList" instance=ExtResource("9_p64m6")]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Beds" type="NinePatchRect" parent="PullOutDrawer/BuildContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("8_mp625")
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="PullOutDrawer/BuildContainer/Beds"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 43.0
+offset_right = -16.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PullOutDrawer/BuildContainer/Beds/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BuildItemIcon" parent="PullOutDrawer/BuildContainer/Beds/MarginContainer/HBoxContainer" instance=ExtResource("9_p64m6")]
+layout_mode = 2
+
+[node name="Food" type="NinePatchRect" parent="PullOutDrawer/BuildContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("8_mp625")
+metadata/_tab_index = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PullOutDrawer/BuildContainer/Food"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 43.0
+offset_right = -16.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PullOutDrawer/BuildContainer/Food/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BuildItemIcon" parent="PullOutDrawer/BuildContainer/Food/MarginContainer/HBoxContainer" instance=ExtResource("9_p64m6")]
+layout_mode = 2
+
+[node name="Decoration" type="NinePatchRect" parent="PullOutDrawer/BuildContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("8_mp625")
+metadata/_tab_index = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="PullOutDrawer/BuildContainer/Decoration"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 43.0
+offset_right = -16.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PullOutDrawer/BuildContainer/Decoration/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BuildItemIcon" parent="PullOutDrawer/BuildContainer/Decoration/MarginContainer/HBoxContainer" instance=ExtResource("9_p64m6")]
+layout_mode = 2
+
+[node name="CreatureContainer" type="ScrollContainer" parent="PullOutDrawer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -509.0
+offset_top = 24.0
+offset_right = 507.0
+offset_bottom = 232.0
+grow_horizontal = 2
+mouse_filter = 2
+follow_focus = true
+vertical_scroll_mode = 0
+
+[node name="CreatureList" type="HBoxContainer" parent="PullOutDrawer/CreatureContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="CreatureIcon" parent="PullOutDrawer/CreatureContainer/CreatureList" instance=ExtResource("10_yp21t")]
+layout_mode = 2
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 11.0
+offset_top = 19.5
+offset_right = -16.0
+offset_bottom = 20.5
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
+mouse_filter = 0
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_bottom = 25
 
@@ -97,209 +335,124 @@ alignment = 1
 
 [node name="HomeButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_oyy8l")
-texture_pressed = SubResource("AtlasTexture_q3ob2")
+texture_normal = SubResource("AtlasTexture_fwc0q")
+texture_pressed = SubResource("AtlasTexture_fox4g")
 stretch_mode = 3
 
 [node name="CreatureButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
 unique_name_in_owner = true
-texture_filter = 6
 layout_mode = 2
 size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_6bft6")
-texture_pressed = SubResource("AtlasTexture_kkke1")
+texture_normal = SubResource("AtlasTexture_8w4v8")
+texture_pressed = SubResource("AtlasTexture_4l8ib")
 stretch_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="MainContainer/HBoxContainer/CreatureButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2631579
+anchor_top = 0.048387095
+anchor_right = 0.7368421
+anchor_bottom = 0.82258064
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_12kny")
+stretch_mode = 3
+metadata/_edit_use_anchors_ = true
 
 [node name="NewCreatureButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_0prlt")
-texture_pressed = SubResource("AtlasTexture_4kmpq")
+texture_normal = SubResource("AtlasTexture_mp625")
+texture_pressed = SubResource("AtlasTexture_tfpvh")
 stretch_mode = 3
 
 [node name="BuildButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_8cutt")
-texture_pressed = SubResource("AtlasTexture_kknjc")
+texture_normal = SubResource("AtlasTexture_yp21t")
+texture_pressed = SubResource("AtlasTexture_p64m6")
 stretch_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="MainContainer/HBoxContainer/BuildButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 2.401089
+anchor_top = 0.016129032
+anchor_right = 2.8575318
+anchor_bottom = 0.7580645
+offset_left = -123.26316
+offset_right = -123.26315
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_rq4lh")
+stretch_mode = 3
+metadata/_edit_use_anchors_ = true
 
 [node name="FeedButton" type="TextureButton" parent="MainContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-texture_normal = SubResource("AtlasTexture_ubklk")
-texture_pressed = SubResource("AtlasTexture_7605n")
+texture_normal = SubResource("AtlasTexture_11j1f")
+texture_pressed = SubResource("AtlasTexture_qqgnj")
 stretch_mode = 3
 
-[node name="CreatureContainer" type="NinePatchRect" parent="."]
-visible = false
-show_behind_parent = true
-texture_filter = 5
+[node name="TextureRect3" type="TextureRect" parent="MainContainer/HBoxContainer/FeedButton"]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.0725806
-anchor_right = 0.995413
-anchor_bottom = 1.00806
+anchor_left = 3.452813
+anchor_top = 0.016129032
+anchor_right = 3.9264975
+anchor_bottom = 0.7903226
+offset_left = -185.26315
+offset_right = -185.26315
 grow_horizontal = 2
-grow_vertical = 0
-texture = ExtResource("7_1d7p0")
-script = ExtResource("5_tansi")
+grow_vertical = 2
+texture = SubResource("AtlasTexture_cev1w")
+stretch_mode = 3
 metadata/_edit_use_anchors_ = true
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CreatureContainer"]
+[node name="GoldContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -108.0
+offset_top = 6.999996
+offset_right = -45.0
+offset_bottom = 22.999996
+grow_horizontal = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="GoldContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.07058824, 0.76862746, 0.84313726, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="GoldContainer/ColorRect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 51.0
-offset_top = 44.0
-offset_right = -53.0
 grow_horizontal = 2
 grow_vertical = 2
-vertical_scroll_mode = 0
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_bottom = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CreatureContainer/ScrollContainer"]
+[node name="GoldValue" type="Label" parent="GoldContainer/ColorRect/MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
+text = "$0"
+label_settings = SubResource("LabelSettings_41mni")
+horizontal_alignment = 3
+vertical_alignment = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CreatureContainer/ScrollContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="CreatureIcon" parent="CreatureContainer/ScrollContainer/MarginContainer/HBoxContainer" instance=ExtResource("6_v1107")]
-layout_mode = 2
-
-[node name="BuildContainer" type="TabContainer" parent="."]
-visible = false
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = -1
-anchor_top = -0.0604839
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_constants/side_margin = 20
-theme_override_styles/tab_selected = SubResource("StyleBoxFlat_dluv1")
-theme_override_styles/panel = SubResource("StyleBoxFlat_2ww7q")
-script = ExtResource("7_vfqr7")
-metadata/_edit_use_anchors_ = true
-
-[node name="All" type="NinePatchRect" parent="BuildContainer"]
-layout_mode = 2
-texture = ExtResource("11_7r4u3")
-
-[node name="MarginContainer" type="MarginContainer" parent="BuildContainer/All"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 43.0
-offset_right = -16.0
-offset_bottom = -9.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
-
-[node name="HBoxContainer" type="HBoxContainer" parent="BuildContainer/All/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="BuildItemIcon" parent="BuildContainer/All/MarginContainer/HBoxContainer" instance=ExtResource("9_h0blf")]
-layout_mode = 2
-
-[node name="Beds" type="NinePatchRect" parent="BuildContainer"]
-visible = false
-layout_mode = 2
-texture = ExtResource("11_7r4u3")
-
-[node name="MarginContainer" type="MarginContainer" parent="BuildContainer/Beds"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 43.0
-offset_right = -16.0
-offset_bottom = -9.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
-
-[node name="HBoxContainer" type="HBoxContainer" parent="BuildContainer/Beds/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="BuildItemIcon" parent="BuildContainer/Beds/MarginContainer/HBoxContainer" instance=ExtResource("9_h0blf")]
-layout_mode = 2
-
-[node name="Food" type="NinePatchRect" parent="BuildContainer"]
-visible = false
-layout_mode = 2
-texture = ExtResource("11_7r4u3")
-
-[node name="MarginContainer" type="MarginContainer" parent="BuildContainer/Food"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 43.0
-offset_right = -16.0
-offset_bottom = -9.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
-
-[node name="HBoxContainer" type="HBoxContainer" parent="BuildContainer/Food/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="BuildItemIcon" parent="BuildContainer/Food/MarginContainer/HBoxContainer" instance=ExtResource("9_h0blf")]
-layout_mode = 2
-
-[node name="Decoration" type="NinePatchRect" parent="BuildContainer"]
-visible = false
-layout_mode = 2
-texture = ExtResource("11_7r4u3")
-
-[node name="MarginContainer" type="MarginContainer" parent="BuildContainer/Decoration"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 43.0
-offset_right = -16.0
-offset_bottom = -9.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
-
-[node name="HBoxContainer" type="HBoxContainer" parent="BuildContainer/Decoration/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="BuildItemIcon" parent="BuildContainer/Decoration/MarginContainer/HBoxContainer" instance=ExtResource("9_h0blf")]
-layout_mode = 2
-
-[connection signal="pressed" from="MainContainer/HBoxContainer/CreatureButton" to="CreatureContainer" method="_on_creature_button_pressed"]
 [connection signal="pressed" from="MainContainer/HBoxContainer/NewCreatureButton" to="." method="_on_new_creature_button_pressed"]
-[connection signal="pressed" from="MainContainer/HBoxContainer/BuildButton" to="BuildContainer" method="_on_build_button_pressed"]
 [connection signal="pressed" from="MainContainer/HBoxContainer/FeedButton" to="." method="_on_feed_button_pressed"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=28 format=3 uid="uid://cspvr47wvwpdy"]
 
 [ext_resource type="Texture2D" uid="uid://csyw1p3ytgmlp" path="res://assets/emotion_bubbles/Single Note Strip 32px.png" id="1_5ykfy"]
-[ext_resource type="Script" path="res://scenes/creature/emotions/EmotionBubble.gd" id="2_e1nf8"]
+[ext_resource type="Script" uid="uid://bfc5152h3o8h6" path="res://scenes/creature/emotions/EmotionBubble.gd" id="2_e1nf8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1fa1k"]
 atlas = ExtResource("1_5ykfy")

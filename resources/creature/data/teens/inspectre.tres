@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="TeenSpecies" load_steps=4 format=3 uid="uid://kijdo1v0eyr0"]
+
+[ext_resource type="Script" uid="uid://okc6177o2seo" path="res://resources/creature/adult_species.gd" id="1_icese"]
+[ext_resource type="Script" uid="uid://8hww1opqqhoy" path="res://resources/creature/teen_species.gd" id="2_v7ser"]
+[ext_resource type="Texture2D" uid="uid://bbp3068j40vhu" path="res://assets/creatures/inspectre.png" id="3_e0u3g"]
+
+[resource]
+script = ExtResource("2_v7ser")
+species_name = "Inspectre"
+spritesheet = ExtResource("3_e0u3g")
+requirements = {
+"care_mistakes": 0,
+"happiness": 0,
+"intelligence": 0,
+"is_dead": true,
+"strength": 0
+}

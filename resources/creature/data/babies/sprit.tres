@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BabySpecies" load_steps=6 format=3 uid="uid://beh73ffiedl6v"]
+
+[ext_resource type="Script" uid="uid://d1bvgi477cu4t" path="res://resources/creature/baby_species.gd" id="1_p7rbl"]
+[ext_resource type="Texture2D" uid="uid://cefip0y7evm36" path="res://assets/creatures/eggs/jeweled_egg.png" id="1_qdo7u"]
+[ext_resource type="Script" uid="uid://8hww1opqqhoy" path="res://resources/creature/teen_species.gd" id="2_7p1h3"]
+[ext_resource type="Texture2D" uid="uid://ckh08xufqetar" path="res://assets/creatures/sprit.png" id="3_ol4ow"]
+[ext_resource type="Resource" uid="uid://cf4pd2sseomja" path="res://resources/creature/data/teens/punk'n.tres" id="5_qpijk"]
+
+[resource]
+script = ExtResource("1_p7rbl")
+teen_posibilities = Array[ExtResource("2_7p1h3")]([ExtResource("5_qpijk")])
+egg_texture = ExtResource("1_qdo7u")
+species_name = "Sprit"
+spritesheet = ExtResource("3_ol4ow")

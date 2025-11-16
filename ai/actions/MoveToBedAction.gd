@@ -15,6 +15,5 @@ func tick(actor, blackboard: Blackboard):
 	else:
 		blackboard.set_value(actor.name + "_bed_target", blackboard.get_value(actor.name + "_bed"))
 		actor.set_movement_target(blackboard.get_value(actor.name + "_bed_target"))
-		actor.creature_anim.play("walking")
+		#actor.creature_anim.play("walking")
 		return RUNNING
-

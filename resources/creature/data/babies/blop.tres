@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BabySpecies" load_steps=6 format=3 uid="uid://c10c0rmftvhic"]
+
+[ext_resource type="Script" uid="uid://d1bvgi477cu4t" path="res://resources/creature/baby_species.gd" id="1_36vjd"]
+[ext_resource type="Texture2D" uid="uid://nr53llk3uo7m" path="res://assets/creatures/eggs/squid_egg.png" id="1_7100e"]
+[ext_resource type="Script" uid="uid://8hww1opqqhoy" path="res://resources/creature/teen_species.gd" id="2_4vhlr"]
+[ext_resource type="Texture2D" uid="uid://bt27uqbu2bvid" path="res://assets/creatures/blop.png" id="3_tfjbu"]
+[ext_resource type="Resource" uid="uid://bgjv62ysvu7s8" path="res://resources/creature/data/teens/bullblop.tres" id="5_0j4qd"]
+
+[resource]
+script = ExtResource("1_36vjd")
+teen_posibilities = Array[ExtResource("2_4vhlr")]([ExtResource("5_0j4qd")])
+egg_texture = ExtResource("1_7100e")
+species_name = "Blop"
+spritesheet = ExtResource("3_tfjbu")

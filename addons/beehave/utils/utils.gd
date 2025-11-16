@@ -1,5 +1,4 @@
 @tool
-class_name BeehaveUtils
 
 
 static func get_plugin() -> EditorPlugin:

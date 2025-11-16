@@ -1,0 +1,8 @@
+[2025-11-16T01:25:37] INFO autoload/game.gd::_ready: Tracer Ready
+[2025-11-16T01:25:37] INFO autoload/game.gd::_ready: Game Ready
+[2025-11-16T01:25:37] INFO scenes/world.gd::spawn_creature: Adding egg to available nest
+[2025-11-16T01:25:37] INFO scenes/ui/UI.gd::_on_focus_requested: Focus view request recieved for Ttni 
+[2025-11-16T01:25:37] INFO scenes/world.gd::_on_focus_view_requested: Focus view request recieved for Ttni
+[2025-11-16T01:26:39] INFO scenes/ui/focus_view_menu.gd::_on_world_view_button_pressed: Requesting world view
+[2025-11-16T01:26:39] INFO scenes/ui/UI.gd::_on_world_view_requested: World view request recieved
+[2025-11-16T01:26:39] INFO scenes/world.gd::_on_world_view_requested: World view request received

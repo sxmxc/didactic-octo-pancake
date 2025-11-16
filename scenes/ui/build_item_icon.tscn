@@ -1,35 +1,79 @@
-[gd_scene load_steps=3 format=3 uid="uid://dxhvunlio0i71"]
+[gd_scene load_steps=6 format=3 uid="uid://dxhvunlio0i71"]
 
 [ext_resource type="Texture2D" uid="uid://cmuwq5armf04u" path="res://assets/basic/sNest_32x32.png" id="1_b3lw1"]
-[ext_resource type="Script" path="res://scenes/ui/build_item_icon.gd" id="1_kcy0n"]
+[ext_resource type="Script" uid="uid://c5t7km00di3ig" path="res://scenes/ui/build_item_icon.gd" id="1_kcy0n"]
+[ext_resource type="FontFile" uid="uid://bkndep7suf0a1" path="res://assets/fonts/Pix32.ttf" id="3_cbhp4"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ud1et"]
+font_size = 24
+font_color = Color(0, 0, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jase2"]
+font = ExtResource("3_cbhp4")
+font_size = 11
+font_color = Color(0, 1, 0.0352941, 1)
+outline_size = 1
+outline_color = Color(0, 0, 0, 1)
 
 [node name="BuildItemIcon" type="Control"]
-custom_minimum_size = Vector2(64, 64)
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = -34.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_kcy0n")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-custom_minimum_size = Vector2(64, 64)
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 0
-offset_right = 64.0
-offset_bottom = 64.0
+offset_right = 16.0
+offset_bottom = 16.0
 texture = ExtResource("1_b3lw1")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="TextureRect"]
+[node name="Name" type="Label" parent="TextureRect"]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -36.0
-offset_right = 37.0
-offset_bottom = 23.0
+offset_left = -37.0
+offset_top = -103.0
+offset_right = 36.0
+offset_bottom = -80.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "Item"
+label_settings = SubResource("LabelSettings_ud1et")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Cost" type="Label" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -27.0
+offset_right = 9.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "0 G"
+label_settings = SubResource("LabelSettings_jase2")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true

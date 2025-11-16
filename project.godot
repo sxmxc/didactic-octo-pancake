@@ -13,20 +13,22 @@ config_version=5
 config/name="digi-tamogotcha-mon"
 config/tags=PackedStringArray("gd4")
 run/main_scene="res://scenes/main_menu.tscn"
-config/features=PackedStringArray("4.2", "Forward Plus")
-boot_splash/image="res://assets/pxvoidmoose.png"
+config/features=PackedStringArray("4.5", "Forward Plus")
 boot_splash/use_filter=false
+boot_splash/image="res://assets/pxvoidmoose.png"
 config/icon="res://assets/logo.png"
 
 [autoload]
 
 BeehaveGlobalMetrics="*res://addons/beehave/metrics/beehave_global_metrics.gd"
 BeehaveGlobalDebugger="*res://addons/beehave/debug/global_debugger.gd"
+Tracer="*res://addons/tracer/./tracer.gd"
 Data="*res://autoload/data.gd"
 SoundManager="*res://addons/sound_manager/sound_manager.gd"
 Eventbus="*res://autoload/eventbus.gd"
 SceneManager="*res://addons/scene_manager/scene_manager.gd"
 Game="*res://autoload/game.gd"
+PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 
 [display]
 
@@ -36,13 +38,17 @@ window/size/initial_screen=2
 window/size/extend_to_title=true
 window/size/window_width_override=540
 window/size/window_height_override=960
-window/stretch/mode="canvas_items"
+window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/beehave/plugin.cfg", "res://addons/randomnamesgenerator/plugin.cfg", "res://addons/scene_manager/plugin.cfg", "res://addons/sound_manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/beehave/plugin.cfg", "res://addons/phantom_camera/plugin.cfg", "res://addons/randomnamesgenerator/plugin.cfg", "res://addons/scene_manager/plugin.cfg", "res://addons/segmented_bar/plugin.cfg", "res://addons/sound_manager/plugin.cfg", "res://addons/tracer/plugin.cfg")
+
+[global_group]
+
+Player=""
 
 [input]
 
@@ -54,13 +60,18 @@ single_touch={
 
 [input_devices]
 
+pointing/android/enable_pan_and_scale_gestures=true
 pen_tablet/driver.windows="wintab"
 pointing/emulate_touch_from_mouse=true
-pointing/android/enable_pan_and_scale_gestures=true
+
+[physics]
+
+common/physics_interpolation=true
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=0
-textures/vram_compression/import_etc2_astc=true
-limits/global_shader_variables/buffer_size=16384
+textures/canvas_textures/default_texture_filter=3
+textures/default_filters/use_nearest_mipmap_filter=true
 anti_aliasing/quality/msaa_2d=3
+limits/global_shader_variables/buffer_size=16384
+2d/snap/snap_2d_transforms_to_pixel=true

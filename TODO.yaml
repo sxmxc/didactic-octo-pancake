@@ -1,6 +1,6 @@
 meta:
   version: 1
-  last_updated: 2024-06-04
+  last_updated: 2024-06-05
   notes: >-
     Structured backlog with priorities, blockers, and subtasks so agents can
     quickly gauge sequencing constraints.
@@ -8,6 +8,32 @@ areas:
   - id: core_mechanics
     title: Core mechanics
     tasks:
+      - id: core.behavior_tree_action_expansion
+        title: Behavior tree action expansion
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: >-
+          The current creature behavior tree only contains a handful of basic actions (idle,
+          sleep, eat, wander), so creatures never perform richer interactions like grooming,
+          social play, nest maintenance, or curiosity-driven exploration.
+        entrypoints:
+          - ai/actions/* (existing behavior tree action scripts)
+          - scenes/creature/Creature.gd (behavior tree assembly + blackboard state)
+          - scenes/world.gd (world events that should trigger new actions)
+        blockers: []
+        subtasks:
+          - description: Audit current actions to document coverage gaps (e.g., social, grooming,
+              enrichment, nest upkeep) and capture required blackboard inputs/outputs.
+          - description: Implement at least two new action scripts plus any supporting conditions
+              or blackboard variables so behaviors can branch in more interesting ways.
+          - description: Update Creature.gd to register the new actions/conditions and expose any
+              tuning constants needed by designers.
+          - description: Document action names, triggers, and side effects in README.md and ensure
+              TODO.yaml references stay in sync once implemented.
+        definition_of_done: >-
+          Creatures regularly demonstrate the new actions in sandbox playtests, blackboard data is
+          clearly defined, and documentation lists available actions plus how to extend them.
       - id: core.egg_inventory_weighted_spawns
         title: Egg inventory + weighted hatching
         priority: medium
@@ -110,13 +136,43 @@ areas:
           - resources/stats/creature_stats.gd (serialization + modifiers)
           - autoload/eventbus.gd (signals for trait changes)
           - README.md (document available traits and evolution rules)
+          blockers: []
+          subtasks:
+            - description: Define a trait data model that supports positive/negative effects, tiers, and evolution paths.
+            - description: Assign traits via weighted RNG at birth and expose hooks for scripted events to add/remove/upgrade traits.
+            - description: Ensure trait effects influence hunger, energy, training, or behaviors and surface notifications when they change.
+          definition_of_done: >-
+            Creatures can spawn or learn traits, traits visibly impact simulation stats/behaviors, and documentation explains how traits evolve or flip alignment.
+      - id: core.creature_types_and_nests
+        title: Creature types + nest gating
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: >-
+          Design now calls for land, flying, and water creatures with matching nest types, but the
+          sim only exposes a single "BasicNest" buildable and creatures lack any elemental/type
+          metadata, so nothing enforces habitat requirements.
+        entrypoints:
+          - resources/creature/species.gd (type metadata + serialization)
+          - resources/creature/data/* (species resource definitions)
+          - buildables/nests/* (new nest scenes + scripts per habitat)
+          - autoload/data.gd (nest registries + build costs)
+          - scenes/world.gd (spawning logic that assigns creatures to compatible nests)
+          - README.md / TODO.yaml (document available types + nest rules)
         blockers: []
         subtasks:
-          - description: Define a trait data model that supports positive/negative effects, tiers, and evolution paths.
-          - description: Assign traits via weighted RNG at birth and expose hooks for scripted events to add/remove/upgrade traits.
-          - description: Ensure trait effects influence hunger, energy, training, or behaviors and surface notifications when they change.
+          - description: Extend species resources with a `creature_type` enum (land, flying, water)
+              and retrofit existing assets with the appropriate values.
+          - description: Author distinct nest scenes/resources for water vs. land-capable creatures
+              and register them in autoload/data.gd with clear build costs/requirements.
+          - description: Update world spawning + nesting logic so water types can only occupy water
+              nests while land and flying types share land nests, surfacing user feedback when no
+              compatible nest exists.
+          - description: Document the new type system, nest unlock rules, and cross-type behavior in
+              README.md so future tasks can extend the taxonomy.
         definition_of_done: >-
-          Creatures can spawn or learn traits, traits visibly impact simulation stats/behaviors, and documentation explains how traits evolve or flip alignment.
+          Every creature species declares a type, matching nests exist and are enforced at runtime,
+          and documentation explains how habitats map to species plus how to add future types.
   - id: content_ux
     title: Content & UX
     tasks:

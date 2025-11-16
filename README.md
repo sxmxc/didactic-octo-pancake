@@ -9,7 +9,10 @@ A Godot 4.5 virtual-creature sandbox inspired by classic Tamagotchi and Digimon 
 - **UI-first interactions.** The HUD (`scenes/ui`) listens to `Eventbus` signals to switch menus, update segmented bars, drag-and-drop buildables, and queue notifications.
 
 ## Evolution brainstorming
-The current data includes baby species (e.g., Blop, Ghos, Sprit, Squip) and placeholders for their teen evolutions. A visual reference (see `/assets/design/evolution-tree.png` once checked in) outlines a branching structure with multiple ghostly or armored variants. Names are in flux, and one teen form still lacks a baby counterpart—expect further iteration as stat-based mechanics solidify.
+The current data includes baby species (e.g., Blop, Ghos, Sprit, Squip) plus three new families—Nibblit → Thornet, Emberpup → Scorchhound, and Glimm → Prismscout—that each branch into distinct adult archetypes (Bramblord/Bloomseraph, Cinderdrake/Glasshowl, and Luminarch/Nullsir, respectively). A visual reference (see `/assets/design/evolution-tree.png` once checked in) outlines the branching structure with ghostly, armored, elemental, and holographic variants. Names are still in flux, so expect further iteration as stat-based mechanics solidify.
+
+### Evolution spreadsheet starter
+To make the written data easier to extend, `assets/design/evolution_tree_seed.csv` captures the current baby → teen → adult pairings along with their known requirements, egg textures, and notes about branching routes (balanced care, neglect, stat focus, day/night training, etc.). Treat it as the source-of-truth planning sheet: duplicate rows when you add new `.tres` resources, fill in the per-column requirement breakdowns (age trigger, death flag, stat minimums/maximums, allowed care mistakes, etc.), and link to any relevant sprite assets so art and design stay in sync.
 
 ## Getting started
 1. Install [Godot 4.5](https://godotengine.org/).

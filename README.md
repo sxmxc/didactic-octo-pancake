@@ -39,6 +39,31 @@ To make the written data easier to extend, `assets/design/evolution_tree_seed.cs
 3. Gate stat decay/bonuses behind the upcoming training stations (see TODO) so strength/intelligence growth introduces tradeoffs—e.g., training drains more energy but slows hunger gain for a short period.
 4. Document the target number of player interactions per in-game day (feeds, naps, training sessions) so future tuning work can aim for a predictable loop.
 
+## Online services (Talo roadmap)
+We're planning to lean on [Talo](https://trytalo.com), an open-source, self-hostable backend that already ships a Godot plug-in and Dockerized server. Instead of inventing new infrastructure, the authoritative layer will focus on configuring and extending Talo so it mirrors our core simulation data.
+
+- **Deployment:** Run the official Talo Docker stack inside `backend/talo/` (compose file + env templates) so local contributors can boot leaderboards, persistent storage, and analytics without cloud credentials.
+- **Godot integration:** Use the upstream Talo add-on (checked into `addons/talo_client/`) to authenticate per-device, sync game saves, and emit telemetry directly from `autoload/game.gd` and UI menus.
+- **Storefront + purchase authority:** Build a Godot storefront panel that talks to Talo endpoints responsible for minting/consuming egg bundles, verifying soft-currency spends, and logging each transaction in the backend so dupes or rollbacks can be audited. The same flow must support gated "packs" of 1/3/5 eggs plus future seasonal bundles.
+- **Feature set we plan to adopt:**
+  - Player management (device auth, optional OAuth, persistent data & groups).
+  - Peer-to-peer multiplayer sessions with server-authoritative persistence.
+  - Leaderboards plus global/player analytics.
+  - Remote config + save slots hosted in the cloud backend.
+  - Feedback hooks and online presence indicators so friends can see when others are active.
+- **Monetization runway:** Even before real-money hooks land, design the storefront API so Talo can track real-currency receipts (Stripe, Steam, etc.) or soft-currency conversions. Document pricing tables in `README.md`/`TODO.yaml`, and ensure device/OAuth auth tokens are part of every purchase so egg inventory can be trusted server-side.
+
+As the Talo integration lands, update this section with exact Docker commands, environment variables, storefront wiring, and any Godot add-on setup steps so future agents can reproduce the backend quickly.
+
+### Storefront architecture options
+Talo covers authentication, save syncing, analytics, and presence out of the box, but it does not ship a turnkey storefront. We have three viable approaches:
+
+1. **Talo-only customization.** Attempt to author purchase flows directly in `backend/talo/` by extending its serverless functions. This keeps everything inside the official stack but will require upstream deep dives plus custom dashboards for SKU management.
+2. **Hybrid companion service (recommended).** Keep Talo for identity, storage, and analytics, but introduce a lightweight purchase authority (`backend/storefront/`) that exposes signed entitlements. The Godot client talks to the storefront for bundle pricing and receipts, and that service writes final inventory data back into Talo via its REST API. This lets us design commerce-specific logic (soft currency sinks, real-money hooks, fraud checks) without abandoning the Talo ecosystem we already plan to rely on.
+3. **Full custom backend.** Replace Talo entirely with our own authoritative service so storefront, saves, and multiplayer share one codebase. That maximizes flexibility but recreates features (auth, leaderboards, dashboards) that Talo already solved and would dramatically increase maintenance costs.
+
+**Best path right now:** pursue the hybrid model. We keep device/OAuth authentication, leaderboards, and analytics inside the Talo Docker stack while prototyping purchases in a purpose-built service that can grow into real-money monetization later. Should the hybrid spike prove unworkable (e.g., Talo APIs cannot be extended cleanly), we'll revisit the full custom backend and update `TODO.yaml` accordingly.
+
 ### Mobile persistence considerations
 - **Constraint:** The current build has no save/load pipeline, so iOS/Android suspensions wipe progress or keep the simulation frozen until the OS reclaims memory.
 - **Goal:** Preserve creature state without requiring the app to stay alive in the background, while still letting time passage matter so that skipping a day has consequences but not instant death.

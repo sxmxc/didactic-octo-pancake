@@ -8,12 +8,12 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
-func _on_notification_requested(notification : String):
+func _on_notification_requested(new_notif : String):
 	var notif : Notification = notification_scene.instantiate()
-	notif.set_notification(notification)
+	notif.set_notification(new_notif)
 	add_child(notif)
 	notif.show_notification()
 	pass

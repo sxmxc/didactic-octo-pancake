@@ -38,6 +38,30 @@ static func pick_random_element(array1, array2, array3, array4, array5, merge1_2
 		compiledStrName = array1[ randi() % array1.size() ] + spc1 + array2[ randi() % array2.size() ]
 	return compiledStrName
 
+static func pick_random_element_with_rng(rng: RandomNumberGenerator, array1, array2, array3, array4, array5, merge1_2, merge2_3, merge3_4, merge4_5):
+	if rng == null:
+		return pick_random_element(array1, array2, array3, array4, array5, merge1_2, merge2_3, merge3_4, merge4_5)
+	var compiledStrName :String = ""
+	var spc1 :String = " "
+	var spc2 :String = " "
+	var spc3 :String = " "
+	var spc4 :String = " "
+	if merge1_2 : spc1=""
+	if merge2_3 : spc2=""
+	if merge3_4 : spc3=""
+	if merge4_5 : spc4=""
+	if !array5.is_empty():
+		compiledStrName = array1[rng.randi_range(0, array1.size() - 1)] + spc1 + array2[rng.randi_range(0, array2.size() - 1)] + spc2 + array3[rng.randi_range(0, array3.size() - 1)] + spc3 + array4[rng.randi_range(0, array4.size() - 1)] + spc4 + array5[rng.randi_range(0, array5.size() - 1)]
+	elif !array4.is_empty():
+		compiledStrName = array1[rng.randi_range(0, array1.size() - 1)] + spc1 + array2[rng.randi_range(0, array2.size() - 1)] + spc2 + array3[rng.randi_range(0, array3.size() - 1)] + spc3 + array4[rng.randi_range(0, array4.size() - 1)]
+	elif !array3.is_empty():
+		compiledStrName = array1[rng.randi_range(0, array1.size() - 1)] + spc1 + array2[rng.randi_range(0, array2.size() - 1)] + spc2 + array3[rng.randi_range(0, array3.size() - 1)]
+	elif !array2.is_empty():
+		compiledStrName = array1[rng.randi_range(0, array1.size() - 1)] + spc1 + array2[rng.randi_range(0, array2.size() - 1)]
+	else:
+		compiledStrName = array1[rng.randi_range(0, array1.size() - 1)]
+	return compiledStrName
+
 func new_name():
 	var nullArray   :Array[String] = []
 	var outputNames :Array[String] = []
@@ -57,4 +81,15 @@ func new_name():
 	
 	outputNames.push_back( pick_random_element(v_Sam1,v_Sam2,v_Sam3,v_Sam2,v_Sam5, true, true, true, true) )	#entry[5]: Sam's Random name generator (Long)
 	
+	return outputNames
+
+func new_name_with_rng(rng: RandomNumberGenerator):
+	if rng == null:
+		return new_name()
+	var nullArray   :Array[String] = []
+	var outputNames :Array[String] = []
+	outputNames.push_back(pick_random_element_with_rng(rng, v_Emi1, v_Emi2, v_Emi3, nullArray, nullArray, true, true, false, false))
+	outputNames.push_back(pick_random_element_with_rng(rng, v_Sam1, v_Sam2, v_Sam3, nullArray, nullArray, true, true, false, false))
+	outputNames.push_back(pick_random_element_with_rng(rng, v_Sam1, v_Sam2, v_Sam3, v_Sam2, nullArray, true, true, true, false))
+	outputNames.push_back(pick_random_element_with_rng(rng, v_Sam1, v_Sam2, v_Sam3, v_Sam2, v_Sam5, true, true, true, true))
 	return outputNames

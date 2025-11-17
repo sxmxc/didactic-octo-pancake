@@ -1,0 +1,309 @@
+[gd_scene load_steps=29 format=3 uid="uid://da2g1v4g1abp3"]
+
+[ext_resource type="Texture2D" uid="uid://dxk1hu0t4u6wx" path="res://assets/ui/main_ui.png" id="1_tex"]
+[ext_resource type="FontFile" uid="uid://bkndep7suf0a1" path="res://assets/fonts/Pix32.ttf" id="3_font"]
+[ext_resource type="Script" uid="uid://psgmrdstrsl3" path="res://scenes/ui/menu_bar.gd" id="4_scr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bar"]
+atlas = ExtResource("1_tex")
+region = Rect2(0, 406, 270, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon_save"]
+atlas = ExtResource("1_tex")
+region = Rect2(1, 241, 29, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon_save_pressed"]
+atlas = ExtResource("1_tex")
+region = Rect2(50, 243, 29, 29)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lgf1l"]
+atlas = ExtResource("1_tex")
+region = Rect2(8, 104, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon_creature"]
+atlas = ExtResource("1_tex")
+region = Rect2(1, 241, 29, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon_creature_pressed"]
+atlas = ExtResource("1_tex")
+region = Rect2(50, 243, 29, 29)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8f1h2"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p2st3"]
+atlas = SubResource("CompressedTexture2D_8f1h2")
+region = Rect2(196, 106, 25, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon_egg"]
+atlas = ExtResource("1_tex")
+region = Rect2(1, 241, 29, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon_egg_pressed"]
+atlas = ExtResource("1_tex")
+region = Rect2(50, 243, 29, 29)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_a2htc"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ik14i"]
+atlas = SubResource("CompressedTexture2D_a2htc")
+region = Rect2(8, 104, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon_build"]
+atlas = ExtResource("1_tex")
+region = Rect2(1, 241, 29, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon_build_pressed"]
+atlas = ExtResource("1_tex")
+region = Rect2(50, 243, 29, 29)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8f1h2"]
+atlas = ExtResource("1_tex")
+region = Rect2(152, 102, 16, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon_food"]
+atlas = ExtResource("1_tex")
+region = Rect2(1, 241, 29, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon_food_pressed"]
+atlas = ExtResource("1_tex")
+region = Rect2(50, 243, 29, 29)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7r6k7"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a2htc"]
+atlas = SubResource("CompressedTexture2D_7r6k7")
+region = Rect2(100, 102, 23, 19)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jubsm"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7r6k7"]
+atlas = SubResource("CompressedTexture2D_jubsm")
+region = Rect2(56, 105, 19, 16)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lgf1l"]
+load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8kxr6"]
+atlas = SubResource("CompressedTexture2D_lgf1l")
+region = Rect2(8, 104, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jubsm"]
+atlas = ExtResource("1_tex")
+region = Rect2(0, 0, 96, 48)
+
+[sub_resource type="LabelSettings" id="LabelSettings_gold"]
+font = ExtResource("3_font")
+font_size = 12
+font_color = Color(0.11764706, 0.43529412, 0.3137255, 1)
+
+[node name="MenuBar" type="Control"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("4_scr")
+
+[node name="Background" type="NinePatchRect" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_bar")
+patch_margin_left = 24
+patch_margin_top = 12
+patch_margin_right = 24
+patch_margin_bottom = 12
+
+[node name="DrawerLayer" type="Control" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+anchor_top = -1.0
+anchor_right = 1.0
+offset_top = 23.0
+offset_bottom = 43.0
+
+[node name="ButtonRow" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="SaveButton" type="TextureButton" parent="ButtonRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_icon_save")
+texture_pressed = SubResource("AtlasTexture_icon_save_pressed")
+
+[node name="Icon" type="TextureRect" parent="ButtonRow/SaveButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.7741935
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_lgf1l")
+stretch_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="CreatureButton" type="TextureButton" parent="ButtonRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_icon_creature")
+texture_pressed = SubResource("AtlasTexture_icon_creature_pressed")
+
+[node name="Icon" type="TextureRect" parent="ButtonRow/CreatureButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.7741935
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_p2st3")
+stretch_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="EggButton" type="TextureButton" parent="ButtonRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_icon_egg")
+texture_pressed = SubResource("AtlasTexture_icon_egg_pressed")
+
+[node name="Icon" type="TextureRect" parent="ButtonRow/EggButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.7741935
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_ik14i")
+stretch_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="BuildButton" type="TextureButton" parent="ButtonRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_icon_build")
+texture_pressed = SubResource("AtlasTexture_icon_build_pressed")
+
+[node name="Icon" type="TextureRect" parent="ButtonRow/BuildButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.7741935
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_8f1h2")
+stretch_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="FoodButton" type="TextureButton" parent="ButtonRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_icon_food")
+texture_pressed = SubResource("AtlasTexture_icon_food_pressed")
+
+[node name="Icon" type="TextureRect" parent="ButtonRow/FoodButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.7741935
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_a2htc")
+stretch_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="ZoomButton" type="TextureButton" parent="ButtonRow"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_icon_creature")
+texture_pressed = SubResource("AtlasTexture_icon_creature_pressed")
+
+[node name="Icon" type="TextureRect" parent="ButtonRow/ZoomButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_7r6k7")
+stretch_mode = 3
+
+[node name="DetailsButton" type="TextureButton" parent="ButtonRow"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_icon_build")
+texture_pressed = SubResource("AtlasTexture_icon_build_pressed")
+
+[node name="Icon" type="TextureRect" parent="ButtonRow/DetailsButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_8kxr6")
+stretch_mode = 3
+
+[node name="GoldContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -36.0
+offset_top = 4.0
+offset_right = 34.0
+offset_bottom = 23.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="GoldBackground" type="NinePatchRect" parent="GoldContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("AtlasTexture_jubsm")
+region_rect = Rect2(0, 0, 96, 48)
+patch_margin_left = 6
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="GoldValue" type="Label" parent="GoldContainer/GoldBackground"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "$0"
+label_settings = SubResource("LabelSettings_gold")
+horizontal_alignment = 1
+vertical_alignment = 1

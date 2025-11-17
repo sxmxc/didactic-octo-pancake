@@ -36,6 +36,7 @@ custom_minimum_size = Vector2(16, 16)
 layout_mode = 0
 offset_right = 16.0
 offset_bottom = 16.0
+mouse_filter = 2
 texture = ExtResource("1_b3lw1")
 expand_mode = 1
 stretch_mode = 5

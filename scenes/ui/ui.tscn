@@ -1,25 +1,21 @@
-[gd_scene load_steps=25 format=3 uid="uid://cwbcbqyxgficy"]
+[gd_scene load_steps=24 format=3 uid="uid://cwbcbqyxgficy"]
 
-[ext_resource type="Script" uid="uid://b65uviys6pwx2" path="res://scenes/ui/UI.gd" id="1_o0qo1"]
+[ext_resource type="Script" uid="uid://b65uviys6pwx2" path="res://scenes/ui/ui.gd" id="1_o0qo1"]
 [ext_resource type="Script" uid="uid://brv2e8p0r5bnp" path="res://scenes/ui/notification_box.gd" id="2_mf3qm"]
 [ext_resource type="Texture2D" uid="uid://dxk1hu0t4u6wx" path="res://assets/ui/main_ui.png" id="3_hc5d0"]
-[ext_resource type="FontFile" uid="uid://bv3ikenl8cvud" path="res://assets/fonts/digital_7/digital-7.ttf" id="4_n3vwu"]
+[ext_resource type="FontFile" uid="uid://bkndep7suf0a1" path="res://assets/fonts/Pix32.ttf" id="3_jcn1r"]
 [ext_resource type="Script" uid="uid://d36wjvx56uohs" path="res://addons/segmented_bar/segmented_bar.gd" id="5_jcn1r"]
-[ext_resource type="PackedScene" uid="uid://i12tclm2wdmd" path="res://scenes/ui/world_view_menu.tscn" id="13_a8shf"]
+[ext_resource type="PackedScene" uid="uid://da2g1v4g1abp3" path="res://scenes/ui/menu_bar.tscn" id="13_a8shf"]
 [ext_resource type="Script" uid="uid://4y6ba0e3isek" path="res://scenes/ui/world_clock_ui.gd" id="14_0i47d"]
-[ext_resource type="PackedScene" uid="uid://cfo8abfi7e2no" path="res://scenes/ui/focus_view_menu.tscn" id="14_v47tu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h1mp1"]
 atlas = ExtResource("3_hc5d0")
 region = Rect2(0, 0, 96, 48)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7jtxg"]
-font = ExtResource("4_n3vwu")
+font = ExtResource("3_jcn1r")
 font_size = 12
-font_color = Color(0.3529412, 0.77254903, 0.30980393, 1)
-outline_size = 2
-outline_color = Color(0.07450981, 0.07450981, 0.07450981, 1)
-shadow_size = 0
+font_color = Color(0.47843137, 0.03529412, 0.98039216, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7vp6q"]
 atlas = ExtResource("3_hc5d0")
@@ -73,11 +69,9 @@ texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_qdy77"]
-font = ExtResource("4_n3vwu")
+font = ExtResource("3_jcn1r")
 font_size = 12
-font_color = Color(0.3529412, 0.77254903, 0.30980393, 1)
-outline_size = 2
-outline_color = Color(0.07450981, 0.07450981, 0.07450981, 1)
+font_color = Color(0.07450981, 0.07450981, 0.07450981, 1)
 shadow_size = 2
 
 [node name="UI" type="CanvasLayer"]
@@ -103,18 +97,9 @@ size_2d_override = Vector2i(270, 480)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 
-[node name="NotificationBox" type="VBoxContainer" parent="SubViewportContainer/SubViewport"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -135.5
-offset_bottom = 143.75
-grow_horizontal = 0
-mouse_filter = 2
-script = ExtResource("2_mf3qm")
-
 [node name="CurrentCreatureStats" type="NinePatchRect" parent="SubViewportContainer/SubViewport"]
 unique_name_in_owner = true
+visible = false
 texture_filter = 3
 anchors_preset = 5
 anchor_left = 0.5
@@ -122,7 +107,7 @@ anchor_right = 0.5
 offset_left = -135.0
 offset_top = 50.0
 offset_right = -36.5
-offset_bottom = 111.25
+offset_bottom = 114.75
 grow_horizontal = 2
 texture = SubResource("AtlasTexture_h1mp1")
 patch_margin_left = 6
@@ -263,24 +248,9 @@ total_segments = 8
 seperation = -1
 metadata/_custom_type_script = "uid://d36wjvx56uohs"
 
-[node name="WorldViewMenu" parent="SubViewportContainer/SubViewport" instance=ExtResource("13_a8shf")]
+[node name="MenuBar" parent="SubViewportContainer/SubViewport" instance=ExtResource("13_a8shf")]
 unique_name_in_owner = true
-anchors_preset = 12
-anchor_left = 0.0
-anchor_right = 1.0
-offset_left = 0.0
-offset_top = -13.0
-offset_right = 0.0
 
-[node name="FocusViewMenu" parent="SubViewportContainer/SubViewport" instance=ExtResource("14_v47tu")]
-unique_name_in_owner = true
-visible = false
-anchors_preset = 12
-anchor_left = 0.0
-anchor_right = 1.0
-offset_left = 0.0
-offset_top = -12.0
-offset_right = 0.0
 
 [node name="WorldClockUI" type="Panel" parent="SubViewportContainer/SubViewport"]
 offset_right = 98.5
@@ -310,3 +280,14 @@ layout_mode = 2
 text = "Jan. 16 2025"
 label_settings = SubResource("LabelSettings_qdy77")
 horizontal_alignment = 1
+
+[node name="NotificationBox" type="VBoxContainer" parent="SubViewportContainer/SubViewport"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -269.5
+offset_bottom = 143.75
+grow_horizontal = 0
+size_flags_horizontal = 10
+mouse_filter = 2
+script = ExtResource("2_mf3qm")

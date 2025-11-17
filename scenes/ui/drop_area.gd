@@ -11,14 +11,14 @@ func _ready():
 func _process(_delta):
 	pass
 
-func _can_drop_data(at_position, data):
+func _can_drop_data(_at_position, _data):
 	if world_map != null:
 		return true
 
-func _drop_data(at_position, data):
+func _drop_data(_at_position, data):
 	Eventbus.buildable_drag_ended.emit()
 	if Data.buildable_library.has(data.buildable_key):
-		var target_position = world_map.map_to_local(world_map.local_to_map(get_global_mouse_position())) 
+		var target_position = _grid_snap_position(get_global_mouse_position()) 
 		if world_items.has(target_position):
 			SoundManager.play_sound(Data.sfx_library["error"])
 			Eventbus.notification_requested.emit("Build location not clear")
@@ -28,4 +28,27 @@ func _drop_data(at_position, data):
 		world_items[target_position] = new_item
 		new_item.global_position = target_position
 		SoundManager.play_sound(Data.sfx_library["click"])
+		Game.queue_save("buildable_drop")
+
+func register_buildable(buildable: Node2D):
+	if world_map == null or buildable == null:
+		return
+	var key := _grid_snap_position(buildable.global_position)
+	world_items[key] = buildable
+
+func forget_buildable(buildable: Node2D):
+	for entry_key in world_items.keys():
+		if world_items[entry_key] == buildable:
+			world_items.erase(entry_key)
+			return
+
+func clear_world_items():
+	world_items.clear()
+
+func _grid_snap_position(position: Vector2) -> Vector2:
+	if world_map == null:
+		return position
+	var local_position := world_map.to_local(position)
+	var cell := world_map.local_to_map(local_position)
+	return world_map.map_to_local(cell)
 		

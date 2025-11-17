@@ -1,18 +1,17 @@
 [gd_scene load_steps=3 format=3 uid="uid://bj0nil8bdg3ac"]
 
 [ext_resource type="Script" uid="uid://bl6b2vj064bsj" path="res://scenes/ui/notification.gd" id="1_3mrlx"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_5q4lt"]
-font_size = 32
-font_color = Color(1, 0.756863, 0.027451, 1)
+[ext_resource type="Theme" uid="uid://c406vfkljx80p" path="res://assets/themes/notification_theme.tres" id="1_5bafy"]
 
 [node name="Notification" type="Panel"]
-custom_minimum_size = Vector2(0, 64)
-offset_right = 282.0
-offset_bottom = 64.0
+custom_minimum_size = Vector2(0, 32)
+offset_right = 172.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+theme = ExtResource("1_5bafy")
 script = ExtResource("1_3mrlx")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,9 +19,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="CenterContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/CenterContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Message"
-label_settings = SubResource("LabelSettings_5q4lt")
 horizontal_alignment = 1
 vertical_alignment = 1

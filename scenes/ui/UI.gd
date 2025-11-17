@@ -7,8 +7,7 @@ var pop_up_scene: PackedScene = preload("res://scenes/ui/pop_up_panel.tscn")
 @onready var hunger_bar: SegmentedBar = %HungerBar
 @onready var energy_bar: SegmentedBar = %EnergyBar
 @onready var current_creature_stats: NinePatchRect = %CurrentCreatureStats
-@onready var world_view_menu: NinePatchRect = %WorldViewMenu
-@onready var focus_view_menu: NinePatchRect = %FocusViewMenu
+@onready var menu_bar: HUDMenuBar = %MenuBar
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,18 +16,23 @@ func _ready():
 	Eventbus.focus_view_requested.connect(_on_focus_requested)
 	Eventbus.world_view_requested.connect(_on_world_view_requested)
 	Eventbus.popup_requested.connect(_on_popup_requested)
+	menu_bar.save_requested.connect(_on_save_requested)
+	menu_bar.zoom_requested.connect(_on_zoom_requested)
+	menu_bar.apply_profile(HUDMenuBar.Profile.WORLD)
 	
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
 
 func _on_world_view_requested():
 	Tracer.info("World view request recieved")
-	focused_creature = null
+	set_focus(null)
+	menu_bar.apply_profile(HUDMenuBar.Profile.WORLD)
+	menu_bar.set_focus_creature(null)
 	pass # Replace with function body.
 
 
@@ -51,7 +55,9 @@ func _on_current_hunger_updated():
 
 func _on_focus_requested(creature: Creature):
 	Tracer.info("Focus view request recieved for %s " % creature.name)
-	%NameLabel.text = creature.creature_nickname
+	set_focus(creature)
+	menu_bar.apply_profile(HUDMenuBar.Profile.FOCUS)
+	menu_bar.set_focus_creature(creature)
 
 func _on_popup_requested(mes : String):
 	Tracer.info("Popup request received")
@@ -59,7 +65,20 @@ func _on_popup_requested(mes : String):
 
 func set_focus(creature: Creature):
 	focused_creature = creature
-	%FocusViewMenu.set_focus(creature)
+	if creature == null:
+		%NameLabel.text = ""
+		return
+	%NameLabel.text = creature.creature_nickname
+
+func _on_save_requested():
+	var result := Game.manual_save_and_sleep()
+	if result.get("ok", false):
+		Eventbus.popup_requested.emit(result.get("message", "Progress saved. It is safe to close the app."))
+	else:
+		Eventbus.popup_requested.emit(result.get("message", "Save failed. Please try again."))
+
+func _on_zoom_requested():
+	Eventbus.world_view_requested.emit()
 
 func show_popup(message: String):
 	var popup = pop_up_scene.instantiate()

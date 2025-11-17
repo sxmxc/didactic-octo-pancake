@@ -12,7 +12,7 @@ config_version=5
 
 config/name="digi-tamogotcha-mon"
 config/tags=PackedStringArray("gd4")
-run/main_scene="res://scenes/main_menu.tscn"
+run/main_scene="res://scenes/login_screen.tscn"
 config/features=PackedStringArray("4.5", "Forward Plus")
 boot_splash/use_filter=false
 boot_splash/image="res://assets/pxvoidmoose.png"
@@ -29,6 +29,7 @@ Eventbus="*res://autoload/eventbus.gd"
 SceneManager="*res://addons/scene_manager/scene_manager.gd"
 Game="*res://autoload/game.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
+Talo="*res://addons/talo/talo_manager.gd"
 
 [display]
 
@@ -44,11 +45,11 @@ window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/beehave/plugin.cfg", "res://addons/phantom_camera/plugin.cfg", "res://addons/randomnamesgenerator/plugin.cfg", "res://addons/scene_manager/plugin.cfg", "res://addons/segmented_bar/plugin.cfg", "res://addons/sound_manager/plugin.cfg", "res://addons/tracer/plugin.cfg")
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/beehave/plugin.cfg", "res://addons/phantom_camera/plugin.cfg", "res://addons/randomnamesgenerator/plugin.cfg", "res://addons/scene_manager/plugin.cfg", "res://addons/segmented_bar/plugin.cfg", "res://addons/sound_manager/plugin.cfg", "res://addons/talo/plugin.cfg", "res://addons/tracer/plugin.cfg")
 
 [global_group]
 
-Player=""
+player=""
 
 [input]
 

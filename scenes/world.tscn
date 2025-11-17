@@ -4,13 +4,13 @@
 [ext_resource type="Script" uid="uid://bgvnh0se64yfh" path="res://scenes/world.gd" id="1_xse1y"]
 [ext_resource type="TileSet" uid="uid://dyax757fo4qca" path="res://assets/tiles/default_terrain.tres" id="2_37qwj"]
 [ext_resource type="Script" uid="uid://bt2o6k13v1m6" path="res://scenes/ui/drop_area.gd" id="2_qhaud"]
-[ext_resource type="Script" uid="uid://b1usy3l1nqq2s" path="res://scenes/player/Player.gd" id="6_tfixf"]
+[ext_resource type="Script" uid="uid://b1usy3l1nqq2s" path="res://scenes/player/player.gd" id="6_tfixf"]
 [ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="9_40nnw"]
 [ext_resource type="PackedScene" uid="uid://cwbcbqyxgficy" path="res://scenes/ui/ui.tscn" id="9_dss4m"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="10_d3p6u"]
 [ext_resource type="Texture2D" uid="uid://bw072abea5or7" path="res://assets/food_bowl.png" id="11_6afm6"]
 [ext_resource type="PackedScene" uid="uid://cyv1ty5tg8nyl" path="res://buildables/nests/nest.tscn" id="27_l21be"]
-[ext_resource type="Script" uid="uid://gb4huttc1tq1" path="res://scenes/SpaceBackground.gd" id="28_x4xo3"]
+[ext_resource type="Script" uid="uid://gb4huttc1tq1" path="res://scenes/space_background.gd" id="28_x4xo3"]
 [ext_resource type="Texture2D" uid="uid://b17bh8piiajfm" path="res://assets/space/Nebula Aqua-Pink.png" id="29_8jkcj"]
 [ext_resource type="Texture2D" uid="uid://bqt670lks5ssd" path="res://assets/space/Stars Small_1.png" id="30_4ojnq"]
 [ext_resource type="Texture2D" uid="uid://d23fjmt6e8ci5" path="res://assets/space/Stars-Big_1_1_PC.png" id="31_kfu7k"]
@@ -60,7 +60,7 @@ tile_set = ExtResource("2_37qwj")
 [node name="Blackboard" type="Node" parent="."]
 script = ExtResource("1_rj3i3")
 
-[node name="Player" type="Node2D" parent="." groups=["Player"]]
+[node name="Player" type="Node2D" parent="." groups=["player"]]
 unique_name_in_owner = true
 script = ExtResource("6_tfixf")
 

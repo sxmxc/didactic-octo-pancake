@@ -3,8 +3,8 @@ extends Node
 signal progress_changed(progress)
 signal load_done
 
-var _load_screen_path: String = "res://addons/scene_manager/LoadScreen.tscn"
-var _load_screen = load(_load_screen_path)
+var _load_screen_path: String = ""
+var _load_screen: PackedScene
 var _load_scene_resource: PackedScene
 var _scene_path: String
 var _progress: Array = []
@@ -17,11 +17,17 @@ var use_sub_threads: bool = true
 func _ready():
 	print("SceneManager Ready")
 
-func load_scene(scene_path: String, load_screen_path: String = "") -> void:
+func load_scene(scene_path: String, load_screen_path: String = "", use_load_screen: bool = true) -> void:
 	_scene_path = scene_path
-	if load_screen_path != null && load_screen_path.length() > 0 &&  load_screen_path != _load_screen_path:
+	if not use_load_screen:
+		assert(get_tree().change_scene_to_file(_scene_path) == OK)
+		return
+	if load_screen_path != null && load_screen_path.length() > 0 && load_screen_path != _load_screen_path:
 		_load_screen_path = load_screen_path
 		_load_screen = load(_load_screen_path)
+	if _load_screen == null:
+		push_error("SceneManager missing load screen resource; pass a valid path or disable loading screen.")
+		return
 	assert(get_tree().change_scene_to_packed(_load_screen) == OK)
 
 func start_load() -> void:

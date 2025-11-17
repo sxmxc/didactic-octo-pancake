@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=3 uid="uid://dapp7zr0aq1jl"]
+
+[ext_resource type="Texture2D" uid="uid://dxk1hu0t4u6wx" path="res://assets/ui/main_ui.png" id="1_tex"]
+[ext_resource type="Script" path="res://scenes/ui/drawers/egg_catalog_drawer.gd" id="2_scp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frame"]
+atlas = ExtResource("1_tex")
+region = Rect2(0, 336, 270, 64)
+
+[node name="EggCatalogDrawer" type="Control"]
+custom_minimum_size = Vector2(0, 150)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -156.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("2_scp")
+edge = 1
+tween_duration = 0.35
+handle_exposed = 18.0
+content_root_path = NodePath("Frame/ContentRoot")
+
+[node name="Frame" type="NinePatchRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_frame")
+patch_margin_left = 25
+patch_margin_top = 18
+patch_margin_right = 25
+patch_margin_bottom = 1
+
+[node name="ContentRoot" type="Control" parent="Frame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Frame/ContentRoot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="EggScroll" type="ScrollContainer" parent="Frame/ContentRoot/MarginContainer"]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="EggList" type="VBoxContainer" parent="Frame/ContentRoot/MarginContainer/EggScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="EmptyEggsLabel" type="Label" parent="Frame/ContentRoot/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "No eggs available."
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://b071utsw23u4a"]
+
+[ext_resource type="FontFile" uid="uid://bkndep7suf0a1" path="res://assets/fonts/Pix32.ttf" id="1_vwtep"]
+
+[resource]
+default_font = ExtResource("1_vwtep")
+default_font_size = 12

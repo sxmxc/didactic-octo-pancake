@@ -1,3 +1,4 @@
+@tool
 extends ActionLeaf
 
 var closest_food: Food
@@ -10,11 +11,9 @@ func tick(actor, blackboard: Blackboard):
 		actor.set_movement_target(closest_food.global_position)
 		actor.show_emotion("hungry")
 	if actor.navigation_agent.is_navigation_finished():
-		actor.stats.current_hunger = 100
 		blackboard.set_value(actor.name + "_current_hunger", actor.stats.current_hunger)
-		if actor.owner.get_node("%HungerBar"):
-			actor.owner.get_node("%HungerBar").value = 100
-		closest_food.consume()
+		Eventbus.current_hunger_updated.emit()
+		closest_food.consume(actor)
 		closest_food = null
 		actor.show_emotion("happy")
 		return SUCCESS

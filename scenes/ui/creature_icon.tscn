@@ -1,13 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2yhlposmux4c"]
+[gd_scene load_steps=5 format=3 uid="uid://b2yhlposmux4c"]
 
 [ext_resource type="Script" uid="uid://b5p7xnl2lc0ym" path="res://scenes/ui/creature_icon.gd" id="1_sgc31"]
+[ext_resource type="FontFile" uid="uid://bkndep7suf0a1" path="res://assets/fonts/Pix32.ttf" id="2_445ia"]
 [ext_resource type="Texture2D" uid="uid://bt27uqbu2bvid" path="res://assets/creatures/blop.png" id="2_hk8n7"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_mcgb7"]
+font = ExtResource("2_445ia")
+font_size = 12
 font_color = Color(0, 0, 0, 1)
 
 [node name="CreatureIcon" type="Control"]
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 70.0
@@ -40,6 +43,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -7.0
+offset_bottom = -7.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_hk8n7")

@@ -14,5 +14,5 @@ func _process(_delta):
 	pass
 
 func consume(creature:Creature):
-	creature.stats.current_hunger = clampf(creature.stats.current_hunger - nutrition_value, 0, creature.stats.max_hunger)
+	creature.stats.current_hunger = clampi(creature.stats.current_hunger - nutrition_value, 0, creature.stats.max_hunger)
 	queue_free()

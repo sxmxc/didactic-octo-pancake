@@ -1,23 +1,26 @@
-[gd_scene load_steps=29 format=3 uid="uid://boqc2y4amjeqp"]
+[gd_scene load_steps=32 format=3 uid="uid://boqc2y4amjeqp"]
 
 [ext_resource type="Script" uid="uid://b8bntixrs8joq" path="res://scenes/creature/creature.gd" id="1_4jpvp"]
 [ext_resource type="Script" uid="uid://bb0t2ovl7wifo" path="res://addons/beehave/nodes/beehave_tree.gd" id="2_6f3ey"]
 [ext_resource type="Script" uid="uid://evb4cyfmej2g" path="res://resources/stats/creature_stats.gd" id="2_odx68"]
 [ext_resource type="Script" uid="uid://8hn4kne15ac5" path="res://addons/beehave/nodes/composites/selector.gd" id="3_l1ib0"]
 [ext_resource type="Script" uid="uid://bbaojjriq676j" path="res://addons/beehave/nodes/composites/sequence_star.gd" id="4_0y2j8"]
-[ext_resource type="Script" uid="uid://c22mo17ekjffx" path="res://ai/conditions/IsHungryCondition.gd" id="5_7u07e"]
-[ext_resource type="Script" uid="uid://bugk8hfwtso2w" path="res://ai/actions/MoveToBedAction.gd" id="6_7urcs"]
-[ext_resource type="Script" uid="uid://b3w1p1x4w10ic" path="res://ai/actions/WalkToFoodAction.gd" id="7_qslpf"]
-[ext_resource type="Script" uid="uid://bnqy0u10ky81t" path="res://ai/actions/WalkAroundAction.gd" id="8_rtp40"]
-[ext_resource type="Script" uid="uid://b0pt4mx2jxp8o" path="res://ai/conditions/IsSleepyCondition.gd" id="9_g5f5m"]
-[ext_resource type="Script" uid="uid://qbyj18catmmc" path="res://ai/actions/IdleAction.gd" id="9_milg3"]
-[ext_resource type="Script" uid="uid://c0eicdo7ojrs6" path="res://ai/actions/SleepAction.gd" id="10_3qdq7"]
-[ext_resource type="Script" uid="uid://cr1k4g5ujf2hj" path="res://ai/actions/EatAction.gd" id="10_2425k"]
-[ext_resource type="PackedScene" uid="uid://b8uamh30l86kw" path="res://scenes/creature/emotions/singing_bubble.tscn" id="10_t2ebw"]
+[ext_resource type="Script" uid="uid://c22mo17ekjffx" path="res://creature_ai/conditions/IsHungryCondition.gd" id="5_7u07e"]
+[ext_resource type="Script" uid="uid://bugk8hfwtso2w" path="res://creature_ai/actions/MoveToBedAction.gd" id="6_7urcs"]
+[ext_resource type="Script" uid="uid://b3w1p1x4w10ic" path="res://creature_ai/actions/WalkToFoodAction.gd" id="7_qslpf"]
+[ext_resource type="Script" uid="uid://bnqy0u10ky81t" path="res://creature_ai/actions/WalkAroundAction.gd" id="8_rtp40"]
+[ext_resource type="Script" uid="uid://b0pt4mx2jxp8o" path="res://creature_ai/conditions/IsSleepyCondition.gd" id="9_g5f5m"]
+[ext_resource type="Script" uid="uid://qbyj18catmmc" path="res://creature_ai/actions/IdleAction.gd" id="9_milg3"]
+[ext_resource type="Script" uid="uid://c0eicdo7ojrs6" path="res://creature_ai/actions/SleepAction.gd" id="10_3qdq7"]
+[ext_resource type="Script" uid="uid://cr1k4g5ujf2hj" path="res://creature_ai/actions/EatAction.gd" id="10_2425k"]
 [ext_resource type="Texture2D" uid="uid://nr53llk3uo7m" path="res://assets/creatures/eggs/squid_egg.png" id="13_xi080"]
 [ext_resource type="Texture2D" uid="uid://bt27uqbu2bvid" path="res://assets/creatures/blop.png" id="14_x7fpl"]
 [ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="15_q5slx"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="16_vdcvm"]
+[ext_resource type="Script" uid="uid://dp4ou4sligeif" path="res://creature_ai/conditions/NeedsGroomingCondition.gd" id="17_bcvz3"]
+[ext_resource type="Script" uid="uid://c8ty6plx5axan" path="res://creature_ai/conditions/IsNestDirtyCondition.gd" id="18_r0g9w"]
+[ext_resource type="Script" uid="uid://cul4ernl2f4vs" path="res://creature_ai/actions/GroomSelfAction.gd" id="19_6m3lw"]
+[ext_resource type="Script" uid="uid://d3v1n0h7g1na2" path="res://creature_ai/actions/CleanNestAction.gd" id="20_64k7m"]
 
 [sub_resource type="Resource" id="Resource_ve8t1"]
 script = ExtResource("2_odx68")
@@ -120,7 +123,7 @@ stats = SubResource("Resource_ve8t1")
 [node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("2_6f3ey")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@257367")
+blackboard = NodePath("@Node@21462")
 actor = NodePath("..")
 
 [node name="Either" type="Node" parent="BeehaveTree"]
@@ -149,6 +152,27 @@ script = ExtResource("7_qslpf")
 
 [node name="EatAction" type="Node" parent="BeehaveTree/Either/FindFood"]
 script = ExtResource("10_2425k")
+
+[node name="Grooming" type="Node" parent="BeehaveTree/Either"]
+script = ExtResource("4_0y2j8")
+
+[node name="NeedsGroomingCondition" type="Node" parent="BeehaveTree/Either/Grooming"]
+script = ExtResource("17_bcvz3")
+
+[node name="GroomSelfAction" type="Node" parent="BeehaveTree/Either/Grooming"]
+script = ExtResource("19_6m3lw")
+
+[node name="NestMaintenance" type="Node" parent="BeehaveTree/Either"]
+script = ExtResource("4_0y2j8")
+
+[node name="IsNestDirtyCondition" type="Node" parent="BeehaveTree/Either/NestMaintenance"]
+script = ExtResource("18_r0g9w")
+
+[node name="MoveToBed" type="Node" parent="BeehaveTree/Either/NestMaintenance"]
+script = ExtResource("6_7urcs")
+
+[node name="CleanNestAction" type="Node" parent="BeehaveTree/Either/NestMaintenance"]
+script = ExtResource("20_64k7m")
 
 [node name="WalkAround" type="Node" parent="BeehaveTree/Either"]
 script = ExtResource("4_0y2j8")
@@ -194,8 +218,6 @@ limit_top = 0
 
 [node name="EmotionContainer" type="Node2D" parent="."]
 position = Vector2(-1, -37)
-
-[node name="SingingBubble" parent="EmotionContainer" instance=ExtResource("10_t2ebw")]
 
 [node name="TouchScreenButton" type="TouchScreenButton" parent="."]
 shape = SubResource("CircleShape2D_dyisl")

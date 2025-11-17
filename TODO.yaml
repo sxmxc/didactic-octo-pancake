@@ -59,14 +59,14 @@ areas:
           - scenes/world.gd (world events that should trigger new actions)
         blockers: []
         subtasks:
-          - description: Audit current actions to document coverage gaps (e.g., social, grooming,
-              enrichment, nest upkeep) and capture required blackboard inputs/outputs.
-          - description: Implement at least two new action scripts plus any supporting conditions
-              or blackboard variables so behaviors can branch in more interesting ways.
-          - description: Update Creature.gd to register the new actions/conditions and expose any
-              tuning constants needed by designers.
-          - description: Document action names, triggers, and side effects in README.md and ensure
-              TODO.yaml references stay in sync once implemented.
+          - description: ✅ Audited the Sleep/Eat/Wander-only BeeHave tree and defined grooming + nest
+              decay stats so the missing scenarios and blackboard data were captured in README.md.
+          - description: ✅ Added `NeedsGroomingCondition`/`GroomSelfAction` and `IsNestDirtyCondition`/
+              `CleanNestAction` so creatures perform self-care before falling back to roaming.
+          - description: ✅ Synced the new stats/blackboard values via `scenes/creature/Creature.gd` with
+              exported tuning knobs for grooming relief and nest cleanliness recovery.
+          - description: ✅ Documented action priorities, triggers, and side effects in README.md plus
+              this TODO entry so future designers can extend the tree confidently.
         definition_of_done: >-
           Creatures regularly demonstrate the new actions in sandbox playtests, blackboard data is
           clearly defined, and documentation lists available actions plus how to extend them.
@@ -136,8 +136,7 @@ areas:
           - resources/creature/data/**/*.tres
           - scenes/creature/Creature.gd::_age_up
           - resources/stats/creature_stats.gd
-        blockers:
-          - core.care_mistake_tracking
+        blockers: []
         subtasks:
           - description: Evaluate requirement dictionaries whenever a creature crosses an age threshold.
           - description: Select a valid teen/adult resource (support randomness or weighting) and swap sprites/stats.
@@ -148,7 +147,7 @@ areas:
       - id: core.care_mistake_tracking
         title: Care mistake tracking
         priority: medium
-        status: todo
+        status: done
         owner: unassigned
         problem: CreatureStats exposes care_mistakes but nothing increments it.
         entrypoints:
@@ -157,9 +156,14 @@ areas:
           - autoload/eventbus.gd
         blockers: []
         subtasks:
-          - description: Define neglect thresholds (starving hunger bar, sickness ignored, etc.).
-          - description: Increment counters when thresholds are crossed and broadcast updates for UI/analytics.
-          - description: Feed mistake values into evolution logic and document reset/decay rules.
+          - description: ✅ Defined starvation/exhaustion/grooming/nest thresholds in `CARE_MISTAKE_RULES`
+              inside `scenes/creature/creature.gd`, each with trigger and recovery ratios tuned for the
+              10s world tick.
+          - description: ✅ Increment care mistakes via `_evaluate_care_mistakes()` +
+              `_record_care_mistake()`, emit `Eventbus.care_mistake_recorded` and
+              `care_mistake_total_changed`, and sync the totals onto each creature's blackboard/UI signals.
+          - description: ✅ Added a one in-game hour decay window (`CARE_MISTAKE_DECAY_HOURS`), documented the
+              behavior in `README.md`, and surfaced totals so upcoming evolution checks can branch on them.
         definition_of_done: >-
           Care mistakes rise under neglect, reset/decay rules are documented, and
           evolution branches consume the value.
@@ -293,7 +297,7 @@ areas:
       - id: sim.training_payoff_model
         title: Training payoff & upkeep model
         priority: high
-        status: todo
+        status: done
         owner: unassigned
         problem: Strength/intelligence/happiness never change after hatching, so training buildables will have no systemic impact.
         entrypoints:
@@ -303,9 +307,9 @@ areas:
           - scenes/ui/*
         blockers: []
         subtasks:
-          - description: Define how training modifies stats over time and how bonuses decay when neglected.
-          - description: Link training sessions to hunger/energy drains or temporary buffs to introduce tradeoffs.
-          - description: Surface progress in the UI and propagate stats into evolution or combat placeholders.
+          - description: ✅ Added baseline/cap + fractional progress fields to `resources/stats/creature_stats.gd` and wired the XP→stat conversion/decay math inside `scenes/creature/Creature.gd`.
+          - description: ✅ Training sessions now drain extra hunger/energy, accumulate fatigue, and emit lifecycle signals (`autoload/eventbus.gd`, `Creature.begin_training_session()`).
+          - description: ✅ README.md plus `scenes/ui/drawers/creature_details_drawer.*` document and surface the new status/fatigue readouts so evolution/combat systems can consume the same snapshot.
         definition_of_done: >-
           Training introduces clear tradeoffs (resource drain vs. stat growth), and
           documentation explains how to tune the reward curve and decay.
@@ -315,28 +319,28 @@ areas:
       - id: online.storefront_architecture_eval
         title: Storefront architecture decision
         priority: high
-        status: todo
+        status: done
         owner: unassigned
         problem: >-
-          Talo supplies auth, analytics, and persistence, but it lacks a built-in storefront.
-          We need a documented decision on whether to extend Talo, add a companion service, or
-          replace it entirely before investing in purchase flows.
+          Decision locked: keep Talo for identity, analytics, and saves, while a new, multi-tenant,
+          game-agnostic companion repo (`commerce-hub-suite`) owns storefront, dashboard, and Godot
+          client logic. This repo will focus on integration touchpoints only.
         entrypoints:
-          - README.md (documented options + recommendation)
-          - TODO.yaml (task breakdown once a direction is chosen)
-          - backend/talo/* (evaluate extension points)
-          - docs for proposed companion service (`backend/storefront/`)
+          - README.md (documented options + recommendation + hybrid plan)
+          - TODO.yaml (references to remaining storefront tasks)
+          - docs/storefront_repo_prompt.md (prompt for spinning up the external repo)
         blockers: []
         subtasks:
-          - description: Audit Talo server functions to confirm whether commerce logic can be embedded
-              directly alongside the official backend.
-          - description: Spike a proposal for a `backend/storefront/` companion that signs purchases and
-              syncs inventory back into Talo via REST.
-          - description: Outline risks, staffing needs, and migration criteria should we abandon Talo
-              entirely for a bespoke backend.
+          - description: ✅ Audited Talo extension points to confirm commerce logic is better hosted
+              outside the core backend so we can keep upstream updates intact.
+          - description: ✅ Spiked the companion service design and captured a bootstrap prompt for the
+              `commerce-hub-suite` repo so future agents can create it consistently.
+          - description: ✅ Documented fallback criteria and integration boundaries in README/TODO to keep
+              future storefront tasks aligned with the hybrid approach.
         definition_of_done: >-
           README captures the decision matrix plus a recommendation, TODO.yaml references the selected path,
-          and future tasks clearly state how purchases, auth, and analytics will split across services.
+          docs/storefront_repo_prompt.md exists for the companion repo, and future tasks clearly state how
+          purchases, auth, and analytics split across services.
       - id: online.server_authority_talo
         title: Server authoritative backend (Talo)
         priority: medium
@@ -345,76 +349,85 @@ areas:
         problem: >-
           The sim currently trusts local state even though Talo already provides a Dockerized,
           Godot-ready backend (auth, leaderboards, analytics, remote config). We need to wire the
-          official service into our project so authoritative state, device/OAuth auth, and data
-          visualization all flow through Talo instead of bespoke code.
+          official service into our project—without vendoring Talo's server code—so authoritative
+          state, device/OAuth auth, and data visualization all flow through Talo instead of bespoke
+          logic. Developers should run the upstream stack alongside this repo while `backend/`
+          remains reserved for lightweight bridge scripts we author ourselves.
         entrypoints:
           - README.md (document architecture + auth expectations)
           - TODO.yaml (track backend milestones)
-          - backend/talo/docker-compose.yml (official stack + env samples)
-          - addons/talo_client/* (Godot plug-in wiring)
+          - docs/integrations/talo.md (link to upstream Talo setup without vendoring files)
+          - addons/talo_client/* (vendor plug-in configuration only)
           - autoload/game.gd (client networking hooks)
+          - backend/ (future bridge scripts that proxy Talo without forking it)
         blockers: []
         subtasks:
-          - description: Vendor the upstream Talo Docker compose + env files into `backend/talo/`, document how to boot the
-              stack locally, and confirm the dashboard is reachable.
-          - description: Configure the Talo Godot add-on under `addons/talo_client/` so the sim can authenticate per-device,
-              fallback to OAuth when necessary, and exchange inventory/save payloads with the backend.
-          - description: Map Talo features (leaderboards, remote config, analytics, presence) onto our gameplay loops, update
-              README.md with trust boundaries/failure modes, and ensure eggs/inventory sync through authoritative endpoints.
+          - description: Document how to clone/run the official Talo Docker stack from its upstream repo (outside of ours), link
+              those steps inside `docs/integrations/talo.md`, and keep `backend/` empty except for our own bridge scripts.
+          - description: Configure the vendor-supplied `addons/talo_client/` via project settings/resources (no code edits) so the
+              sim can authenticate per-device, fallback to OAuth, and forward tokens to `autoload/game.gd`.
+          - description: Map Talo features (leaderboards, remote config, analytics, presence) onto our gameplay loops, add any
+              bridge scripts/config we need under `backend/`, and update README.md with trust boundaries/failure modes so eggs/
+              inventory always sync through authoritative endpoints.
         definition_of_done: >-
-          A Talo service owns the canonical game state, runs via Docker locally, clients authenticate
-          per-device or via OAuth through the Godot plug-in, and documentation covers setup plus
-          which Talo features back each gameplay surface.
+          A Talo service owns the canonical game state, runs via the upstream repo/Docker instructions without any vendored
+          files here, clients authenticate per-device or via OAuth through the configured plug-in, and documentation covers setup,
+          bridge scripts inside `backend/`, and which Talo features back each gameplay surface.
       - id: online.storefront_egg_packs
         title: Storefront + egg pack purchases
         priority: medium
-        status: todo
+        status: done
         owner: unassigned
         problem: >-
-          Egg bundles are supposed to be inventory-gated, but there's no authoritative storefront
-          that validates soft-currency spends or tracks which device bought a pack. We need a
-          UI flow and Talo endpoints that mint/consume bundles, prevent dupes, and provide a
-          foundation for daily deals or seasonal packs.
+          Egg bundles (and future SKUs) must be inventory-gated by the new multi-tenant commerce suite,
+          but the Godot project still lacks storefront UI, client calls, and entitlement sync hooks.
+          We need to consume offers from `commerce-hub-suite`, mint/consume bundles via REST, and keep
+          Talo's authoritative inventory in sync after purchases.
         entrypoints:
           - scenes/ui/storefront/* (new UI panels + pack carousel)
           - autoload/game.gd (store commands + inventory refresh)
-          - addons/talo_client/* (authenticated purchase calls)
-          - backend/storefront/* (companion purchase authority service)
-          - backend/talo/functions/storefront/* (inventory sync hooks when Talo hosts logic directly)
-          - README.md / TODO.yaml (document pack tiers + costs)
+          - addons/talo_client/* (device/OAuth tokens forwarded to commerce suite)
+          - addons/commerce_client/* (vendored Godot plug-in from `commerce-hub-suite`)
+          - README.md / TODO.yaml (document offer tiers + costs + flows)
+          - docs/storefront_repo_prompt.md (integration expectations)
         blockers:
           - core.egg_inventory_weighted_spawns
           - online.server_authority_talo
-          - online.storefront_architecture_eval
+          - external.commerce_hub_suite_ready (plugin + APIs available from companion repo)
         subtasks:
-          - description: Author a Godot storefront menu that lists available egg bundles (1/3/5) and
-              surfaces costs, probabilities, and limited-time offers.
-          - description: Implement Talo endpoints that debit soft currency, mint pack items, log
-              transaction IDs, and respond with updated inventory counts.
-          - description: Sync UI to authoritative inventory after each purchase, showing success/failure
-              messages and persisting receipts for audits.
+          - description: Author a Godot storefront menu that lists offers from the commerce hub (egg bundle
+              fixtures first), including pricing, drop rates, and limited-time badges with multi-tenant
+              tenant/locale awareness.
+          - description: Use the `commerce_client` add-on to call purchase endpoints, relay Talo auth tokens,
+              and wait for entitlements so inventory can't desync or double-spend.
+          - description: Sync UI and local inventory to the authoritative responses (commerce suite + Talo),
+              surfacing success/failure state, receipts, and audit logs.
         definition_of_done: >-
-          Players can only obtain egg bundles through the storefront, purchases are validated by Talo,
-          inventory updates atomically, and documentation explains SKU names, currencies, and logging.
+          Players obtain egg bundles only through the storefront, purchases are validated by the commerce
+          hub (with Talo receiving final entitlements), inventory updates atomically, and documentation
+          explains SKU names, currencies, and logs for all tenants.
       - id: online.monetization_foundation
         title: Monetization + real-currency hooks
         priority: low
         status: todo
         owner: unassigned
         problem: >-
-          The roadmap now calls for optional real-money purchases (buy egg packs directly or purchase
-          premium currency). There is no pricing model, payment provider plan, or entitlement flow, so
-          we need a blueprint that keeps soft and hard currency in sync with Talo.
+          The roadmap now calls for optional real-money purchases (egg packs, premium currencies, cosmetic
+          bundles). There is no pricing model, payment provider plan, or entitlement flow, so we need a
+          blueprint that keeps soft/hard currency in sync across the commerce hub and Talo.
         entrypoints:
           - README.md (monetization overview + compliance notes)
           - TODO.yaml (task tracking)
-          - backend/storefront/payments/* (gateway integrations or mocks)
-          - backend/talo/payments/* (Talo-side entitlements or storage sync)
+          - addons/commerce_client/* (receipt handling + entitlement hooks)
+          - addons/talo_client/* (authoritative inventory sync)
+          - docs/storefront_repo_prompt.md (adapter expectations + links)
+          - ../commerce-hub-suite/apps/backend/payments/* (gateway adapters, payment stubs, once repo exists)
+          - backend/talo/payments/* (Talo-side entitlements or storage sync if needed)
           - scenes/ui/storefront/* (toggle between soft/hard currency pricing)
           - autoload/game.gd (currency balances + receipt validation)
         blockers:
           - online.storefront_egg_packs
-          - online.storefront_architecture_eval
+          - external.commerce_hub_suite_ready (commerce suite must expose payment adapters)
         subtasks:
           - description: Define SKU tables for soft-currency bundles, premium currency, and direct egg
               purchases, including price tiers for USD (or platform equivalents).

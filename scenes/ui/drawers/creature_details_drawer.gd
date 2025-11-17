@@ -7,8 +7,26 @@ extends MenuDrawer
 @onready var strength_value: Label = %StrengthValue
 @onready var intelligence_value: Label = %IntelligenceValue
 @onready var happiness_value: Label = %HappinessValue
+@onready var training_status_value: Label = %TrainingStatusValue
+@onready var training_fatigue_value: Label = %TrainingFatigueValue
+@onready var mood_value: Label = %MoodValue
+@onready var action_value: Label = %ActionValue
+@onready var thought_value: Label = %ThoughtValue
 
 var focused_creature: Creature = null
+var _refresh_timer := 0.0
+
+func _ready() -> void:
+	super._ready()
+	Eventbus.creature_activity_changed.connect(_on_creature_activity_changed)
+
+func _process(delta: float) -> void:
+	if !_is_open or focused_creature == null:
+		return
+	_refresh_timer -= delta
+	if _refresh_timer <= 0.0:
+		_refresh_timer = 0.5
+		_refresh()
 
 func set_focus(creature: Creature) -> void:
 	focused_creature = creature
@@ -17,6 +35,10 @@ func set_focus(creature: Creature) -> void:
 
 func _on_drawer_opening() -> void:
 	_refresh()
+
+func _on_creature_activity_changed(creature: Creature) -> void:
+	if creature == focused_creature and _is_open:
+		_refresh()
 
 func _refresh() -> void:
 	if focused_creature == null:
@@ -27,11 +49,60 @@ func _refresh() -> void:
 		strength_value.text = "--"
 		intelligence_value.text = "--"
 		happiness_value.text = "--"
+		training_status_value.text = "--"
+		training_fatigue_value.text = "--"
+		mood_value.text = "--"
+		action_value.text = "--"
+		thought_value.text = "--"
 		return
 	name_value.text = focused_creature.creature_nickname
-	species_value.text = focused_creature.species.species_name
+	species_value.text = focused_creature.species.species_name if focused_creature.species else "--"
 	life_stage_value.text = focused_creature.current_life_stage
 	mistakes_value.text = str(focused_creature.stats.care_mistakes)
-	strength_value.text = str(focused_creature.stats.strength)
-	intelligence_value.text = str(focused_creature.stats.intelligence)
-	happiness_value.text = str(focused_creature.stats.happiness)
+	strength_value.text = _format_stat_value(focused_creature.stats.strength, focused_creature.stats.strength_baseline, focused_creature.stats.strength_cap)
+	intelligence_value.text = _format_stat_value(focused_creature.stats.intelligence, focused_creature.stats.intelligence_baseline, focused_creature.stats.intelligence_cap)
+	happiness_value.text = _format_stat_value(focused_creature.stats.happiness, focused_creature.stats.happiness_baseline, focused_creature.stats.happiness_cap)
+	var training_snapshot: Dictionary = focused_creature.get_training_snapshot()
+	training_status_value.text = _format_training_status(training_snapshot)
+	training_fatigue_value.text = _format_training_fatigue(training_snapshot)
+	mood_value.text = focused_creature.get_current_mood_label()
+	action_value.text = focused_creature.get_current_action_label()
+	thought_value.text = focused_creature.get_current_thought()
+
+func _format_stat_value(current: int, baseline: int, cap: int) -> String:
+	var bonus: int = max(current - baseline, 0)
+	if bonus > 0:
+		return "%d (+%d) / %d" % [current, bonus, cap]
+	return "%d / %d" % [current, cap]
+
+func _format_training_status(snapshot: Dictionary) -> String:
+	var stat_name: Variant = snapshot.get("active_stat", StringName())
+	var seconds_remaining: float = float(snapshot.get("seconds_remaining", 0.0))
+	if stat_name != StringName() and seconds_remaining > 0.0:
+		return "Training %s (%s left)" % [String(stat_name).capitalize(), _format_duration(seconds_remaining)]
+	var grace_seconds: float = float(snapshot.get("grace_seconds", 0.0))
+	var rest_seconds: float = float(snapshot.get("rest_seconds", grace_seconds))
+	if rest_seconds < grace_seconds:
+		return "Resting (%s grace)" % _format_duration(grace_seconds - rest_seconds)
+	return "Idle / Decaying"
+
+func _format_training_fatigue(snapshot: Dictionary) -> String:
+	var fatigue: float = float(snapshot.get("fatigue", 0.0))
+	var fatigue_max: float = max(float(snapshot.get("fatigue_max", 100.0)), 1.0)
+	var fatigue_ratio: float = fatigue / fatigue_max
+	var descriptor := "Fresh"
+	if fatigue_ratio >= 0.8:
+		descriptor = "Exhausted"
+	elif fatigue_ratio >= 0.5:
+		descriptor = "Tired"
+	elif fatigue_ratio >= 0.25:
+		descriptor = "Warmed up"
+	return "%d / %d (%s)" % [int(round(fatigue)), int(round(fatigue_max)), descriptor]
+
+func _format_duration(seconds: float) -> String:
+	var remaining: int = max(int(round(seconds)), 0)
+	var minutes: int = remaining / 60
+	var secs: int = remaining % 60
+	if minutes > 0:
+		return "%dm %02ds" % [minutes, secs]
+	return "%ds" % secs

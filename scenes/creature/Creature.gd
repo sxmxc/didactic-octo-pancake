@@ -126,6 +126,30 @@ const DEFAULT_THOUGHTS := [
 	"Planning surprise conga lines.",
 ]
 
+const TraitState = preload("res://resources/traits/trait_state.gd")
+const TraitCatalog = preload("res://resources/traits/trait_catalog.gd")
+
+const TRAIT_DEFAULT_MODIFIERS: Dictionary = {
+	"hunger_rate": 1.0,
+	"energy_drain": 1.0,
+	"sleep_recovery": 1.0,
+	"training_gain": 1.0,
+	"training_fatigue": 1.0,
+	"grooming_action": 1.0,
+	"nest_action": 1.0,
+}
+
+const TRAIT_BIRTH_SLOTS: Array[Dictionary] = [
+	{
+		"alignment": &"positive",
+		"source": "birth_positive",
+	},
+	{
+		"alignment": &"negative",
+		"source": "birth_negative",
+	},
+]
+
 const ACTION_METADATA: Dictionary = {
 	"idle": {
 		"label": "Daydreaming",
@@ -254,6 +278,10 @@ var _thought_rng := RandomNumberGenerator.new()
 var _emotion_time_remaining: float = 0.0
 var _care_mistake_state: Dictionary = {}
 var _care_mistake_decay_ticks: int = 0
+var _trait_rng := RandomNumberGenerator.new()
+var _trait_modifiers: Dictionary = {}
+var _base_grooming_relief: int = 0
+var _base_nest_restore: int = 0
 
 func _ready() -> void:
 	if stats == null:
@@ -261,6 +289,11 @@ func _ready() -> void:
 	else:
 		stats = stats.duplicate(true) as CreatureStats
 	_initialize_training_defaults()
+	_reset_trait_modifiers()
+	_trait_rng.randomize()
+	_base_grooming_relief = max(grooming_relief_per_action, 1)
+	_base_nest_restore = max(nest_cleanliness_restore_per_action, 1)
+	_bootstrap_traits()
 	_thought_rng.randomize()
 	if emotion_container.get_child_count() > 0:
 		current_emotion = emotion_container.get_child(0)
@@ -298,6 +331,125 @@ func _clamp_training_values() -> void:
 	stats.training_rest_seconds = clampf(stats.training_rest_seconds, 0.0, SECONDS_PER_HOUR * 24.0)
 	stats.training_fatigue = clampf(stats.training_fatigue, 0.0, TRAINING_MAX_FATIGUE)
 
+func _bootstrap_traits() -> void:
+	if stats == null:
+		return
+	if stats.traits == null:
+		stats.traits = []
+	if stats.traits.is_empty():
+		for slot in TRAIT_BIRTH_SLOTS:
+			_assign_birth_trait(slot)
+	else:
+		for entry in stats.traits:
+			if entry is TraitState:
+				var typed: TraitState = entry
+				if typed.alignment == StringName():
+					typed.alignment = TraitCatalog.get_alignment(typed.trait_id)
+	_recalculate_trait_modifiers()
+
+func _assign_birth_trait(slot: Dictionary) -> void:
+	var alignment: StringName = _to_string_name(slot.get("alignment", StringName()))
+	var excludes: Array[StringName] = _get_trait_ids()
+	var rolled: TraitState = TraitCatalog.roll_random_state(alignment, _trait_rng, excludes)
+	if rolled == null:
+		return
+	rolled.source = String(slot.get("source", "birth"))
+	_append_trait_state(rolled, true)
+
+func _append_trait_state(state: TraitState, announce: bool) -> TraitState:
+	if stats == null or state == null or !state.is_valid():
+		return null
+	stats.traits.append(state)
+	_recalculate_trait_modifiers()
+	if announce:
+		_emit_trait_added(state)
+	return state
+
+func _emit_trait_added(state: TraitState) -> void:
+	Eventbus.trait_added.emit(self, state)
+	_notify_trait_change("added", state)
+
+func _emit_trait_upgraded(state: TraitState) -> void:
+	Eventbus.trait_upgraded.emit(self, state)
+	_notify_trait_change("upgraded", state)
+
+func _emit_trait_removed(state: TraitState) -> void:
+	Eventbus.trait_removed.emit(self, state)
+	_notify_trait_change("removed", state)
+
+func _notify_trait_change(event_type: String, state: TraitState) -> void:
+	if state == null:
+		return
+	var creature_label: String = String(creature_nickname)
+	if creature_label == "":
+		creature_label = String(name)
+	var label: String = TraitCatalog.describe_state(state)
+	var template: String = ""
+	match event_type:
+		"added":
+			template = "%s gained %s"
+		"upgraded":
+			template = "%s evolved %s"
+		"removed":
+			template = "%s lost %s"
+	if template != "":
+		Eventbus.notification_requested.emit(template % [creature_label, label])
+	Eventbus.creature_activity_changed.emit(self)
+
+func _get_trait_ids() -> Array[StringName]:
+	var ids: Array[StringName] = []
+	if stats == null:
+		return ids
+	for entry in stats.traits:
+		if entry is TraitState:
+			var typed: TraitState = entry
+			if typed.is_valid():
+				ids.append(typed.trait_id)
+	return ids
+
+func _get_trait_state(trait_id: StringName) -> TraitState:
+	if stats == null or trait_id == StringName():
+		return null
+	for entry in stats.traits:
+		if entry is TraitState:
+			var typed: TraitState = entry
+			if typed.is_valid() and typed.trait_id == trait_id:
+				return typed
+	return null
+
+func _reset_trait_modifiers() -> void:
+	_trait_modifiers = TRAIT_DEFAULT_MODIFIERS.duplicate(true)
+
+func _recalculate_trait_modifiers() -> void:
+	_reset_trait_modifiers()
+	if stats != null:
+		for entry in stats.traits:
+			if entry is TraitState:
+				var typed: TraitState = entry
+				if !typed.is_valid():
+					continue
+				var modifiers: Dictionary = TraitCatalog.get_modifiers(typed)
+				for key in modifiers.keys():
+					var current: float = float(_trait_modifiers.get(key, 1.0))
+					_trait_modifiers[key] = current * float(modifiers[key])
+	_apply_trait_behavior_modifiers()
+
+func _apply_trait_behavior_modifiers() -> void:
+	if _base_grooming_relief <= 0:
+		_base_grooming_relief = max(grooming_relief_per_action, 1)
+	if _base_nest_restore <= 0:
+		_base_nest_restore = max(nest_cleanliness_restore_per_action, 1)
+	var grooming_multiplier: float = float(_trait_modifiers.get("grooming_action", 1.0))
+	var nest_multiplier: float = float(_trait_modifiers.get("nest_action", 1.0))
+	grooming_relief_per_action = max(int(round(_base_grooming_relief * grooming_multiplier)), 1)
+	nest_cleanliness_restore_per_action = max(int(round(_base_nest_restore * nest_multiplier)), 1)
+
+func _to_string_name(value: Variant) -> StringName:
+	if value is StringName:
+		return value
+	if value is String and value != "":
+		return StringName(value)
+	return StringName()
 func set_species(spec: Species) -> void:
 	species = spec
 	if stats == null:
@@ -396,7 +548,8 @@ func _apply_hunger_tick(stage_profile: Dictionary) -> void:
 	var species_multiplier: float = 1.0
 	if species:
 		species_multiplier = species.hunger_decay_multiplier
-	var hunger_delta: float = base_rate * stage_multiplier * species_multiplier
+	var trait_multiplier: float = float(_trait_modifiers.get("hunger_rate", 1.0))
+	var hunger_delta: float = base_rate * stage_multiplier * species_multiplier * trait_multiplier
 	if hunger_delta <= 0.0:
 		return
 	if is_sleeping:
@@ -420,7 +573,8 @@ func _drain_energy_tick(stage_profile: Dictionary) -> void:
 	var species_multiplier: float = 1.0
 	if species:
 		species_multiplier = species.energy_decay_multiplier
-	var energy_delta: float = base_rate * stage_multiplier * species_multiplier
+	var trait_multiplier: float = float(_trait_modifiers.get("energy_drain", 1.0))
+	var energy_delta: float = base_rate * stage_multiplier * species_multiplier * trait_multiplier
 	if energy_delta <= 0.0:
 		return
 	_pending_energy_drain += energy_delta
@@ -438,7 +592,8 @@ func _recover_energy_tick(stage_profile: Dictionary) -> void:
 	var species_multiplier: float = 1.0
 	if species:
 		species_multiplier = species.sleep_recovery_multiplier
-	var energy_delta: float = base_rate * stage_multiplier * species_multiplier
+	var trait_multiplier: float = float(_trait_modifiers.get("sleep_recovery", 1.0))
+	var energy_delta: float = base_rate * stage_multiplier * species_multiplier * trait_multiplier
 	if energy_delta <= 0.0:
 		return
 	_pending_sleep_energy += energy_delta
@@ -531,6 +686,70 @@ func get_training_snapshot() -> Dictionary:
 		"stats": per_stat,
 	}
 
+func get_trait_snapshot() -> Array:
+	if stats == null:
+		return []
+	var entries: Array = []
+	for entry in stats.traits:
+		if entry is TraitState:
+			var typed: TraitState = entry
+			if !typed.is_valid():
+				continue
+			var tier_data: Dictionary = TraitCatalog.get_tier_data(typed.trait_id, typed.tier)
+			entries.append({
+				"id": typed.trait_id,
+				"alignment": typed.alignment,
+				"tier": typed.tier,
+				"label": TraitCatalog.describe_state(typed),
+				"description": String(tier_data.get("description", "")),
+			})
+	return entries
+
+func has_trait(trait_id: StringName) -> bool:
+	return _get_trait_state(trait_id) != null
+
+func add_trait(trait_id: StringName, tier: int = 0, source: String = "scripted") -> TraitState:
+	if stats == null or trait_id == StringName():
+		return null
+	if _get_trait_state(trait_id) != null:
+		return null
+	var state := TraitCatalog.create_state(trait_id, tier, source)
+	return _append_trait_state(state, true)
+
+func upgrade_trait(trait_id: StringName, reason: String = "scripted_upgrade") -> TraitState:
+	var state := _get_trait_state(trait_id)
+	if state == null:
+		return null
+	var next_tier: int = TraitCatalog.get_evolution_target(state)
+	if next_tier < 0:
+		var max_tier: int = TraitCatalog.get_tier_count(trait_id) - 1
+		next_tier = min(state.tier + 1, max_tier)
+	if next_tier <= state.tier:
+		return null
+	state.tier = next_tier
+	state.source = reason
+	state.acquired_at_ms = Time.get_ticks_msec()
+	_recalculate_trait_modifiers()
+	_emit_trait_upgraded(state)
+	return state
+
+func remove_trait(trait_id: StringName, reason: String = "scripted_remove") -> bool:
+	if stats == null:
+		return false
+	for i in range(stats.traits.size()):
+		var entry = stats.traits[i]
+		if entry is TraitState:
+			var typed: TraitState = entry
+			if !typed.is_valid():
+				continue
+			if typed.trait_id == trait_id:
+				stats.traits.remove_at(i)
+				typed.source = reason
+				_recalculate_trait_modifiers()
+				_emit_trait_removed(typed)
+				return true
+	return false
+
 func _apply_training_tick() -> void:
 	if !_is_training_active():
 		return
@@ -546,7 +765,8 @@ func _apply_training_tick() -> void:
 	var xp_rate: float = TRAINING_GAIN_PER_MINUTE.get(stat_key, 0.0)
 	if xp_rate > 0.0:
 		var fatigue_penalty: float = lerpf(1.0, 0.35, clampf(stats.training_fatigue / TRAINING_MAX_FATIGUE, 0.0, 1.0))
-		var xp_gain: float = xp_rate * minutes_delta * clampf(stats.active_training_intensity, TRAINING_MIN_INTENSITY, TRAINING_MAX_INTENSITY) * fatigue_penalty
+		var trait_multiplier: float = float(_trait_modifiers.get("training_gain", 1.0))
+		var xp_gain: float = xp_rate * minutes_delta * clampf(stats.active_training_intensity, TRAINING_MIN_INTENSITY, TRAINING_MAX_INTENSITY) * fatigue_penalty * trait_multiplier
 		_apply_training_gain(stat_key, xp_gain)
 		stats.last_training_epoch_ms = Time.get_ticks_msec()
 	stats.training_rest_seconds = 0.0
@@ -573,7 +793,8 @@ func _apply_training_resource_costs(stat_key: StringName, minutes_delta: float) 
 			_pending_training_energy -= energy_steps
 
 func _apply_training_fatigue(minutes_delta: float, intensity: float) -> void:
-	var fatigue_gain: float = TRAINING_FATIGUE_PER_MINUTE * minutes_delta * clampf(intensity, TRAINING_MIN_INTENSITY, TRAINING_MAX_INTENSITY)
+	var trait_multiplier: float = float(_trait_modifiers.get("training_fatigue", 1.0))
+	var fatigue_gain: float = TRAINING_FATIGUE_PER_MINUTE * minutes_delta * clampf(intensity, TRAINING_MIN_INTENSITY, TRAINING_MAX_INTENSITY) * trait_multiplier
 	if fatigue_gain <= 0.0:
 		return
 	stats.training_fatigue = clampf(stats.training_fatigue + fatigue_gain, 0.0, TRAINING_MAX_FATIGUE)
@@ -893,9 +1114,13 @@ func set_behavior_state(action_id: StringName, options: Dictionary = {}) -> void
 	Eventbus.creature_activity_changed.emit(self)
 
 func get_current_action_label() -> String:
+	if current_life_stage == "egg":
+		return "Keeping warm"
 	return current_action_label
 
 func get_current_thought() -> String:
+	if current_life_stage == "egg":
+		return "Dreaming about hatching."
 	return current_thought
 
 func get_current_mood_label() -> String:
@@ -1019,6 +1244,7 @@ func _stats_to_dict() -> Dictionary:
 		"seconds_alive": stats.seconds_alive,
 		"age": stats.age,
 		"is_dead": stats.is_dead,
+		"traits": stats.serialize_traits(),
 	}
 
 func _apply_stats_from_dict(data: Dictionary) -> void:
@@ -1071,6 +1297,10 @@ func _apply_stats_from_dict(data: Dictionary) -> void:
 	stats.seconds_alive = int(data.get("seconds_alive", stats.seconds_alive))
 	stats.age = int(data.get("age", stats.age))
 	stats.is_dead = bool(data.get("is_dead", stats.is_dead))
+	var trait_payload: Variant = data.get("traits", [])
+	if trait_payload is Array:
+		stats.apply_trait_snapshot(trait_payload)
+	_recalculate_trait_modifiers()
 	_clamp_training_values()
 
 func get_icon_image() -> Texture2D:

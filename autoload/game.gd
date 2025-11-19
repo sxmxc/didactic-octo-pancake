@@ -3,6 +3,7 @@ extends Node
 const LogLevel = Tracer.Level
 const AUTOSAVE_DELAY := 1.5
 const MAX_IDLE_CATCHUP_SECONDS := 6 * 3600
+const DAILY_PACK_ID := "daily_single"
 
 var rng := RandomNumberGenerator.new()
 
@@ -10,6 +11,7 @@ var _world: GameWorld = null
 var _autosave_timer: Timer
 var _pending_save_reason := ""
 var _last_manual_save_message := ""
+var _tier_weight_cache: Dictionary = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -156,3 +158,51 @@ func _run_idle_catchup(payload: Dictionary) -> void:
 	tick_count = min(tick_count, max_ticks)
 	if tick_count > 0:
 		_world.apply_idle_ticks(tick_count)
+
+func sync_egg_rewards(player: Player) -> void:
+	if player == null:
+		return
+	_award_daily_pack(player)
+
+func roll_species_for_tier(tier_id: StringName) -> String:
+	var safe_tier: StringName = tier_id if tier_id != StringName() else &"meadow"
+	var entries: Array = _tier_weight_cache.get(safe_tier, [])
+	if entries.is_empty():
+		entries = _build_tier_weights(safe_tier)
+		_tier_weight_cache[safe_tier] = entries
+	if entries.is_empty():
+		return ""
+	var total_weight := 0
+	for entry in entries:
+		total_weight += int(entry.get("weight", 0))
+	if total_weight <= 0:
+		return ""
+	var roll := rng.randi_range(1, total_weight)
+	for entry in entries:
+		roll -= int(entry.get("weight", 0))
+		if roll <= 0:
+			return String(entry.get("key", ""))
+	return String(entries.back().get("key", ""))
+
+func _build_tier_weights(tier_id: StringName) -> Array:
+	var entries: Array = []
+	for key in Data.species_baby_library.keys():
+		var species: BabySpecies = Data.species_baby_library[key]
+		var species_tier: StringName = species.egg_tier if species.egg_tier != StringName() else &"meadow"
+		if species_tier == tier_id:
+			var weight: int = max(species.hatch_weight, 1)
+			entries.append({"key": key, "weight": weight})
+	return entries
+
+func _award_daily_pack(player: Player) -> void:
+	var pack_def: Dictionary = Data.egg_pack_definitions.get(DAILY_PACK_ID, {})
+	if pack_def.is_empty():
+		return
+	var now_ms := Time.get_unix_time_from_system() * 1000
+	if !player.can_claim_pack(DAILY_PACK_ID, now_ms):
+		return
+	var cooldown_hours: float = float(pack_def.get("cooldown_hours", 20.0))
+	player.grant_pack(DAILY_PACK_ID, 1, false, false)
+	player.mark_pack_claimed(DAILY_PACK_ID, cooldown_hours, now_ms, true)
+	var pack_name: String = pack_def.get("display_name", "Daily egg pack")
+	Eventbus.notification_requested.emit("%s delivered!" % pack_name)

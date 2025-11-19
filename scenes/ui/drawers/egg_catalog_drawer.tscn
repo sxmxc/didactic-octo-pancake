@@ -1,28 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://dapp7zr0aq1jl"]
+[gd_scene load_steps=5 format=3 uid="uid://dapp70r0aq1jl"]
 
+[ext_resource type="Theme" uid="uid://b071utsw23u4a" path="res://assets/themes/pull_out_drawer_theme.tres" id="1_g5ebk"]
 [ext_resource type="Texture2D" uid="uid://dxk1hu0t4u6wx" path="res://assets/ui/main_ui.png" id="1_tex"]
-[ext_resource type="Script" path="res://scenes/ui/drawers/egg_catalog_drawer.gd" id="2_scp"]
+[ext_resource type="Script" uid="uid://c1u8rsdutq4fr" path="res://scenes/ui/drawers/egg_catalog_drawer.gd" id="2_scp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_frame"]
 atlas = ExtResource("1_tex")
 region = Rect2(0, 336, 270, 64)
 
 [node name="EggCatalogDrawer" type="Control"]
-custom_minimum_size = Vector2(0, 150)
-anchors_preset = 15
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -156.0
 grow_horizontal = 2
 grow_vertical = 0
+theme = ExtResource("1_g5ebk")
 script = ExtResource("2_scp")
-edge = 1
-tween_duration = 0.35
 handle_exposed = 18.0
 content_root_path = NodePath("Frame/ContentRoot")
 
 [node name="Frame" type="NinePatchRect" parent="."]
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -51,21 +52,76 @@ grow_vertical = 2
 theme_override_constants/margin_left = 18
 theme_override_constants/margin_top = 18
 theme_override_constants/margin_right = 18
-theme_override_constants/margin_bottom = 18
+theme_override_constants/margin_bottom = 60
 
-[node name="EggScroll" type="ScrollContainer" parent="Frame/ContentRoot/MarginContainer"]
+[node name="ContentScroll" type="ScrollContainer" parent="Frame/ContentRoot/MarginContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 follow_focus = true
 horizontal_scroll_mode = 0
 
-[node name="EggList" type="VBoxContainer" parent="Frame/ContentRoot/MarginContainer/EggScroll"]
+[node name="ContentColumn" type="VBoxContainer" parent="Frame/ContentRoot/MarginContainer/ContentScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Frame/ContentRoot/MarginContainer/ContentScroll/ContentColumn"]
+layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Frame/ContentRoot/MarginContainer/ContentScroll/ContentColumn/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PackTitle" type="Label" parent="Frame/ContentRoot/MarginContainer/ContentScroll/ContentColumn/HSplitContainer/VBoxContainer"]
+layout_mode = 2
+text = "Packs & Rewards"
+
+[node name="PackList" type="VBoxContainer" parent="Frame/ContentRoot/MarginContainer/ContentScroll/ContentColumn/HSplitContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Frame/ContentRoot/MarginContainer/ContentScroll/ContentColumn/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InventoryTitle" type="Label" parent="Frame/ContentRoot/MarginContainer/ContentScroll/ContentColumn/HSplitContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Egg Inventory"
+
+[node name="EggScroll" type="ScrollContainer" parent="Frame/ContentRoot/MarginContainer/ContentScroll/ContentColumn/HSplitContainer/VBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="EggList" type="VBoxContainer" parent="Frame/ContentRoot/MarginContainer/ContentScroll/ContentColumn/HSplitContainer/VBoxContainer2/EggScroll"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="EmptyEggsLabel" type="Label" parent="Frame/ContentRoot/MarginContainer"]
+[node name="EmptyEggsLabel" type="Label" parent="Frame/ContentRoot/MarginContainer/ContentScroll/ContentColumn/HSplitContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "No eggs available."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="OddsTitle" type="Label" parent="Frame/ContentRoot/MarginContainer/ContentScroll/ContentColumn"]
+layout_mode = 2
+text = "Hatch Odds"
+
+[node name="OddsBody" type="RichTextLabel" parent="Frame/ContentRoot/MarginContainer/ContentScroll/ContentColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+fit_content = true
+scroll_active = false

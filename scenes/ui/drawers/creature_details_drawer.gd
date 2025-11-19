@@ -12,6 +12,7 @@ extends MenuDrawer
 @onready var mood_value: Label = %MoodValue
 @onready var action_value: Label = %ActionValue
 @onready var thought_value: Label = %ThoughtValue
+@onready var traits_value: Label = %TraitsValue
 
 var focused_creature: Creature = null
 var _refresh_timer := 0.0
@@ -46,6 +47,7 @@ func _refresh() -> void:
 		species_value.text = "--"
 		life_stage_value.text = "--"
 		mistakes_value.text = "--"
+		traits_value.text = "--"
 		strength_value.text = "--"
 		intelligence_value.text = "--"
 		happiness_value.text = "--"
@@ -59,6 +61,7 @@ func _refresh() -> void:
 	species_value.text = focused_creature.species.species_name if focused_creature.species else "--"
 	life_stage_value.text = focused_creature.current_life_stage
 	mistakes_value.text = str(focused_creature.stats.care_mistakes)
+	traits_value.text = _format_traits(focused_creature.get_trait_snapshot())
 	strength_value.text = _format_stat_value(focused_creature.stats.strength, focused_creature.stats.strength_baseline, focused_creature.stats.strength_cap)
 	intelligence_value.text = _format_stat_value(focused_creature.stats.intelligence, focused_creature.stats.intelligence_baseline, focused_creature.stats.intelligence_cap)
 	happiness_value.text = _format_stat_value(focused_creature.stats.happiness, focused_creature.stats.happiness_baseline, focused_creature.stats.happiness_cap)
@@ -106,3 +109,27 @@ func _format_duration(seconds: float) -> String:
 	if minutes > 0:
 		return "%dm %02ds" % [minutes, secs]
 	return "%ds" % secs
+
+func _format_traits(entries: Array) -> String:
+	if entries.is_empty():
+		return "None"
+	var lines: Array[String] = []
+	for entry in entries:
+		if entry is Dictionary:
+			var label: String = entry.get("label", "--")
+			var alignment_value: Variant = entry.get("alignment", "neutral")
+			var alignment := "Neutral"
+			if alignment_value is StringName:
+				var raw := String(alignment_value)
+				if raw != "":
+					alignment = raw.capitalize()
+			elif alignment_value is String:
+				var str_value := String(alignment_value)
+				if str_value != "":
+					alignment = str_value.capitalize()
+			var description := String(entry.get("description", ""))
+			var summary := "%s [%s]" % [label, alignment]
+			if description != "":
+				summary += " - %s" % description
+			lines.append(summary)
+	return "\n".join(lines)

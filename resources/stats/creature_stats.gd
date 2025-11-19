@@ -1,6 +1,8 @@
 extends Resource
 class_name CreatureStats
 
+const TraitState = preload("res://resources/traits/trait_state.gd")
+
 @export_range(0, 999, 1) var strength: int = 0
 @export_range(0, 999, 1) var intelligence: int = 0
 @export_range(0, 999, 1) var happiness: int = 0
@@ -38,3 +40,25 @@ class_name CreatureStats
 @export var active_training_seconds_remaining: float = 0.0
 @export var active_training_intensity: float = 0.0
 @export var last_training_station_id: StringName = StringName()
+@export var traits: Array[TraitState] = []
+
+func serialize_traits() -> Array:
+	var snapshot: Array = []
+	for state in traits:
+		if state == null:
+			continue
+		if !state is TraitState:
+			continue
+		var typed_state: TraitState = state
+		if typed_state.is_valid():
+			snapshot.append(typed_state.to_dictionary())
+	return snapshot
+
+func apply_trait_snapshot(entries: Array) -> void:
+	traits.clear()
+	for entry in entries:
+		if entry is Dictionary:
+			var state := TraitState.new()
+			state.apply_dictionary(entry)
+			if state.is_valid():
+				traits.append(state)

@@ -12,3 +12,5 @@ teen_posibilities = Array[ExtResource("2_akhro")]([ExtResource("5_4808c")])
 egg_texture = ExtResource("1_1sbx3")
 species_name = "Squip"
 spritesheet = ExtResource("3_fli88")
+egg_tier = &"tidepool"
+hatch_weight = 5

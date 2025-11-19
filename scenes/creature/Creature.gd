@@ -1114,9 +1114,13 @@ func set_behavior_state(action_id: StringName, options: Dictionary = {}) -> void
 	Eventbus.creature_activity_changed.emit(self)
 
 func get_current_action_label() -> String:
+	if current_life_stage == "egg":
+		return "Keeping warm"
 	return current_action_label
 
 func get_current_thought() -> String:
+	if current_life_stage == "egg":
+		return "Dreaming about hatching."
 	return current_thought
 
 func get_current_mood_label() -> String:

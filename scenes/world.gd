@@ -49,11 +49,8 @@ func start_new_session() -> void:
 	Tracer.info("Bootstrapping new world session")
 	_reset_world_state()
 	_bootstrap_player_profile()
-	var starter: Creature = _create_random_creature()
-	if starter:
-		var spawned: Creature = spawn_creature(starter, false)
-		if spawned:
-			Eventbus.focus_view_requested.emit(spawned)
+	Game.sync_egg_rewards(player)
+	_hatch_starter_creature()
 	_last_tick_epoch_ms = Time.get_ticks_msec()
 
 func begin_simulation() -> void:
@@ -148,9 +145,14 @@ func _on_build_view_requested():
 
 func _on_new_creature_requested():
 	Tracer.info("New creature request received")
-	var new_creature: Creature = _create_random_creature()
-	if new_creature:
-		spawn_creature(new_creature)
+	if player.get_egg_token_count() <= 0:
+		Eventbus.notification_requested.emit("You need an egg token before hatching a creature.")
+		return
+	var hatch_result := player.hatch_egg_at(0)
+	if !hatch_result.get("ok", false):
+		Eventbus.notification_requested.emit(hatch_result.get("message", "Unable to hatch an egg right now."))
+		return
+	_finalize_hatch(hatch_result)
 
 func _on_feed_requested(food: Food):
 	Tracer.info("Food request received")
@@ -163,22 +165,28 @@ func _on_feed_requested(food: Food):
 	Tracer.info("No available food containers")
 
 func _on_egg_hatch_requested(egg_index: int) -> void:
-	var egg_data: Dictionary = player.get_egg_by_index(egg_index)
-	if egg_data.is_empty():
-		Eventbus.notification_requested.emit("No egg available.")
+	var hatch_result := player.hatch_egg_at(egg_index)
+	if !hatch_result.get("ok", false):
+		Eventbus.notification_requested.emit(hatch_result.get("message", "No egg available."))
 		return
-	var species: Species = _resolve_species_from_egg(egg_data)
+	_finalize_hatch(hatch_result)
+
+func _finalize_hatch(hatch_result: Dictionary) -> void:
+	var species: Species = hatch_result.get("species", null)
+	var token: Dictionary = hatch_result.get("token", {})
 	if species == null:
+		player.restore_egg_token(token)
 		Eventbus.notification_requested.emit("Egg data corrupted.")
 		return
 	var new_creature: Creature = _create_random_creature(species)
 	if new_creature == null:
+		player.restore_egg_token(token)
 		return
 	var spawned := spawn_creature(new_creature)
 	if spawned:
-		player.remove_egg_at(egg_index)
 		Eventbus.focus_view_requested.emit(spawned)
 	else:
+		player.restore_egg_token(token)
 		new_creature.queue_free()
 
 func _reset_world_state() -> void:
@@ -214,8 +222,34 @@ func _bootstrap_player_profile() -> void:
 	player.set_wallet_from_save({"gold": 500, "gem": 0, "platinum": 0})
 	player.learn_buildable(Data.buildable_library["BasicNest"].instantiate(), false)
 	player.learn_buildable(Data.buildable_library["BasicFoodBowl"].instantiate(), false)
-	player.clear_egg_inventory()
-	player.grant_debug_eggs(3)
+	player.clear_egg_inventory(false)
+	player.grant_pack("brood_bundle", 1, false, false)
+	player.open_pack("brood_bundle", false)
+
+func _hatch_starter_creature() -> void:
+	if player.get_egg_token_count() <= 0:
+		player.grant_pack("daily_single", 1, false, false)
+		player.open_pack("daily_single", false)
+	if player.get_egg_token_count() <= 0:
+		var fallback: Creature = _create_random_creature()
+		if fallback:
+			var spawned_fallback := spawn_creature(fallback, false)
+			if spawned_fallback:
+				Eventbus.focus_view_requested.emit(spawned_fallback)
+			else:
+				fallback.queue_free()
+		return
+	var hatch_result := player.hatch_egg_at(0, false)
+	if !hatch_result.get("ok", false):
+		var backup: Creature = _create_random_creature()
+		if backup:
+			var spawned_backup := spawn_creature(backup, false)
+			if spawned_backup:
+				Eventbus.focus_view_requested.emit(spawned_backup)
+			else:
+				backup.queue_free()
+		return
+	_finalize_hatch(hatch_result)
 
 func _create_random_creature(species_override: Species = null) -> Creature:
 	if creature_scene == null:
@@ -239,17 +273,6 @@ func _create_random_creature(species_override: Species = null) -> Creature:
 			new_creature.stats.is_dead = true
 	new_creature.date_born = Time.get_unix_time_from_system()
 	return new_creature
-
-func _resolve_species_from_egg(egg_data: Dictionary) -> Species:
-	var resource_path: String = egg_data.get("species_path", "")
-	if resource_path != "":
-		var loaded: Resource = ResourceLoader.load(resource_path)
-		if loaded is Species:
-			return loaded
-	var key: String = egg_data.get("species_key", "")
-	if key != "" and Data.species_baby_library.has(key):
-		return Data.species_baby_library[key]
-	return null
 
 func _attach_creature_to_nest(creature: Creature, nest: Nest) -> void:
 	world_map.add_child(creature)
@@ -330,7 +353,8 @@ func _restore_player(data: Dictionary) -> void:
 	var known_buildables: Array = data.get("known_buildables", [])
 	for key in known_buildables:
 		player.learn_buildable_by_key(str(key), false)
-	player.set_egg_inventory_from_save(data.get("egg_inventory", []))
+	player.set_egg_inventory_from_save(data.get("egg_inventory", {}))
+	Game.sync_egg_rewards(player)
 
 func _restore_buildables(entries: Array) -> void:
 	if world_map == null:

@@ -18,7 +18,7 @@ region = Rect2(50, 243, 29, 29)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lgf1l"]
 atlas = ExtResource("1_tex")
-region = Rect2(8, 104, 16, 16)
+region = Rect2(247, 103, 17, 17)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_icon_creature"]
 atlas = ExtResource("1_tex")

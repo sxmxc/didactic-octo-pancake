@@ -85,3 +85,7 @@ func show_popup(message: String):
 	popup.set_content(message)
 	add_child(popup)
 	popup.pop_up()
+
+
+func _on_settings_button_pressed() -> void:
+	pass # Replace with function body.

@@ -1,6 +1,6 @@
 meta:
   version: 1
-  last_updated: 2025-11-17
+  last_updated: 2025-11-19
   notes: >-
     Structured backlog with priorities, blockers, and subtasks so agents can
     quickly gauge sequencing constraints.
@@ -47,14 +47,15 @@ areas:
       - id: core.behavior_tree_action_expansion
         title: Behavior tree action expansion
         priority: medium
-        status: todo
+        status: done
         owner: unassigned
         problem: >-
           The current creature behavior tree only contains a handful of basic actions (idle,
           sleep, eat, wander), so creatures never perform richer interactions like grooming,
           social play, nest maintenance, or curiosity-driven exploration.
         entrypoints:
-          - ai/actions/* (existing behavior tree action scripts)
+          - creature_ai/actions/* (BeeHave action scripts)
+          - creature_ai/conditions/* (BeeHave condition scripts)
           - scenes/creature/Creature.gd (behavior tree assembly + blackboard state)
           - scenes/world.gd (world events that should trigger new actions)
         blockers: []
@@ -291,6 +292,32 @@ areas:
         definition_of_done: >-
           Diagram sits in the repo, README links to it, and future contributors can
           edit the source.
+  - id: maintenance
+    title: Maintenance & cleanup
+    tasks:
+      - id: maintenance.remove_unused_drop_zone_canvas
+        title: Remove unused drop zone canvas scripts
+        priority: low
+        status: todo
+        owner: unassigned
+        problem: >-
+          The legacy `scenes/drop_zone_canvas.gd` script (and matching `.uid`) was replaced by
+          `scenes/ui/drop_area.gd` but never deleted, so the orphan files now cause confusion about
+          which drop target is authoritative.
+        entrypoints:
+          - scenes/drop_zone_canvas.gd
+          - scenes/drop_zone_canvas.gd.uid
+          - scenes/ui/drop_area.gd (replacement implementation)
+          - scenes/world.tscn / scenes/world.gd
+          - README.md / TODO.yaml
+        blockers: []
+        subtasks:
+          - description: Confirm no scenes reference `drop_zone_canvas` (current drop logic hangs off `%DropArea`).
+          - description: Delete the unused script + uid, removing any lingering load errors from the project cache.
+          - description: Update documentation/TODO to point at `scenes/ui/drop_area.gd` as the drag/drop target.
+        definition_of_done: >-
+          The unused drop-zone canvas artifacts are gone, only `DropArea` handles build placement, and
+          documentation/TODO references no longer mention the legacy script.
   - id: simulation_balance
     title: Simulation balance
     tasks:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cwbcbqyxgficy"]
+[gd_scene load_steps=25 format=3 uid="uid://cwbcbqyxgficy"]
 
 [ext_resource type="Script" uid="uid://b65uviys6pwx2" path="res://scenes/ui/ui.gd" id="1_o0qo1"]
 [ext_resource type="Script" uid="uid://brv2e8p0r5bnp" path="res://scenes/ui/notification_box.gd" id="2_mf3qm"]
@@ -73,6 +73,10 @@ font = ExtResource("3_jcn1r")
 font_size = 12
 font_color = Color(0.07450981, 0.07450981, 0.07450981, 1)
 shadow_size = 2
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jcn1r"]
+atlas = ExtResource("3_hc5d0")
+region = Rect2(193, 17, 46, 46)
 
 [node name="UI" type="CanvasLayer"]
 script = ExtResource("1_o0qo1")
@@ -251,10 +255,11 @@ metadata/_custom_type_script = "uid://d36wjvx56uohs"
 [node name="MenuBar" parent="SubViewportContainer/SubViewport" instance=ExtResource("13_a8shf")]
 unique_name_in_owner = true
 
-
 [node name="WorldClockUI" type="Panel" parent="SubViewportContainer/SubViewport"]
-offset_right = 98.5
-offset_bottom = 50.75
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 102.5
+offset_bottom = 54.75
 theme_override_styles/panel = SubResource("StyleBoxTexture_2h7mf")
 script = ExtResource("14_0i47d")
 
@@ -291,3 +296,16 @@ grow_horizontal = 0
 size_flags_horizontal = 10
 mouse_filter = 2
 script = ExtResource("2_mf3qm")
+
+[node name="SettingsButton" type="TextureButton" parent="SubViewportContainer/SubViewport"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -52.25
+offset_top = 4.75
+offset_right = -6.25
+offset_bottom = 50.75
+grow_horizontal = 0
+texture_normal = SubResource("AtlasTexture_jcn1r")
+
+[connection signal="pressed" from="SubViewportContainer/SubViewport/SettingsButton" to="." method="_on_settings_button_pressed"]

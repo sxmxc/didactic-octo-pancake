@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://b6nag5xj2kmky"]
+[gd_scene load_steps=4 format=3 uid="uid://b6nag5xj2kmky"]
 
+[ext_resource type="Theme" uid="uid://bnqt4jqx06rdw" path="res://assets/themes/pop_up_panel.tres" id="1_e8ckn"]
 [ext_resource type="Script" uid="uid://bya40om6itgo4" path="res://scenes/login_screen.gd" id="1_x0f4u"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8q002"]
+font_size = 48
 
 [node name="LoginScreen" type="Control"]
 layout_mode = 3
@@ -9,6 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_e8ckn")
 script = ExtResource("1_x0f4u")
 
 [node name="Background" type="ColorRect" parent="."]
@@ -39,6 +44,7 @@ theme_override_constants/separation = 24
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+label_settings = SubResource("LabelSettings_8q002")
 horizontal_alignment = 1
 vertical_alignment = 1
 

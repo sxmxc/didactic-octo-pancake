@@ -17,3 +17,6 @@ Applies to the entire repository until a nested `AGENTS.md` overrides it.
 9. **Pull Requests:** Use this pull request template for all pull requests `.github/pull_request_template.md`.
 10. **Addons:** Changes should never be made to any of the thirdparty addons in `addons/`.
 11. **Creature AI and BehaviorTree:** We are using [BeeHave](https://bitbra.in/beehave/#/) behaviour tree addon. Refer to its docs when implementing new ai behaviour acions or have questions about its structure.
+12. **Code Generation** Always use context7 when you need code generation, setup or configuration steps, or
+library/API documentation. This means you should automatically use the Context7 MCP
+tools to resolve library id and get library docs without me having to explicitly ask.

@@ -28,7 +28,9 @@ SoundManager="*res://addons/sound_manager/sound_manager.gd"
 Eventbus="*res://autoload/eventbus.gd"
 SceneManager="*res://addons/scene_manager/scene_manager.gd"
 Game="*res://autoload/game.gd"
+Telemetry="*res://autoload/telemetry.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
+Talo="*res://addons/talo/talo_manager.gd"
 
 [display]
 
@@ -44,7 +46,7 @@ window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/beehave/plugin.cfg", "res://addons/phantom_camera/plugin.cfg", "res://addons/randomnamesgenerator/plugin.cfg", "res://addons/scene_manager/plugin.cfg", "res://addons/segmented_bar/plugin.cfg", "res://addons/sound_manager/plugin.cfg", "res://addons/tracer/plugin.cfg")
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/beehave/plugin.cfg", "res://addons/phantom_camera/plugin.cfg", "res://addons/randomnamesgenerator/plugin.cfg", "res://addons/scene_manager/plugin.cfg", "res://addons/segmented_bar/plugin.cfg", "res://addons/sound_manager/plugin.cfg", "res://addons/talo/plugin.cfg", "res://addons/tracer/plugin.cfg")
 
 [global_group]
 

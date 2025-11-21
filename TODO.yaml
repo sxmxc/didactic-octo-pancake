@@ -403,9 +403,12 @@ areas:
           - description: Map Talo features (leaderboards, remote config, analytics, presence) onto our gameplay loops, add any
               bridge scripts/config we need under `backend/`, and update README.md with trust boundaries/failure modes so eggs/
               inventory always sync through authoritative endpoints.
-          - description: Wire pack/egg telemetry signals into `autoload/telemetry.gd` so purchases, claims, openings, hatches, and
-              adoptions submit the documented Talo events/stats (per https://docs.trytalo.com/docs/godot/events and /stats) while
-              guarding against missing player identity.
+          - description: ✅ Wire pack/egg telemetry signals into `autoload/telemetry.gd` so purchases, claims, openings, hatches,
+              and adoptions submit the documented Talo events/stats (per https://docs.trytalo.com/docs/godot/events and /stats)
+              while guarding against missing player identity.
+          - description: ✅ Replace the fake login delay with device-based identification (per https://docs.trytalo.com/docs/godot/identifying)
+              so the login screen caches a unique device ID, calls `Talo.players.identify("device", id)` on boot, and only enters the
+              main menu once Talo has issued an alias (no username/password prompts required).
         definition_of_done: >-
           A Talo service owns the canonical game state, runs via the upstream repo/Docker instructions without any vendored
           files here, clients authenticate per-device or via OAuth through the configured plug-in, and documentation covers setup,

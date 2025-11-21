@@ -99,13 +99,13 @@ func _on_creature_adopted(creature: Creature) -> void:
 	})
 	_track_stat(STAT_CREATURES_ADOPTED)
 
-func _track_telemetry_event(name: String, props: Dictionary = {}) -> void:
+func _track_telemetry_event(event_name: String, props: Dictionary = {}) -> void:
 	if !_can_submit():
 		return
 	var payload: Dictionary[String, String] = {}
 	for key in props.keys():
 		payload[str(key)] = _stringify_value(props[key])
-	Talo.events.track(name, payload)
+	Talo.events.track(event_name, payload)
 
 func _track_stat(stat_name: String, change: float = 1.0) -> void:
 	if !_can_submit():

@@ -1,7 +1,7 @@
 extends RefCounted
 class_name TraitCatalog
 
-const TraitState = preload("res://resources/traits/trait_state.gd")
+const TRAITSTATE = preload("res://resources/traits/trait_state.gd")
 
 const TRAIT_DEFINITIONS: Dictionary = {
 	&"metabolic_marvel": {
@@ -164,13 +164,13 @@ static func get_tier_data(trait_id: StringName, tier: int) -> Dictionary:
 		return {}
 	return tiers[tier]
 
-static func create_state(trait_id: StringName, tier: int = 0, source: String = "", timestamp_ms: int = 0) -> TraitState:
+static func create_state(trait_id: StringName, tier: int = 0, source: String = "", timestamp_ms: int = 0) -> TRAITSTATE:
 	var def: Dictionary = get_definition(trait_id)
 	if def.is_empty():
 		return null
 	var tiers: Array = def.get("tiers", [])
 	var clamped_tier: int = clampi(tier, 0, max(tiers.size() - 1, 0))
-	var state := TraitState.new()
+	var state := TRAITSTATE.new()
 	state.trait_id = trait_id
 	state.tier = clamped_tier
 	state.alignment = def.get("alignment", &"neutral")
@@ -178,7 +178,7 @@ static func create_state(trait_id: StringName, tier: int = 0, source: String = "
 	state.acquired_at_ms = timestamp_ms if timestamp_ms > 0 else Time.get_ticks_msec()
 	return state
 
-static func roll_random_state(alignment_filter: StringName = StringName(), rng: RandomNumberGenerator = null, exclude_ids: Array[StringName] = []) -> TraitState:
+static func roll_random_state(alignment_filter: StringName = StringName(), rng: RandomNumberGenerator = null, exclude_ids: Array[StringName] = []) -> TRAITSTATE:
 	var entries: Array = []
 	for trait_id in TRAIT_DEFINITIONS.keys():
 		if exclude_ids.has(trait_id):
@@ -219,7 +219,7 @@ static func get_tier_label(trait_id: StringName, tier: int) -> String:
 		return "Tier %d" % (tier + 1)
 	return String(tier_data.get("label", "Tier %d" % (tier + 1)))
 
-static func describe_state(state: TraitState) -> String:
+static func describe_state(state: TRAITSTATE) -> String:
 	if state == null or !state.is_valid():
 		return "--"
 	var def: Dictionary = get_definition(state.trait_id)
@@ -227,7 +227,7 @@ static func describe_state(state: TraitState) -> String:
 	var tier_label: String = get_tier_label(state.trait_id, state.tier)
 	return "%s (%s)" % [display_name, tier_label]
 
-static func get_modifiers(state: TraitState) -> Dictionary:
+static func get_modifiers(state: TRAITSTATE) -> Dictionary:
 	if state == null or !state.is_valid():
 		return {}
 	var tier_data: Dictionary = get_tier_data(state.trait_id, state.tier)
@@ -235,7 +235,7 @@ static func get_modifiers(state: TraitState) -> Dictionary:
 		return {}
 	return tier_data.get("modifiers", {})
 
-static func get_evolution_target(state: TraitState) -> int:
+static func get_evolution_target(state: TRAITSTATE) -> int:
 	if state == null:
 		return -1
 	var tier_data: Dictionary = get_tier_data(state.trait_id, state.tier)
@@ -243,7 +243,7 @@ static func get_evolution_target(state: TraitState) -> int:
 		return -1
 	return int(tier_data.get("evolves_to", -1))
 
-static func can_evolve(state: TraitState) -> bool:
+static func can_evolve(state: TRAITSTATE) -> bool:
 	return get_evolution_target(state) >= 0
 
 static func get_tier_count(trait_id: StringName) -> int:

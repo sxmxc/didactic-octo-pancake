@@ -20,9 +20,12 @@ func _process(_delta: float) -> void:
 	pass
 
 func adopt_creature(creature: Creature, track_save: bool = true) -> void:
+	if creature == null:
+		return
 	_owned_creatures.append(creature)
 	if track_save:
 		Game.queue_save("creature_adopted")
+		Eventbus.creature_adopted.emit(creature)
 
 func get_adopted_creatures() -> Array[Creature]:
 	return _owned_creatures
@@ -139,6 +142,7 @@ func purchase_pack(pack_id: String, cost: Dictionary, track_save: bool = true) -
 	if !spend_wallet(cost, "egg_pack_purchase"):
 		return {"ok": false, "message": "Unable to spend currency."}
 	grant_pack(pack_id, 1, track_save)
+	Eventbus.egg_pack_purchased.emit(pack_id, cost.duplicate(true))
 	return {"ok": true}
 
 func open_pack(pack_id: String, track_save: bool = true) -> Dictionary:
@@ -161,6 +165,11 @@ func open_pack(pack_id: String, track_save: bool = true) -> Dictionary:
 				_egg_inventory.register_token(token)
 				minted_tokens.append(token)
 	_emit_inventory_changed(track_save)
+	var minted_snapshot: Array = []
+	for entry in minted_tokens:
+		if entry is Dictionary:
+			minted_snapshot.append(entry.duplicate(true))
+	Eventbus.egg_pack_opened.emit(pack_id, minted_snapshot)
 	return {
 		"ok": true,
 		"pack_id": pack_id,
@@ -172,20 +181,21 @@ func hatch_egg_at(index: int, track_save: bool = true) -> Dictionary:
 	var token := _egg_inventory.get_token(index)
 	if token.is_empty():
 		return {"ok": false, "message": "No egg available."}
+	var tier_value = token.get("tier_id", "meadow")
+	var tier_id: StringName = StringName(str(tier_value))
+	if tier_id == StringName():
+		tier_id = &"meadow"
 	var species_key: String = ""
 	if token.has("locked_species_key"):
 		species_key = str(token.get("locked_species_key", ""))
 	if species_key == "":
-		var tier_value = token.get("tier_id", "meadow")
-		var tier_id: StringName = StringName(str(tier_value))
-		if tier_id == StringName():
-			tier_id = &"meadow"
 		species_key = Game.roll_species_for_tier(tier_id)
 	if species_key == "" or !Data.species_baby_library.has(species_key):
 		return {"ok": false, "message": "Unable to resolve species."}
 	var species: Species = Data.species_baby_library[species_key]
 	_egg_inventory.remove_token_at(index)
 	_emit_inventory_changed(track_save)
+	Eventbus.egg_hatched.emit(species_key, tier_id, token.duplicate(true))
 	return {
 		"ok": true,
 		"species_key": species_key,
@@ -207,15 +217,12 @@ func try_claim_pack(pack_id: String, cooldown_hours: float, track_save: bool = t
 	if !can_claim_pack(pack_id, now_ms):
 		return {"ok": false, "message": "Pack not ready."}
 	grant_pack(pack_id, 1, false, false)
-	var interval_ms: int = int(max(cooldown_hours, 0.0) * 3600.0 * 1000.0)
-	_egg_inventory.set_next_claim_ready(pack_id, now_ms + interval_ms)
-	_emit_inventory_changed(track_save)
-	return {"ok": true, "ready_time_ms": now_ms + interval_ms}
+	var next_ready_ms := _apply_pack_cooldown(pack_id, cooldown_hours, now_ms, track_save)
+	Eventbus.egg_pack_claimed.emit(pack_id, "manual_claim", now_ms, next_ready_ms)
+	return {"ok": true, "ready_time_ms": next_ready_ms}
 
-func mark_pack_claimed(pack_id: String, cooldown_hours: float, now_ms: int = _now_ms(), track_save: bool = true) -> void:
-	var interval_ms: int = int(max(cooldown_hours, 0.0) * 3600.0 * 1000.0)
-	_egg_inventory.set_next_claim_ready(pack_id, now_ms + interval_ms)
-	_emit_inventory_changed(track_save)
+func mark_pack_claimed(pack_id: String, cooldown_hours: float, now_ms: int = _now_ms(), track_save: bool = true) -> int:
+	return _apply_pack_cooldown(pack_id, cooldown_hours, now_ms, track_save)
 
 func get_next_claim_ready_time(pack_id: String) -> int:
 	return _egg_inventory.get_next_claim_ready(pack_id)
@@ -224,6 +231,13 @@ func _emit_inventory_changed(track_save: bool) -> void:
 	Eventbus.player_egg_inventory_updated.emit(get_egg_inventory_snapshot())
 	if track_save:
 		Game.queue_save("egg_inventory_changed")
+
+func _apply_pack_cooldown(pack_id: String, cooldown_hours: float, now_ms: int, track_save: bool) -> int:
+	var interval_ms: int = int(max(cooldown_hours, 0.0) * 3600.0 * 1000.0)
+	var next_ready_ms := now_ms + interval_ms
+	_egg_inventory.set_next_claim_ready(pack_id, next_ready_ms)
+	_emit_inventory_changed(track_save)
+	return next_ready_ms
 
 func _migrate_legacy_egg_array(entries: Array) -> void:
 	for entry in entries:

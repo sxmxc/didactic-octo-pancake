@@ -45,10 +45,10 @@ func forget_buildable(buildable: Node2D):
 func clear_world_items():
 	world_items.clear()
 
-func _grid_snap_position(position: Vector2) -> Vector2:
+func _grid_snap_position(pos: Vector2) -> Vector2:
 	if world_map == null:
-		return position
-	var local_position := world_map.to_local(position)
+		return pos
+	var local_position := world_map.to_local(pos)
 	var cell := world_map.local_to_map(local_position)
 	return world_map.map_to_local(cell)
 		

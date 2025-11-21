@@ -23,7 +23,7 @@ func _ready():
 	pass # Replace with function body.
 
 
-func _process(delta):
+func _process(_delta):
 	var current_time = Time.get_datetime_dict_from_system()
 	var hour = current_time["hour"]
 	var minute = current_time["minute"]

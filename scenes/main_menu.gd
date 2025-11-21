@@ -2,10 +2,10 @@ extends Control
 
 const LOAD_SCREEN_PATH := "res://scenes/ui/load_screen.tscn"
 
-@onready var _new_button: Button = %NewGameButton
+#@onready var _new_button: Button = %NewGameButton
 @onready var _continue_button: Button = %ContinueButton
-@onready var _settings_button: Button = %SettingsButton
-@onready var _quit_button: Button = %QuitButton
+#@onready var _settings_button: Button = %SettingsButton
+#@onready var _quit_button: Button = %QuitButton
 
 var _has_save := false
 

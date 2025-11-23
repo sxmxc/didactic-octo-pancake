@@ -1,9 +1,10 @@
-[gd_scene load_steps=32 format=3 uid="uid://boqc2y4amjeqp"]
+[gd_scene load_steps=33 format=3 uid="uid://boqc2y4amjeqp"]
 
-[ext_resource type="Script" uid="uid://b8bntixrs8joq" path="res://scenes/creature/creature.gd" id="1_4jpvp"]
+[ext_resource type="Script" uid="uid://pcqxihactgb7" path="res://scenes/creature/creature.gd" id="1_4jpvp"]
 [ext_resource type="Script" uid="uid://bb0t2ovl7wifo" path="res://addons/beehave/nodes/beehave_tree.gd" id="2_6f3ey"]
 [ext_resource type="Script" uid="uid://evb4cyfmej2g" path="res://resources/stats/creature_stats.gd" id="2_odx68"]
 [ext_resource type="Script" uid="uid://8hn4kne15ac5" path="res://addons/beehave/nodes/composites/selector.gd" id="3_l1ib0"]
+[ext_resource type="Script" uid="uid://bqxy0msxw6n1i" path="res://resources/traits/trait_state.gd" id="3_m32da"]
 [ext_resource type="Script" uid="uid://bbaojjriq676j" path="res://addons/beehave/nodes/composites/sequence_star.gd" id="4_0y2j8"]
 [ext_resource type="Script" uid="uid://c22mo17ekjffx" path="res://creature_ai/conditions/IsHungryCondition.gd" id="5_7u07e"]
 [ext_resource type="Script" uid="uid://bugk8hfwtso2w" path="res://creature_ai/actions/MoveToBedAction.gd" id="6_7urcs"]
@@ -123,7 +124,7 @@ stats = SubResource("Resource_ve8t1")
 [node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("2_6f3ey")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@21462")
+blackboard = NodePath("@Node@21336")
 actor = NodePath("..")
 
 [node name="Either" type="Node" parent="BeehaveTree"]

@@ -124,7 +124,7 @@ stats = SubResource("Resource_ve8t1")
 [node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("2_6f3ey")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@21336")
+blackboard = NodePath("@Node@21343")
 actor = NodePath("..")
 
 [node name="Either" type="Node" parent="BeehaveTree"]

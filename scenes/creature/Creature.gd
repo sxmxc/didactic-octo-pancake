@@ -126,8 +126,8 @@ const DEFAULT_THOUGHTS := [
 	"Planning surprise conga lines.",
 ]
 
-const TraitState = preload("res://resources/traits/trait_state.gd")
-const TraitCatalog = preload("res://resources/traits/trait_catalog.gd")
+const TRAITSTATE = preload("res://resources/traits/trait_state.gd")
+const TRAITCATALOG = preload("res://resources/traits/trait_catalog.gd")
 
 const TRAIT_DEFAULT_MODIFIERS: Dictionary = {
 	"hunger_rate": 1.0,
@@ -341,22 +341,22 @@ func _bootstrap_traits() -> void:
 			_assign_birth_trait(slot)
 	else:
 		for entry in stats.traits:
-			if entry is TraitState:
-				var typed: TraitState = entry
+			if entry is TRAITSTATE:
+				var typed: TRAITSTATE = entry
 				if typed.alignment == StringName():
-					typed.alignment = TraitCatalog.get_alignment(typed.trait_id)
+					typed.alignment = TRAITCATALOG.get_alignment(typed.trait_id)
 	_recalculate_trait_modifiers()
 
 func _assign_birth_trait(slot: Dictionary) -> void:
 	var alignment: StringName = _to_string_name(slot.get("alignment", StringName()))
 	var excludes: Array[StringName] = _get_trait_ids()
-	var rolled: TraitState = TraitCatalog.roll_random_state(alignment, _trait_rng, excludes)
+	var rolled: TRAITSTATE = TRAITCATALOG.roll_random_state(alignment, _trait_rng, excludes)
 	if rolled == null:
 		return
 	rolled.source = String(slot.get("source", "birth"))
 	_append_trait_state(rolled, true)
 
-func _append_trait_state(state: TraitState, announce: bool) -> TraitState:
+func _append_trait_state(state: TRAITSTATE, announce: bool) -> TRAITSTATE:
 	if stats == null or state == null or !state.is_valid():
 		return null
 	stats.traits.append(state)
@@ -365,25 +365,25 @@ func _append_trait_state(state: TraitState, announce: bool) -> TraitState:
 		_emit_trait_added(state)
 	return state
 
-func _emit_trait_added(state: TraitState) -> void:
+func _emit_trait_added(state: TRAITSTATE) -> void:
 	Eventbus.trait_added.emit(self, state)
 	_notify_trait_change("added", state)
 
-func _emit_trait_upgraded(state: TraitState) -> void:
+func _emit_trait_upgraded(state: TRAITSTATE) -> void:
 	Eventbus.trait_upgraded.emit(self, state)
 	_notify_trait_change("upgraded", state)
 
-func _emit_trait_removed(state: TraitState) -> void:
+func _emit_trait_removed(state: TRAITSTATE) -> void:
 	Eventbus.trait_removed.emit(self, state)
 	_notify_trait_change("removed", state)
 
-func _notify_trait_change(event_type: String, state: TraitState) -> void:
+func _notify_trait_change(event_type: String, state: TRAITSTATE) -> void:
 	if state == null:
 		return
 	var creature_label: String = String(creature_nickname)
 	if creature_label == "":
 		creature_label = String(name)
-	var label: String = TraitCatalog.describe_state(state)
+	var label: String = TRAITCATALOG.describe_state(state)
 	var template: String = ""
 	match event_type:
 		"added":
@@ -401,18 +401,18 @@ func _get_trait_ids() -> Array[StringName]:
 	if stats == null:
 		return ids
 	for entry in stats.traits:
-		if entry is TraitState:
-			var typed: TraitState = entry
+		if entry is TRAITSTATE:
+			var typed: TRAITSTATE = entry
 			if typed.is_valid():
 				ids.append(typed.trait_id)
 	return ids
 
-func _get_trait_state(trait_id: StringName) -> TraitState:
+func _get_trait_state(trait_id: StringName) -> TRAITSTATE:
 	if stats == null or trait_id == StringName():
 		return null
 	for entry in stats.traits:
-		if entry is TraitState:
-			var typed: TraitState = entry
+		if entry is TRAITSTATE:
+			var typed: TRAITSTATE = entry
 			if typed.is_valid() and typed.trait_id == trait_id:
 				return typed
 	return null
@@ -424,11 +424,11 @@ func _recalculate_trait_modifiers() -> void:
 	_reset_trait_modifiers()
 	if stats != null:
 		for entry in stats.traits:
-			if entry is TraitState:
-				var typed: TraitState = entry
+			if entry is TRAITSTATE:
+				var typed: TRAITSTATE = entry
 				if !typed.is_valid():
 					continue
-				var modifiers: Dictionary = TraitCatalog.get_modifiers(typed)
+				var modifiers: Dictionary = TRAITCATALOG.get_modifiers(typed)
 				for key in modifiers.keys():
 					var current: float = float(_trait_modifiers.get(key, 1.0))
 					_trait_modifiers[key] = current * float(modifiers[key])
@@ -691,16 +691,16 @@ func get_trait_snapshot() -> Array:
 		return []
 	var entries: Array = []
 	for entry in stats.traits:
-		if entry is TraitState:
-			var typed: TraitState = entry
+		if entry is TRAITSTATE:
+			var typed: TRAITSTATE = entry
 			if !typed.is_valid():
 				continue
-			var tier_data: Dictionary = TraitCatalog.get_tier_data(typed.trait_id, typed.tier)
+			var tier_data: Dictionary = TRAITCATALOG.get_tier_data(typed.trait_id, typed.tier)
 			entries.append({
 				"id": typed.trait_id,
 				"alignment": typed.alignment,
 				"tier": typed.tier,
-				"label": TraitCatalog.describe_state(typed),
+				"label": TRAITCATALOG.describe_state(typed),
 				"description": String(tier_data.get("description", "")),
 			})
 	return entries
@@ -708,21 +708,21 @@ func get_trait_snapshot() -> Array:
 func has_trait(trait_id: StringName) -> bool:
 	return _get_trait_state(trait_id) != null
 
-func add_trait(trait_id: StringName, tier: int = 0, source: String = "scripted") -> TraitState:
+func add_trait(trait_id: StringName, tier: int = 0, source: String = "scripted") -> TRAITSTATE:
 	if stats == null or trait_id == StringName():
 		return null
 	if _get_trait_state(trait_id) != null:
 		return null
-	var state := TraitCatalog.create_state(trait_id, tier, source)
+	var state := TRAITCATALOG.create_state(trait_id, tier, source)
 	return _append_trait_state(state, true)
 
-func upgrade_trait(trait_id: StringName, reason: String = "scripted_upgrade") -> TraitState:
+func upgrade_trait(trait_id: StringName, reason: String = "scripted_upgrade") -> TRAITSTATE:
 	var state := _get_trait_state(trait_id)
 	if state == null:
 		return null
-	var next_tier: int = TraitCatalog.get_evolution_target(state)
+	var next_tier: int = TRAITCATALOG.get_evolution_target(state)
 	if next_tier < 0:
-		var max_tier: int = TraitCatalog.get_tier_count(trait_id) - 1
+		var max_tier: int = TRAITCATALOG.get_tier_count(trait_id) - 1
 		next_tier = min(state.tier + 1, max_tier)
 	if next_tier <= state.tier:
 		return null
@@ -738,8 +738,8 @@ func remove_trait(trait_id: StringName, reason: String = "scripted_remove") -> b
 		return false
 	for i in range(stats.traits.size()):
 		var entry = stats.traits[i]
-		if entry is TraitState:
-			var typed: TraitState = entry
+		if entry is TRAITSTATE:
+			var typed: TRAITSTATE = entry
 			if !typed.is_valid():
 				continue
 			if typed.trait_id == trait_id:

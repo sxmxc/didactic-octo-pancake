@@ -12,7 +12,7 @@ func set_item(buildable: Buildable):
 func get_item() -> Buildable:
 	return _buildable_item
 
-func _get_drag_data(at_position):
+func _get_drag_data(_at_position):
 	var drag_preview = _drag_preview_scene.instantiate()
 	
 	drag_preview.get_node("TextureRect").texture = _buildable_item.menu_icon_texture

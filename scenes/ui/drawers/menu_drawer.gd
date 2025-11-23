@@ -118,6 +118,6 @@ func _on_drawer_opening() -> void:
 	# Hook for subclasses
 	pass
 
-func _on_drawer_state_changed(open_state: bool) -> void:
+func _on_drawer_state_changed(_open_state: bool) -> void:
 	# Hook for subclasses
 	pass

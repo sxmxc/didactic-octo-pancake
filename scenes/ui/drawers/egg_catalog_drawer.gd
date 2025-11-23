@@ -242,7 +242,7 @@ func _on_pack_open_pressed(pack_id: String) -> void:
 	if !_ensure_player():
 		Eventbus.notification_requested.emit("Player not ready.")
 		return
-	var pack_def: Dictionary = Data.egg_pack_definitions.get(pack_id, {})
+	#var pack_def: Dictionary = Data.egg_pack_definitions.get(pack_id, {})
 	var result := _player.open_pack(pack_id)
 	if result.get("ok", false):
 		var minted: int = int(result.get("minted", 0))

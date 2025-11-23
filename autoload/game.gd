@@ -199,10 +199,12 @@ func _award_daily_pack(player: Player) -> void:
 	if pack_def.is_empty():
 		return
 	var now_ms := Time.get_unix_time_from_system() * 1000
-	if !player.can_claim_pack(DAILY_PACK_ID, now_ms):
+	var claim_at_ms := int(now_ms)
+	if !player.can_claim_pack(DAILY_PACK_ID, claim_at_ms):
 		return
 	var cooldown_hours: float = float(pack_def.get("cooldown_hours", 20.0))
 	player.grant_pack(DAILY_PACK_ID, 1, false, false)
-	player.mark_pack_claimed(DAILY_PACK_ID, cooldown_hours, now_ms, true)
+	var next_ready_ms := player.mark_pack_claimed(DAILY_PACK_ID, cooldown_hours, claim_at_ms, true)
+	Eventbus.egg_pack_claimed.emit(DAILY_PACK_ID, "daily_grant", claim_at_ms, next_ready_ms)
 	var pack_name: String = pack_def.get("display_name", "Daily egg pack")
 	Eventbus.notification_requested.emit("%s delivered!" % pack_name)

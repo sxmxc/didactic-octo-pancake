@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bgvnh0se64yfh" path="res://scenes/world.gd" id="1_xse1y"]
 [ext_resource type="TileSet" uid="uid://dyax757fo4qca" path="res://assets/tiles/default_terrain.tres" id="2_37qwj"]
 [ext_resource type="Script" uid="uid://bt2o6k13v1m6" path="res://scenes/ui/drop_area.gd" id="2_qhaud"]
-[ext_resource type="Script" uid="uid://b1usy3l1nqq2s" path="res://scenes/player/player.gd" id="6_tfixf"]
+[ext_resource type="Script" uid="uid://cp7coy23waxml" path="res://scenes/player/player.gd" id="6_tfixf"]
 [ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="9_40nnw"]
 [ext_resource type="PackedScene" uid="uid://cwbcbqyxgficy" path="res://scenes/ui/ui.tscn" id="9_dss4m"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="10_d3p6u"]
@@ -191,7 +191,9 @@ mouse_filter = 2
 color = Color(1, 0, 0.110692024, 0.4117647)
 
 [node name="MainCamera" type="Camera2D" parent="."]
+physics_interpolation_mode = 1
 position = Vector2(549, 927)
+process_callback = 0
 editor_draw_limits = true
 
 [node name="PhantomCameraHost" type="Node" parent="MainCamera"]

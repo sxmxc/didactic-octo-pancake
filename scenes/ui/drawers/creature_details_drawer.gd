@@ -4,9 +4,9 @@ extends MenuDrawer
 @onready var species_value: Label = %SpeciesValue
 @onready var life_stage_value: Label = %LifeStageValue
 @onready var mistakes_value: Label = %MistakesValue
-@onready var strength_value: Label = %StrengthValue
-@onready var intelligence_value: Label = %IntelligenceValue
-@onready var happiness_value: Label = %HappinessValue
+@onready var strength_value: SegmentedBar = %StrengthValue
+@onready var intelligence_value: SegmentedBar = %IntelligenceValue
+@onready var happiness_value: SegmentedBar = %HappinessValue
 @onready var training_status_value: Label = %TrainingStatusValue
 @onready var training_fatigue_value: Label = %TrainingFatigueValue
 @onready var mood_value: Label = %MoodValue
@@ -48,9 +48,9 @@ func _refresh() -> void:
 		life_stage_value.text = "--"
 		mistakes_value.text = "--"
 		traits_value.text = "--"
-		strength_value.text = "--"
-		intelligence_value.text = "--"
-		happiness_value.text = "--"
+		strength_value.set_value(0)
+		intelligence_value.set_value(0)
+		happiness_value.set_value(0)
 		training_status_value.text = "--"
 		training_fatigue_value.text = "--"
 		mood_value.text = "--"
@@ -62,9 +62,7 @@ func _refresh() -> void:
 	life_stage_value.text = focused_creature.current_life_stage
 	mistakes_value.text = str(focused_creature.stats.care_mistakes)
 	traits_value.text = _format_traits(focused_creature.get_trait_snapshot())
-	strength_value.text = _format_stat_value(focused_creature.stats.strength, focused_creature.stats.strength_baseline, focused_creature.stats.strength_cap)
-	intelligence_value.text = _format_stat_value(focused_creature.stats.intelligence, focused_creature.stats.intelligence_baseline, focused_creature.stats.intelligence_cap)
-	happiness_value.text = _format_stat_value(focused_creature.stats.happiness, focused_creature.stats.happiness_baseline, focused_creature.stats.happiness_cap)
+	set_stat_bars()
 	var training_snapshot: Dictionary = focused_creature.get_training_snapshot()
 	training_status_value.text = _format_training_status(training_snapshot)
 	training_fatigue_value.text = _format_training_fatigue(training_snapshot)
@@ -72,11 +70,21 @@ func _refresh() -> void:
 	action_value.text = focused_creature.get_current_action_label()
 	thought_value.text = focused_creature.get_current_thought()
 
-func _format_stat_value(current: int, baseline: int, cap: int) -> String:
+func set_stat_bars():
+	var new_str = _format_stat_value(focused_creature.stats.strength, focused_creature.stats.strength_baseline, focused_creature.stats.strength_cap)
+	var new_int = _format_stat_value(focused_creature.stats.intelligence, focused_creature.stats.intelligence_baseline, focused_creature.stats.intelligence_cap)
+	var new_hap = _format_stat_value(focused_creature.stats.happiness, focused_creature.stats.happiness_baseline, focused_creature.stats.happiness_cap)
+	
+	strength_value.set_value(float(new_str) / focused_creature.stats.strength_cap) 
+	intelligence_value.set_value(float(new_int) / focused_creature.stats.intelligence_cap)
+	happiness_value.set_value(float(new_hap) / focused_creature.stats.happiness_cap) 
+	
+
+func _format_stat_value(current: int, baseline: int, cap: int) -> int:
 	var bonus: int = max(current - baseline, 0)
 	if bonus > 0:
-		return "%d (+%d) / %d" % [current, bonus, cap]
-	return "%d / %d" % [current, cap]
+		return clampi(current + bonus, 0, cap)
+	return clampi(current, 0, cap)
 
 func _format_training_status(snapshot: Dictionary) -> String:
 	var stat_name: Variant = snapshot.get("active_stat", StringName())

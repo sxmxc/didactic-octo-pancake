@@ -14,6 +14,7 @@ config/name="digi-tamogotcha-mon"
 config/tags=PackedStringArray("gd4")
 run/main_scene="res://scenes/login_screen.tscn"
 config/features=PackedStringArray("4.5", "Forward Plus")
+boot_splash/fullsize=false
 boot_splash/use_filter=false
 boot_splash/image="res://assets/pxvoidmoose.png"
 config/icon="res://assets/logo.png"
@@ -31,6 +32,10 @@ Game="*res://autoload/game.gd"
 Telemetry="*res://autoload/telemetry.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 Talo="*res://addons/talo/talo_manager.gd"
+
+[debug]
+
+gdscript/warnings/integer_division=0
 
 [display]
 

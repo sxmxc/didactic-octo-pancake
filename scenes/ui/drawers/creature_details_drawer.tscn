@@ -202,13 +202,17 @@ size_flags_vertical = 3
 
 [node name="Strenth" type="HBoxContainer" parent="Frame/ContentRoot/MarginContainer/VBoxContainer/HBoxContainer/RightStats/VBoxContainer"]
 layout_mode = 2
+alignment = 1
 
 [node name="StrengthLabel" type="Label" parent="Frame/ContentRoot/MarginContainer/VBoxContainer/HBoxContainer/RightStats/VBoxContainer/Strenth"]
 layout_mode = 2
-text = "Strength:"
+size_flags_horizontal = 3
+text = "Strength"
+horizontal_alignment = 1
 
 [node name="StrengthBar" type="TextureRect" parent="Frame/ContentRoot/MarginContainer/VBoxContainer/HBoxContainer/RightStats/VBoxContainer/Strenth"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = SubResource("AtlasTexture_opxg2")
 stretch_mode = 3
 
@@ -236,13 +240,17 @@ metadata/_custom_type_script = "uid://d36wjvx56uohs"
 
 [node name="Happiness" type="HBoxContainer" parent="Frame/ContentRoot/MarginContainer/VBoxContainer/HBoxContainer/RightStats/VBoxContainer"]
 layout_mode = 2
+alignment = 1
 
 [node name="HappinessLabel" type="Label" parent="Frame/ContentRoot/MarginContainer/VBoxContainer/HBoxContainer/RightStats/VBoxContainer/Happiness"]
 layout_mode = 2
-text = "Happiness:"
+size_flags_horizontal = 3
+text = "Happiness"
+horizontal_alignment = 1
 
 [node name="StrengthBar2" type="TextureRect" parent="Frame/ContentRoot/MarginContainer/VBoxContainer/HBoxContainer/RightStats/VBoxContainer/Happiness"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = SubResource("AtlasTexture_opxg2")
 stretch_mode = 3
 
@@ -270,13 +278,17 @@ metadata/_custom_type_script = "uid://d36wjvx56uohs"
 
 [node name="Intelligence" type="HBoxContainer" parent="Frame/ContentRoot/MarginContainer/VBoxContainer/HBoxContainer/RightStats/VBoxContainer"]
 layout_mode = 2
+alignment = 1
 
 [node name="IntelligenceLabel" type="Label" parent="Frame/ContentRoot/MarginContainer/VBoxContainer/HBoxContainer/RightStats/VBoxContainer/Intelligence"]
 layout_mode = 2
-text = "Intelligence:"
+size_flags_horizontal = 3
+text = "Intelligence"
+horizontal_alignment = 1
 
 [node name="StrengthBar3" type="TextureRect" parent="Frame/ContentRoot/MarginContainer/VBoxContainer/HBoxContainer/RightStats/VBoxContainer/Intelligence"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = SubResource("AtlasTexture_opxg2")
 stretch_mode = 3
 
@@ -341,6 +353,7 @@ horizontal_alignment = 1
 
 [node name="CurrentAction" type="HBoxContainer" parent="Frame/ContentRoot/MarginContainer/VBoxContainer/HBoxContainer10"]
 layout_mode = 2
+alignment = 1
 
 [node name="ActionLabel" type="Label" parent="Frame/ContentRoot/MarginContainer/VBoxContainer/HBoxContainer10/CurrentAction"]
 layout_mode = 2

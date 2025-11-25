@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://djun7vdnudas3"]
+
+[ext_resource type="Script" uid="uid://cl0chijt2tu04" path="res://buildables/training/training_station.gd" id="1_2usvb"]
+[ext_resource type="Texture2D" uid="uid://vswbhn2s5jr5" path="res://assets/buildables/buildables.png" id="3_c03xp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8mycl"]
+atlas = ExtResource("3_c03xp")
+region = Rect2(323, 9, 26, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_irrdf"]
+atlas = ExtResource("3_c03xp")
+region = Rect2(256, 0, 64, 64)
+
+[node name="GymPod" type="Node2D"]
+script = ExtResource("1_2usvb")
+station_key = &"gym_pod"
+session_duration_seconds = 120.0
+session_intensity = 1.15
+buildable_name = "Gym Pod"
+buildable_key = "GymPod"
+buildable_cost = 850
+menu_icon_texture = SubResource("AtlasTexture_8mycl")
+
+[node name="EntryPoint" type="Marker2D" parent="."]
+position = Vector2(1, -1)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(64, 64)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_irrdf")
+expand_mode = 1
+stretch_mode = 5

@@ -1,8 +1,10 @@
 extends Node2D
 
 @export var buildable_library : Dictionary = {
-	"BasicNest" : preload("res://buildables/nests/nest.tscn"),
-	"BasicFoodBowl" : preload("res://buildables/food_containers/food_container.tscn")
+	"BasicNest": preload("res://buildables/nests/nest.tscn"),
+	"BasicFoodBowl": preload("res://buildables/food_containers/food_container.tscn"),
+	"GymPod": preload("res://buildables/training/gym_pod.tscn"),
+	"StudyDesk": preload("res://buildables/training/study_desk.tscn"),
 }
 
 @export var creature_library : Dictionary = {

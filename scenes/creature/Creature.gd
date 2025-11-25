@@ -114,6 +114,9 @@ const TRAINING_FATIGUE_RECOVERY_PER_HOUR: float = 18.0
 const TRAINING_MAX_FATIGUE: float = 100.0
 const TRAINING_MIN_INTENSITY: float = 0.4
 const TRAINING_MAX_INTENSITY: float = 2.2
+const TRAINING_ABORT_MAX_HUNGER_RATIO: float = 0.7
+const TRAINING_ABORT_MIN_ENERGY_RATIO: float = 0.35
+const TRAINING_ABORT_MAX_FATIGUE_RATIO: float = 0.75
 
 const DEFAULT_THOUGHTS := [
 	"Wonders if ghosts snore.",
@@ -772,6 +775,9 @@ func _apply_training_tick() -> void:
 	stats.training_rest_seconds = 0.0
 	_apply_training_resource_costs(stat_key, minutes_delta)
 	_apply_training_fatigue(minutes_delta, stats.active_training_intensity)
+	if should_abort_training_for_needs():
+		cancel_training_session()
+		return
 	Eventbus.training_progress_updated.emit(self, stat_key, _build_training_progress_payload(stat_key))
 	if stats.active_training_seconds_remaining <= 0.01:
 		_complete_training_session(stat_key)
@@ -798,6 +804,22 @@ func _apply_training_fatigue(minutes_delta: float, intensity: float) -> void:
 	if fatigue_gain <= 0.0:
 		return
 	stats.training_fatigue = clampf(stats.training_fatigue + fatigue_gain, 0.0, TRAINING_MAX_FATIGUE)
+
+func should_abort_training_for_needs() -> bool:
+	if stats == null:
+		return false
+	if stats.max_hunger > 0:
+		var hunger_ratio: float = float(stats.current_hunger) / float(stats.max_hunger)
+		if hunger_ratio >= TRAINING_ABORT_MAX_HUNGER_RATIO:
+			return true
+	if stats.max_energy > 0:
+		var energy_ratio: float = float(stats.current_energy) / float(stats.max_energy)
+		if energy_ratio <= TRAINING_ABORT_MIN_ENERGY_RATIO:
+			return true
+	var fatigue_ratio: float = stats.training_fatigue / max(TRAINING_MAX_FATIGUE, 0.01)
+	if fatigue_ratio >= TRAINING_ABORT_MAX_FATIGUE_RATIO:
+		return true
+	return false
 
 func _complete_training_session(stat_key: StringName) -> void:
 	stats.active_training_stat = StringName()

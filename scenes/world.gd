@@ -222,6 +222,8 @@ func _bootstrap_player_profile() -> void:
 	player.set_wallet_from_save({"gold": 500, "gem": 0, "platinum": 0})
 	player.learn_buildable(Data.buildable_library["BasicNest"].instantiate(), false)
 	player.learn_buildable(Data.buildable_library["BasicFoodBowl"].instantiate(), false)
+	player.learn_buildable(Data.buildable_library["GymPod"].instantiate(), false)
+	player.learn_buildable(Data.buildable_library["StudyDesk"].instantiate(), false)
 	player.clear_egg_inventory(false)
 	player.grant_pack("brood_bundle", 1, false, false)
 	player.open_pack("brood_bundle", false)

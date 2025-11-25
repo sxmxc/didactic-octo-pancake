@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://cu6r0aoqrt5ck"]
+
+[ext_resource type="Script" uid="uid://cl0chijt2tu04" path="res://buildables/training/training_station.gd" id="1_7pkuj"]
+[ext_resource type="Texture2D" uid="uid://vswbhn2s5jr5" path="res://assets/buildables/buildables.png" id="2_wxic0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wxic0"]
+atlas = ExtResource("2_wxic0")
+region = Rect2(455, 4, 19, 23)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4nnkj"]
+atlas = ExtResource("2_wxic0")
+region = Rect2(384, 0, 64, 64)
+
+[node name="StudyDesk" type="Node2D"]
+script = ExtResource("1_7pkuj")
+station_key = &"study_desk"
+training_stat = &"intelligence"
+session_duration_seconds = 105.0
+session_intensity = 0.95
+buildable_name = "Study Desk"
+buildable_key = "StudyDesk"
+buildable_cost = 720
+menu_icon_texture = SubResource("AtlasTexture_wxic0")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(64, 64)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_4nnkj")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="EntryPoint" type="Marker2D" parent="."]
+position = Vector2(-14, 10)

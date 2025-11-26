@@ -21,3 +21,4 @@ Applies to the entire repository until a nested `AGENTS.md` overrides it.
 13. **Code Generation** Always use context7 when you need code generation, setup or configuration steps, or
 library/API documentation. This means you should automatically use the Context7 MCP
 tools to resolve library id and get library docs without me having to explicitly ask.
+14. **Godot uid files** Do not manually create file's .gd.uid file. Godot will automatically generate these. If reference is needed, allow Godot generation time.

@@ -8,3 +8,4 @@
 script = ExtResource("2_ggp5c")
 species_name = "Punk'n"
 spritesheet = ExtResource("3_gxasa")
+diet = "veggie"

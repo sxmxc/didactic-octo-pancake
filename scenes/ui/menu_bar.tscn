@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://da2g1v4g1abp3"]
+[gd_scene load_steps=28 format=3 uid="uid://da2g1v4g1abp3"]
 
 [ext_resource type="Texture2D" uid="uid://dxk1hu0t4u6wx" path="res://assets/ui/main_ui.png" id="1_tex"]
 [ext_resource type="FontFile" uid="uid://bkndep7suf0a1" path="res://assets/fonts/Pix32.ttf" id="3_font"]
@@ -43,12 +43,9 @@ region = Rect2(1, 241, 29, 31)
 atlas = ExtResource("1_tex")
 region = Rect2(50, 243, 29, 29)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_a2htc"]
-load_path = "res://.godot/imported/main_ui.png-fd5c823293733203b7fbcd602155cbf3.ctex"
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_ik14i"]
-atlas = SubResource("CompressedTexture2D_a2htc")
-region = Rect2(8, 104, 16, 16)
+atlas = ExtResource("1_tex")
+region = Rect2(199, 150, 18, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_icon_build"]
 atlas = ExtResource("1_tex")

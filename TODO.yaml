@@ -1,6 +1,6 @@
 meta:
   version: 1
-  last_updated: 2025-11-23
+  last_updated: 2025-11-25
   notes: >-
 	Structured backlog with priorities, blockers, and subtasks so agents can
 	quickly gauge sequencing constraints.
@@ -127,7 +127,7 @@ areas:
           - sim.training_payoff_model
         subtasks:
           - description: ✅ Authored Gym Pod + Study Desk training buildables, registered them via autoload/data.gd, and exposed them in the build drawer.
-          - description: ✅ Added a BeeHave branch (`ShouldTrainCondition` + `UseTrainingStationAction`) so idle creatures seek nearby stations and emit the Eventbus training lifecycle.
+          - description: ✅ Added a BeeHave branch (`ShouldTrainCondition`, `ApproachTrainingStationAction`, `TrainAtStationAction`) so idle creatures seek nearby stations, walk to them, and emit the Eventbus training lifecycle.
           - description: ✅ Hooked TrainingStation nodes into `Creature.begin_training_session()` so stats climb while draining hunger/energy/fatigue per tick.
           - description: ✅ Forwarded training progress through Eventbus/Creature snapshots so HUD drawers reflect multiple concurrent sessions.
         definition_of_done: >-
@@ -205,7 +205,7 @@ areas:
       - id: core.dietary_food_system
         title: Diet types + food effects
         priority: high
-        status: todo
+        status: done
         owner: unassigned
         problem: >-
           Every creature eats the same placeholder food so hunger relief is trivial and there are no stat
@@ -224,10 +224,10 @@ areas:
           - TODO.yaml
         blockers: []
         subtasks:
-          - description: Add a diet enum/field to species definitions in `resources/creature/species.gd` and retrofit every `.tres` in `resources/creature/data/**` so each creature declares meat, veggie, or omnivore.
-          - description: Author multiple food resources (meat cuts, veggie bundles, balanced meals) inside `autoload/data.gd`/`scenes/food/food.gd` with hunger relief values plus stat buffs/debuffs designers can tune.
-          - description: Update feeding flows (`scenes/world.gd`, Player helpers, Food Bag drawer) to enforce diet compatibility, surface warnings, and apply the configured stat effects or penalties.
-          - description: Document diet rules, food stats, and extension guidelines in README.md/TODO.yaml so future contributors can add new foods confidently.
+          - description: ✅ Add a diet enum/field to species definitions in `resources/creature/species.gd` and retrofit every `.tres` in `resources/creature/data/**` so each creature declares meat, veggie, or omnivore.
+          - description: ✅ Author multiple food resources (meat cuts, veggie bundles, balanced meals) inside `autoload/data.gd`/`scenes/food/food.gd` with hunger relief values plus stat buffs/debuffs designers can tune.
+          - description: ✅ Update feeding flows (`scenes/world.gd`, Player helpers, Food Bag drawer) to enforce diet compatibility, surface warnings, and apply the configured stat effects or penalties.
+          - description: ✅ Document diet rules, food stats, and extension guidelines in README.md/TODO.yaml so future contributors can add new foods confidently.
         definition_of_done: >-
           Species advertise diets, foods are typed with gameplay effects, feeding enforces compatibility with
           UI feedback, and documentation covers how to tune/extend the system.
@@ -411,11 +411,33 @@ areas:
 		definition_of_done: >-
 		  Distinct food/bowl art assets (sources + exports) live under `assets/`, UI/world scenes use them,
 		  and README/TODO document how to update the set.
-	  - id: content.naming_and_theming
-		title: Naming + theming review
+	  - id: content.egg_catalog_usability_polish
+		title: Egg catalog usability polish
 		priority: low
 		status: todo
 		owner: unassigned
+		problem: >-
+		  The streamlined catalog cards plus detail window reduce clutter, but players still need better affordances
+		  for browsing large inventories (filters, grouping, visual urgency for ready-to-claim packs, etc.).
+		entrypoints:
+		  - scenes/ui/drawers/egg_catalog_drawer.gd
+		  - scenes/ui/drawers/egg_catalog_drawer.tscn
+		  - scenes/ui/drawers/catalog_item_panel.gd
+		  - scenes/ui/drawers/item_details_window.* (new shared dialog)
+		  - assets/themes/pull_out_drawer_theme.tres
+		blockers: []
+		subtasks:
+		  - description: Add sorting/filter toggles so players can collapse owned/zero-count packs and filter egg inventory by tier or source without scrolling.
+		  - description: Surface urgency cues (color, icons, claim timers) directly on pack cards and egg entries so readiness is apparent without opening tooltips.
+		  - description: Expand the detail window with art/previews and a responsive layout (resizable or multi-column) that can be reused by other drawers.
+		definition_of_done: >-
+		  The egg catalog drawer supports filtering/grouping, highlights actionable packs/eggs at a glance, and
+		  the detail dialog offers richer context plus visuals without overwhelming the main list.
+      - id: content.naming_and_theming
+        title: Naming + theming review
+        priority: low
+        status: todo
+        owner: unassigned
 		problem: Species names are placeholders and may change with art direction.
 		entrypoints:
 		  - resources/creature/data/**/*.tres

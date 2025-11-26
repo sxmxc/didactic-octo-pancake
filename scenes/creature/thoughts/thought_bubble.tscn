@@ -1,0 +1,54 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0uajbfced4sw"]
+
+[ext_resource type="Script" uid="uid://bcl8i150m2ru0" path="res://scenes/creature/thoughts/thought_bubble.gd" id="1_blouc"]
+[ext_resource type="FontFile" uid="uid://ubepyfb11hwy" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_uf3be"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yprising"]
+bg_color = Color(1, 1, 1, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.168627, 0.196078, 0.239216, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 6.0
+expand_margin_top = 6.0
+expand_margin_right = 6.0
+expand_margin_bottom = 6.0
+
+[node name="ThoughtBubble" type="Node2D"]
+z_index = 5
+script = ExtResource("1_blouc")
+
+[node name="BubblePanel" type="PanelContainer" parent="."]
+z_index = 1
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yprising")
+
+[node name="MarginContainer" type="MarginContainer" parent="BubblePanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 4
+
+[node name="ThoughtLabel" type="RichTextLabel" parent="BubblePanel/MarginContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.05490196, 0.02745098, 0.105882354, 1)
+theme_override_fonts/normal_font = ExtResource("2_uf3be")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="Tail" type="Polygon2D" parent="."]
+position = Vector2(11, 23)
+color = Color(1, 1, 1, 0.95)
+antialiased = true
+polygon = PackedVector2Array(-4, -8, 0, 0, 4, -8)

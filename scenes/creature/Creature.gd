@@ -251,16 +251,17 @@ var current_life_stage = "egg"
 	"idle": preload("res://scenes/creature/emotions/idle_bubble.tscn"),
 	"hungry": preload("res://scenes/creature/emotions/hungry_bubble.tscn")
 }
+@export var thought_bubble_scene: PackedScene = preload("res://scenes/creature/thoughts/thought_bubble.tscn")
 @export var species : Species
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 @onready var bt: BeehaveTree = get_node("BeehaveTree")
 @onready var egg_sprite: Sprite2D = get_node("EggSprite")
 @onready var creature_sprite : Sprite2D = get_node("CreatureSprite")
 #@onready var creature_anim : AnimationPlayer = get_node("AnimationPlayer")
-@onready var emotion_container = get_node("EmotionContainer")
-@onready var current_emotion : EmotionBubble = null
+@onready var emotion_container: Node2D = get_node("EmotionContainer")
+@onready var thought_container: Node2D = get_node("ThoughtContainer")
 @onready var camera : PhantomCamera2D = get_node("Camera2D")
-var world_map: TileMapLayer
+var navigation_tilemap: TileMapLayer
 var creature_nickname: StringName
 var creature_name: StringName
 var date_born
@@ -276,9 +277,9 @@ var _pending_training_energy: float = 0.0
 var current_action_id: StringName = &"idle"
 var current_action_label: String = "Idling"
 var current_thought: String = "Just hanging out."
+var expression_controller: ExpressionController = null
 var _last_behavior_change: float = 0.0
 var _thought_rng := RandomNumberGenerator.new()
-var _emotion_time_remaining: float = 0.0
 var _care_mistake_state: Dictionary = {}
 var _care_mistake_decay_ticks: int = 0
 var _trait_rng := RandomNumberGenerator.new()
@@ -298,10 +299,7 @@ func _ready() -> void:
 	_base_nest_restore = max(nest_cleanliness_restore_per_action, 1)
 	_bootstrap_traits()
 	_thought_rng.randomize()
-	if emotion_container.get_child_count() > 0:
-		current_emotion = emotion_container.get_child(0)
-	else:
-		current_emotion = null
+	_initialize_expression_controller()
 	navigation_agent.velocity_computed.connect(Callable(_on_navigation_agent_2d_velocity_computed))
 	_apply_species_visuals()
 	for mistake_id in CARE_MISTAKE_RULES.keys():
@@ -310,6 +308,14 @@ func _ready() -> void:
 			"active": false,
 		}
 	set_behavior_state("idle")
+
+func _initialize_expression_controller() -> void:
+	if expression_controller == null:
+		expression_controller = ExpressionController.new()
+		add_child(expression_controller)
+	if expression_controller:
+		expression_controller.setup(emotion_container, thought_container, emotion_bubbles, thought_bubble_scene, emotion_linger_seconds)
+		expression_controller.set_current_thought(current_thought, true)
 
 func _initialize_training_defaults() -> void:
 	if stats == null:
@@ -460,8 +466,10 @@ func set_species(spec: Species) -> void:
 	if is_inside_tree():
 		_apply_species_visuals()
 
-func register_worldmap(map: TileMapLayer):
-	world_map = map
+func register_tilemap(map: TileMapLayer):
+	navigation_tilemap = map
+	if navigation_agent and navigation_tilemap:
+		navigation_agent.set_navigation_map(navigation_tilemap.get_navigation_map())
 
 func register_blackboard(bb: Blackboard):
 	bt.blackboard = bb
@@ -492,13 +500,6 @@ func _physics_process(_delta):
 	else:
 		creature_sprite.flip_h = true
 		
-func _process(delta: float) -> void:
-	if _emotion_time_remaining > 0.0:
-		_emotion_time_remaining -= delta
-		if _emotion_time_remaining <= 0.0:
-			_clear_active_emotion()
-		
-
 func _on_navigation_agent_2d_velocity_computed(safe_velocity):
 	velocity = safe_velocity
 	move_and_slide()
@@ -900,6 +901,20 @@ func _decrease_stat(stat_key: StringName, amount: int) -> void:
 			stats.intelligence = clampi(stats.intelligence - amount, stats.intelligence_baseline, stats.intelligence_cap)
 		&"happiness":
 			stats.happiness = clampi(stats.happiness - amount, stats.happiness_baseline, stats.happiness_cap)
+func apply_food_effects(effects: Dictionary) -> void:
+	if !(effects is Dictionary) or effects.is_empty():
+		return
+	for key in effects.keys():
+		var stat_key: StringName = _to_string_name(key)
+		if stat_key == StringName():
+			continue
+		var amount: int = int(effects[key])
+		if amount == 0:
+			continue
+		if amount > 0:
+			_increase_stat(stat_key, amount)
+		else:
+			_decrease_stat(stat_key, abs(amount))
 
 func _is_training_active() -> bool:
 	if stats == null:
@@ -1103,19 +1118,13 @@ func _age_up():
 	Eventbus.popup_requested.emit("Happy Birthday %s!" % name)
 	
 func show_emotion(emotion: String, custom_linger: float = -1.0) -> void:
-	if !emotion_bubbles.has(emotion):
-		return
-	_clear_active_emotion()
-	current_emotion = emotion_bubbles[emotion].instantiate()
-	emotion_container.add_child(current_emotion)
-	current_emotion.play("default")
-	_emotion_time_remaining = emotion_linger_seconds if custom_linger <= 0.0 else custom_linger
+	if expression_controller:
+		expression_controller.show_emotion(emotion, custom_linger)
 
-func _clear_active_emotion() -> void:
-	for child in emotion_container.get_children():
-		child.queue_free()
-	current_emotion = null
-	_emotion_time_remaining = 0.0
+func show_thought(thought: String, reveal_immediately: bool = true) -> void:
+	current_thought = thought
+	if expression_controller:
+		expression_controller.set_current_thought(current_thought, reveal_immediately)
 
 func set_behavior_state(action_id: StringName, options: Dictionary = {}) -> void:
 	var action_key: String = String(action_id)
@@ -1130,6 +1139,8 @@ func set_behavior_state(action_id: StringName, options: Dictionary = {}) -> void
 		thought_pool = meta["thoughts"]
 	current_thought = thought_override if thought_override != "" else _pick_random_thought(thought_pool)
 	var emotion_name: String = options.get("emotion", meta.get("emotion", ""))
+	if expression_controller:
+		expression_controller.set_current_thought(current_thought, emotion_name == "")
 	if emotion_name != "":
 		show_emotion(emotion_name)
 	_last_behavior_change = Time.get_ticks_msec() / 1000.0

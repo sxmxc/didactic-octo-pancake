@@ -20,6 +20,7 @@ session_intensity = 0.95
 buildable_name = "Study Desk"
 buildable_key = "StudyDesk"
 buildable_cost = 720
+tile_id = 4
 menu_icon_texture = SubResource("AtlasTexture_wxic0")
 
 [node name="TextureRect" type="TextureRect" parent="."]

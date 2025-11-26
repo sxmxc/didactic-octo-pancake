@@ -30,6 +30,27 @@ func adopt_creature(creature: Creature, track_save: bool = true) -> void:
 func get_adopted_creatures() -> Array[Creature]:
 	return _owned_creatures
 
+func get_diet_summary() -> Dictionary:
+	var summary: Dictionary = {}
+	for creature in _owned_creatures:
+		if creature == null or creature.species == null:
+			continue
+		var diet: StringName = creature.species.get_diet()
+		if diet == StringName():
+			continue
+		summary[diet] = int(summary.get(diet, 0)) + 1
+	return summary
+
+func owns_creature_for_food(food: Food) -> bool:
+	if food == null:
+		return false
+	for creature in _owned_creatures:
+		if creature == null or creature.species == null:
+			continue
+		if food.is_compatible_with_species(creature.species):
+			return true
+	return false
+
 func reset_owned_creatures() -> void:
 	_owned_creatures.clear()
 

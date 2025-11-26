@@ -1,7 +1,7 @@
 extends MenuDrawer
 
 @export var build_icon_scene: PackedScene = preload("res://scenes/ui/build_item_icon.tscn")
-@onready var item_list: HBoxContainer = %BuildItemList
+@onready var item_list: FlowContainer = %BuildItemList
 
 func _ready() -> void:
 	super._ready()

@@ -1,0 +1,63 @@
+[gd_scene load_steps=3 format=3 uid="uid://0aabawbrvn1u"]
+
+[ext_resource type="Script" uid="uid://dsh0irtxi6yje" path="res://scenes/ui/notification_window.gd" id="1_scp"]
+[ext_resource type="Theme" path="res://assets/themes/item_details_window_theme.tres" id="1_thm"]
+
+[node name="NotificationWindow" type="Window"]
+snap_2d_transforms_to_pixel = true
+oversampling_override = 1.0
+title = "Notice"
+initial_position = 1
+size = Vector2i(540, 360)
+unresizable = true
+content_scale_aspect = 1
+content_scale_stretch = 1
+theme = ExtResource("1_thm")
+script = ExtResource("1_scp")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Notice"
+
+[node name="BodyScroll" type="ScrollContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="BodyLabel" type="RichTextLabel" parent="MarginContainer/VBox/BodyScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Details go here."
+fit_content = true
+scroll_active = false
+
+[node name="ActionsRow" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="CloseButton" type="Button" parent="MarginContainer/VBox/ActionsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Close"

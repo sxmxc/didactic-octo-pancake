@@ -14,3 +14,4 @@ egg_tier = &"tidepool"
 hatch_weight = 5
 species_name = "Squip"
 spritesheet = ExtResource("3_fli88")
+diet = "meat"

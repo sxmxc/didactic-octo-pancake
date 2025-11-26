@@ -1,80 +1,132 @@
-[gd_scene load_steps=6 format=3 uid="uid://dxhvunlio0i71"]
+[gd_scene load_steps=7 format=3 uid="uid://dxhvunlio0i71"]
 
-[ext_resource type="Texture2D" uid="uid://cmuwq5armf04u" path="res://assets/basic/sNest_32x32.png" id="1_b3lw1"]
+[ext_resource type="Theme" uid="uid://b071utsw23u4a" path="res://assets/themes/pull_out_drawer_theme.tres" id="1_b26ye"]
 [ext_resource type="Script" uid="uid://c5t7km00di3ig" path="res://scenes/ui/build_item_icon.gd" id="1_kcy0n"]
-[ext_resource type="FontFile" uid="uid://bkndep7suf0a1" path="res://assets/fonts/Pix32.ttf" id="3_cbhp4"]
+[ext_resource type="FontFile" uid="uid://ubepyfb11hwy" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_font"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_ud1et"]
-font_size = 24
-font_color = Color(0, 0, 1, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.172549, 0.443137, 0.47451, 0.533333)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 0.729412)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
-[sub_resource type="LabelSettings" id="LabelSettings_jase2"]
-font = ExtResource("3_cbhp4")
-font_size = 11
-font_color = Color(0, 1, 0.0352941, 1)
+[sub_resource type="LabelSettings" id="LabelSettings_name"]
+font = ExtResource("2_font")
+font_size = 8
+font_color = Color(0.0705882, 0.0235294, 0.0666667, 1)
 outline_size = 1
-outline_color = Color(0, 0, 0, 1)
+outline_color = Color(0, 0, 0, 0.658824)
+
+[sub_resource type="LabelSettings" id="LabelSettings_price"]
+font = ExtResource("2_font")
+font_size = 9
+font_color = Color(0.0196078, 0.760784, 0.215686, 1)
+outline_size = 1
+outline_color = Color(0, 0, 0, 0.784314)
 
 [node name="BuildItemIcon" type="Control"]
-custom_minimum_size = Vector2(16, 16)
+custom_minimum_size = Vector2(116, 38)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -50.0
-offset_right = -34.0
-offset_bottom = -34.0
+offset_left = -58.0
+offset_top = -19.0
+offset_right = 58.0
+offset_bottom = 19.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_b26ye")
 script = ExtResource("1_kcy0n")
+mouse_filter = 0
 
-[node name="TextureRect" type="TextureRect" parent="."]
-custom_minimum_size = Vector2(16, 16)
+[node name="Card" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_right = 16.0
-offset_bottom = 16.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -58.0
+offset_top = -19.0
+offset_right = 58.0
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="Margins" type="MarginContainer" parent="Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 2
 mouse_filter = 2
-texture = ExtResource("1_b3lw1")
+
+[node name="Layout" type="VBoxContainer" parent="Card/Margins"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 2
+mouse_filter = 2
+
+[node name="TopRow" type="HBoxContainer" parent="Card/Margins/Layout"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 6
+mouse_filter = 2
+
+[node name="IconFrame" type="ColorRect" parent="Card/Margins/Layout/TopRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(18, 18)
+color = Color(0.0784314, 0.14902, 0.203922, 0.866667)
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="Card/Margins/Layout/TopRow/IconFrame"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Name" type="Label" parent="TextureRect"]
-visible = false
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -37.0
-offset_top = -103.0
-offset_right = 36.0
-offset_bottom = -80.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "Item"
-label_settings = SubResource("LabelSettings_ud1et")
+[node name="Price" type="Label" parent="Card/Margins/Layout/TopRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "000 gp"
+label_settings = SubResource("LabelSettings_price")
 horizontal_alignment = 1
 vertical_alignment = 1
+mouse_filter = 2
 
-[node name="Cost" type="Label" parent="TextureRect"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -8.0
-offset_top = -27.0
-offset_right = 9.0
-offset_bottom = -15.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "0 G"
-label_settings = SubResource("LabelSettings_jase2")
+[node name="Name" type="Label" parent="Card/Margins/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Buildable Name"
+label_settings = SubResource("LabelSettings_name")
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
+autowrap_mode = 3
+mouse_filter = 2

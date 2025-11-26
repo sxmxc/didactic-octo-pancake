@@ -14,3 +14,4 @@ species_name = "Blop"
 spritesheet = ExtResource("3_tfjbu")
 egg_tier = &"meadow"
 hatch_weight = 6
+diet = "veggie"

@@ -8,3 +8,4 @@
 script = ExtResource("2_ir0be")
 species_name = "Squeemo"
 spritesheet = ExtResource("3_sj3en")
+diet = "meat"

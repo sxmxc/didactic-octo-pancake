@@ -13,8 +13,8 @@ const BED_MATCH_TOLERANCE: float = 8.0
 @onready var world_camera: PhantomCamera2D = %WorldCamera
 @onready var build_camera: PhantomCamera2D = %BuildCamera
 @onready var drop: CanvasLayer = $Drop
-@onready var drop_area = get_node("%DropArea")
-@onready var world_map: TileMapLayer = %WorldMap
+@onready var drop_area: Control = get_node("%DropArea")
+@onready var world_map_layer: TileMapLayer = %WorldMapLayer
 @onready var tile_map_layer: TileMapLayer = %TileMapLayer
 @onready var ui: WorldUI = %UI
 
@@ -22,6 +22,7 @@ var world_clock: Timer
 var namegen: NameGenerator = NameGenerator.new()
 var _last_tick_epoch_ms: int = 0
 var _is_simulation_running: bool = false
+var _base_world_map_data: PackedByteArray = PackedByteArray()
 
 func _ready():
 	randomize()
@@ -33,7 +34,11 @@ func _ready():
 	Eventbus.new_creature_requested.connect(_on_new_creature_requested)
 	Eventbus.feed_request.connect(_on_feed_requested)
 	Eventbus.egg_hatch_requested.connect(_on_egg_hatch_requested)
-	drop_area.world_map = world_map
+	drop_area.world_map_layer = world_map_layer
+	if world_map_layer != null:
+		_base_world_map_data = world_map_layer.tile_map_data.duplicate()
+		world_map_layer.update_internals()
+		call_deferred("_sync_base_buildables")
 	world_clock = Timer.new()
 	world_clock.wait_time = tick_frequency
 	world_clock.timeout.connect(_on_timer_timeout)
@@ -48,6 +53,9 @@ func _process(_delta):
 func start_new_session() -> void:
 	Tracer.info("Bootstrapping new world session")
 	_reset_world_state()
+	if world_map_layer:
+		world_map_layer.update_internals()
+		_sync_base_buildables()
 	_bootstrap_player_profile()
 	Game.sync_egg_rewards(player)
 	_hatch_starter_creature()
@@ -155,7 +163,13 @@ func _on_new_creature_requested():
 	_finalize_hatch(hatch_result)
 
 func _on_feed_requested(food: Food):
+	if food == null:
+		return
 	Tracer.info("Food request received")
+	if !_player_can_use_food(food):
+		Eventbus.notification_requested.emit("None of your creatures can eat %s foods." % food.get_display_name())
+		food.queue_free()
+		return
 	for target in get_tree().get_nodes_in_group("food_container"):
 		if target.get_child_count() == 0:
 			Tracer.info("Adding food to available container")
@@ -163,6 +177,7 @@ func _on_feed_requested(food: Food):
 			return
 	Eventbus.notification_requested.emit("No available food containers.")
 	Tracer.info("No available food containers")
+	food.queue_free()
 
 func _on_egg_hatch_requested(egg_index: int) -> void:
 	var hatch_result := player.hatch_egg_at(egg_index)
@@ -198,9 +213,10 @@ func _reset_world_state() -> void:
 	drop_area.clear_world_items()
 	if world_bb:
 		world_bb.blackboard = {}
+	_sync_base_buildables()
 
 func _teardown_creatures() -> void:
-	for nest in get_tree().get_nodes_in_group("Nest"):
+	for nest in get_tree().get_nodes_in_group("nest"):
 		if nest.has_method("owned_by_creature"):
 			nest.owned_by_creature = null
 	for node in get_tree().get_nodes_in_group("Creature"):
@@ -209,12 +225,15 @@ func _teardown_creatures() -> void:
 	player.reset_owned_creatures()
 
 func _clear_dynamic_buildables() -> void:
-	if world_map == null:
+	if world_map_layer == null:
 		return
-	for child in world_map.get_children():
+	world_map_layer.clear()
+	for child in world_map_layer.get_children():
 		if child is Buildable:
 			drop_area.forget_buildable(child)
 			child.queue_free()
+	_restore_base_tiles()
+	_sync_base_buildables()
 
 func _bootstrap_player_profile() -> void:
 	player.reset_owned_creatures()
@@ -277,8 +296,8 @@ func _create_random_creature(species_override: Species = null) -> Creature:
 	return new_creature
 
 func _attach_creature_to_nest(creature: Creature, nest: Nest) -> void:
-	world_map.add_child(creature)
-	creature.register_worldmap(world_map)
+	world_map_layer.add_child(creature)
+	creature.register_tilemap(tile_map_layer)
 	creature.register_blackboard(world_bb)
 	if creature.has_method("set_world_tick_interval"):
 		creature.set_world_tick_interval(float(tick_frequency))
@@ -297,13 +316,13 @@ func _sync_creature_blackboard(creature: Creature, nest: Nest) -> void:
 	Eventbus.current_hunger_updated.emit()
 
 func _find_available_nest() -> Node2D:
-	for node in get_tree().get_nodes_in_group("Nest"):
+	for node in get_tree().get_nodes_in_group("nest"):
 		if node.owned_by_creature == null:
 			return node
 	return null
 
 func _find_nest_at_position(target_position: Vector2) -> Node2D:
-	for node in get_tree().get_nodes_in_group("Nest"):
+	for node in get_tree().get_nodes_in_group("nest"):
 		if !node.has_method("owned_by_creature"):
 			continue
 		if node.global_position.distance_to(target_position) <= BED_MATCH_TOLERANCE:
@@ -319,20 +338,25 @@ func _serialize_player() -> Dictionary:
 
 func _serialize_buildables() -> Array:
 	var entries: Array = []
-	if world_map == null:
+	if world_map_layer == null:
 		return entries
-	for child in world_map.get_children():
+	for child in world_map_layer.get_children():
 		if child is Buildable:
 			var buildable: Buildable = child
+			var cell: Vector2i = world_map_layer.local_to_map(world_map_layer.to_local(buildable.global_position))
 			entries.append({
 				"buildable_key": buildable.buildable_key,
 				"position": buildable.global_position,
+				"cell": cell,
+				"tile_source_id": buildable.tile_source_id,
+				"tile_id": buildable.tile_id,
+				"tile_atlas_coords": buildable.tile_atlas_coords,
 			})
 	return entries
 
 func _build_bed_lookup() -> Dictionary:
 	var lookup: Dictionary = {}
-	for nest in get_tree().get_nodes_in_group("Nest"):
+	for nest in get_tree().get_nodes_in_group("nest"):
 		if nest.has_method("owned_by_creature") and nest.owned_by_creature:
 			lookup[nest.owned_by_creature] = nest.global_position
 	return lookup
@@ -359,17 +383,38 @@ func _restore_player(data: Dictionary) -> void:
 	Game.sync_egg_rewards(player)
 
 func _restore_buildables(entries: Array) -> void:
-	if world_map == null:
+	if world_map_layer == null:
 		return
+	world_map_layer.clear()
+	for child in world_map_layer.get_children():
+		if child is Buildable:
+			child.queue_free()
+	_restore_base_tiles()
+	world_map_layer.update_internals()
+	drop_area.clear_world_items()
 	for entry in entries:
 		var buildable_key: String = entry.get("buildable_key", "")
-		if buildable_key == "" or !Data.buildable_library.has(buildable_key):
+		if buildable_key == "":
 			continue
-		var buildable: Buildable = Data.buildable_library[buildable_key].instantiate()
-		world_map.add_child(buildable)
-		if entry.has("position"):
-			buildable.global_position = entry["position"]
-		drop_area.register_buildable(buildable)
+		var template: Buildable = _instantiate_buildable_template(buildable_key)
+		var tile_source_id: int = int(entry.get("tile_source_id", template.tile_source_id if template != null else 1))
+		var tile_id: int = int(entry.get("tile_id", template.tile_id if template != null else -1))
+		var tile_atlas_coords: Vector2i = entry.get("tile_atlas_coords", template.tile_atlas_coords if template != null else Vector2i.ZERO)
+		if tile_id < 0:
+			if template != null:
+				template.queue_free()
+			continue
+		var cell: Vector2i = entry.get("cell", Vector2i.ZERO)
+		if !(cell is Vector2i):
+			if entry.has("position"):
+				cell = world_map_layer.local_to_map(world_map_layer.to_local(entry["position"]))
+			else:
+				cell = Vector2i.ZERO
+		world_map_layer.set_cell(cell, tile_source_id, tile_atlas_coords, tile_id)
+		call_deferred("_register_tile_buildable", cell)
+		if template != null:
+			template.queue_free()
+	_sync_base_buildables()
 
 func _restore_creature(data: Dictionary) -> void:
 	if creature_scene == null:
@@ -397,6 +442,44 @@ func _assign_creature_to_bed(creature: Creature, bed_position: Variant) -> Node2
 	_attach_creature_to_nest(creature, target)
 	return target
 
+func _restore_base_tiles() -> void:
+	if world_map_layer == null:
+		return
+	if _base_world_map_data.is_empty():
+		world_map_layer.clear()
+	else:
+		world_map_layer.tile_map_data = _base_world_map_data.duplicate()
+	world_map_layer.update_internals()
+
+func _sync_base_buildables() -> void:
+	if world_map_layer == null:
+		return
+	drop_area.clear_world_items()
+	for child in world_map_layer.get_children():
+		if child is Buildable:
+			drop_area.register_buildable(child)
+
+func _instantiate_buildable_template(buildable_key: String) -> Buildable:
+	if buildable_key == "" or !Data.buildable_library.has(buildable_key):
+		return null
+	return Data.buildable_library[buildable_key].instantiate()
+
+func _register_tile_buildable(cell: Vector2i) -> void:
+	await get_tree().process_frame
+	var instance := _find_buildable_at_cell(cell)
+	if instance != null:
+		drop_area.register_buildable(instance)
+
+func _find_buildable_at_cell(cell: Vector2i) -> Buildable:
+	var expected_position := world_map_layer.to_global(world_map_layer.map_to_local(cell))
+	var tolerance := float(Vector2(world_map_layer.tile_set.tile_size).length()) if world_map_layer.tile_set else 64.0
+	for child in world_map_layer.get_children():
+		if child is Buildable:
+			var buildable: Buildable = child
+			if buildable.global_position.distance_to(expected_position) <= tolerance:
+				return buildable
+	return null
+
 func _get_active_creatures() -> Array[Creature]:
 	var creatures: Array[Creature] = []
 	for node in get_tree().get_nodes_in_group("Creature"):
@@ -410,3 +493,8 @@ func _queue_next_track() -> void:
 		return
 	var next_key : String = keys[randi_range(0, keys.size() - 1)]
 	SoundManager.play_music(Data.music_library[next_key], 1)
+
+func _player_can_use_food(food: Food) -> bool:
+	if player == null:
+		return false
+	return player.owns_creature_for_food(food)

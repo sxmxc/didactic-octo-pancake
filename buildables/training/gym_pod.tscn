@@ -19,6 +19,7 @@ session_intensity = 1.15
 buildable_name = "Gym Pod"
 buildable_key = "GymPod"
 buildable_cost = 850
+tile_id = 3
 menu_icon_texture = SubResource("AtlasTexture_8mycl")
 
 [node name="EntryPoint" type="Marker2D" parent="."]

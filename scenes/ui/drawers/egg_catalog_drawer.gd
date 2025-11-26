@@ -3,7 +3,7 @@ extends MenuDrawer
 @onready var pack_list: VBoxContainer = %PackList
 @onready var egg_list: VBoxContainer = %EggList
 @onready var empty_label: Label = %EmptyEggsLabel
-@onready var odds_body: RichTextLabel = %OddsBody
+@onready var odds_button: Button = %OddsButton
 
 var _player: Player = null
 var _inventory_snapshot: Dictionary = {}
@@ -12,10 +12,15 @@ var _pack_counts: Dictionary = {}
 var _cooldowns: Dictionary = {}
 
 const PACK_ITEM_SCENE := preload("res://scenes/ui/drawers/catalog_item_panel.tscn")
+var _popup_manager: PopupWindowManager = null
 
 func _ready() -> void:
 	super._ready()
 	_player = _find_player()
+	_popup_manager = _find_popup_manager()
+	if odds_button:
+		odds_button.focus_mode = Control.FOCUS_NONE
+		odds_button.pressed.connect(_on_odds_button_pressed)
 	Eventbus.player_egg_inventory_updated.connect(_on_inventory_updated)
 	_on_inventory_updated({})
 
@@ -49,7 +54,7 @@ func _on_drawer_opening() -> void:
 func _render_contents() -> void:
 	_render_packs()
 	_render_eggs()
-	_render_odds()
+	_update_odds_button_state()
 
 func _render_packs() -> void:
 	for child in pack_list.get_children():
@@ -62,6 +67,7 @@ func _render_packs() -> void:
 		var panel := PACK_ITEM_SCENE.instantiate() as CatalogItemPanel
 		if panel == null:
 			continue
+		panel.details_requested.connect(_on_pack_details_requested.bind(pack_id))
 		#panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		panel.set_title(str(pack_def.get("display_name", pack_id.capitalize())))
 		panel.set_count_text("x%s" % _get_pack_count(pack_id))
@@ -104,16 +110,118 @@ func _render_eggs() -> void:
 	for index in range(_tokens.size()):
 		var entry: Dictionary = _tokens[index]
 		var button := Button.new()
-		button.text = _format_token_label(entry)
+		button.text = _format_token_title(entry)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.focus_mode = Control.FOCUS_NONE
-		button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.tooltip_text = _format_token_tooltip(entry)
-		button.pressed.connect(_on_egg_selected.bind(index))
+		button.pressed.connect(_on_egg_entry_pressed.bind(index))
 		egg_list.add_child(button)
 
-func _render_odds() -> void:
-	var lines: Array[String] = []
+func _on_pack_details_requested(pack_id: String) -> void:
+	_show_pack_details(pack_id)
+
+func _on_egg_entry_pressed(index: int) -> void:
+	_show_egg_details(index)
+
+func _on_odds_button_pressed() -> void:
+	var manager := _get_or_find_popup_manager()
+	if manager == null:
+		return
+	var odds_entries := _build_odds_entries()
+	if odds_entries.is_empty():
+		Eventbus.notification_requested.emit("No hatch odds configured.")
+		return
+	manager.show_hatch_odds(odds_entries, _get_odds_description())
+
+func _show_pack_details(pack_id: String) -> void:
+	var manager := _get_or_find_popup_manager()
+	if manager == null:
+		return
+	var pack_def: Dictionary = Data.egg_pack_definitions.get(pack_id, {})
+	var info_entries: Array = _build_pack_info_entries(pack_id, pack_def)
+	var subtitle := _format_source_label(str(pack_def.get("source", "purchase")))
+	var description := str(pack_def.get("description", ""))
+	if pack_def.is_empty():
+		description = "Unknown pack definition."
+	var payload := {
+		"title": _get_pack_display_name(pack_id),
+		"subtitle": subtitle,
+		"description": description,
+		"info": info_entries,
+		"actions": [],
+	}
+	manager.show_item_details(payload)
+
+func _show_egg_details(index: int) -> void:
+	var manager := _get_or_find_popup_manager()
+	if manager == null or index < 0 or index >= _tokens.size():
+		return
+	var token: Dictionary = _tokens[index]
+	var tier_id: String = str(token.get("tier_id", "meadow"))
+	var tier_data: Dictionary = Data.egg_tier_definitions.get(tier_id, {})
+	var tier_name := str(tier_data.get("display_name", tier_id.capitalize()))
+	var tier_desc := str(tier_data.get("description", ""))
+	var payload := {
+		"title": "%s Egg" % tier_name,
+		"subtitle": "Inventory #%s" % (index + 1),
+		"description": tier_desc,
+		"info": _build_egg_info_entries(token),
+		"actions": [
+			{
+				"label": "Hatch Egg",
+				"callable": Callable(self, "_on_hatch_action_pressed").bind(index),
+			},
+		],
+	}
+	manager.show_item_details(payload)
+
+func _build_pack_info_entries(pack_id: String, pack_def: Dictionary) -> Array:
+	var entries: Array = []
+	entries.append(_create_info_entry("Owned", "x%s" % _get_pack_count(pack_id)))
+	if pack_def.is_empty():
+		entries.append(_create_info_entry("Pack ID", pack_id))
+		return entries
+	var source := str(pack_def.get("source", "purchase"))
+	entries.append(_create_info_entry("Source", _format_source_label(source)))
+	var cost_text := _format_cost_text(pack_def.get("cost", {}))
+	if cost_text != "":
+		entries.append(_create_info_entry("Cost", cost_text))
+	var contains_text := _format_pack_contains_lines(pack_def)
+	if contains_text != "":
+		entries.append(_create_info_entry("Contains", contains_text))
+	var cooldown_hours := float(pack_def.get("cooldown_hours", 0.0))
+	if cooldown_hours > 0.0:
+		entries.append(_create_info_entry("Cooldown", "%.1f hrs" % cooldown_hours))
+	if source == "daily":
+		entries.append(_create_info_entry("Claim Status", _format_claim_status(pack_id)))
+	return entries
+
+func _build_egg_info_entries(token: Dictionary) -> Array:
+	var entries: Array = []
+	var source_id: String = str(token.get("source_pack_id", ""))
+	var source_name := _get_pack_display_name(source_id)
+	if source_name != "":
+		entries.append(_create_info_entry("Source", source_name))
+	var awarded_text := _format_awarded_text(int(token.get("awarded_at_ms", 0)))
+	if awarded_text != "":
+		entries.append(_create_info_entry("Awarded", awarded_text))
+	var locked_species := str(token.get("locked_species_key", ""))
+	if locked_species != "":
+		entries.append(_create_info_entry("Locked Species", locked_species.capitalize()))
+	var token_id := str(token.get("token_id", ""))
+	if token_id != "":
+		entries.append(_create_info_entry("Token ID", token_id))
+	return entries
+
+func _create_info_entry(label: String, value: String) -> Dictionary:
+	return {
+		"label": label,
+		"value": value,
+	}
+
+func _build_odds_entries() -> Array[Dictionary]:
+	var entries: Array[Dictionary] = []
 	var tier_ids: Array = Data.egg_tier_definitions.keys()
 	tier_ids.sort()
 	for tier_id in tier_ids:
@@ -123,13 +231,13 @@ func _render_odds() -> void:
 		if weights.is_empty():
 			continue
 		var display_name := str(tier_data.get("display_name", tier_id.capitalize()))
-		lines.append("[b]%s[/b]" % display_name)
-		var desc: String = tier_data.get("description", "")
-		if desc != "":
-			lines.append("[color=#9ea0a5]%s[/color]" % desc)
+		var description := str(tier_data.get("description", ""))
 		var total_weight: int = 0
 		for item in weights:
 			total_weight += item.get("weight", 0)
+		var lines: Array[String] = []
+		if description != "":
+			lines.append(description)
 		for item in weights:
 			var species_name: String = str(item.get("name", item.get("key", "")))
 			var weight: int = int(item.get("weight", 0))
@@ -137,11 +245,57 @@ func _render_odds() -> void:
 			if total_weight > 0:
 				percent = float(weight) / float(total_weight) * 100.0
 			lines.append("• %s (%.1f%%)" % [species_name, percent])
-		lines.append("")
-	if lines.is_empty():
-		odds_body.text = "No hatch odds configured."
-	else:
-		odds_body.text = "\n".join(lines).strip_edges()
+		entries.append(_create_info_entry(display_name, "\n".join(lines)))
+	return entries
+
+func _update_odds_button_state() -> void:
+	if odds_button == null:
+		return
+	odds_button.disabled = _build_odds_entries().is_empty()
+
+func _get_odds_description() -> String:
+	return "Odds are calculated from live species weights per tier."
+
+func _find_popup_manager() -> PopupWindowManager:
+	var node := get_tree().get_first_node_in_group("popup_manager")
+	return node if node is PopupWindowManager else null
+
+func _get_or_find_popup_manager() -> PopupWindowManager:
+	if _popup_manager != null and is_instance_valid(_popup_manager):
+		return _popup_manager
+	_popup_manager = _find_popup_manager()
+	return _popup_manager
+
+func _format_cost_text(cost: Dictionary) -> String:
+	if cost.is_empty():
+		return ""
+	var parts: Array[String] = []
+	for currency in cost.keys():
+		var amount := int(cost[currency])
+		if amount <= 0:
+			continue
+		parts.append("%s %s" % [amount, currency.capitalize()])
+	return ", ".join(parts)
+
+func _format_source_label(source: String) -> String:
+	match source:
+		"daily":
+			return "Daily Reward"
+		"purchase":
+			return "Shop Purchase"
+		_:
+			return source.capitalize()
+
+func _format_pack_contains_lines(pack_def: Dictionary) -> String:
+	var lines: Array[String] = []
+	for roll in pack_def.get("egg_rolls", []):
+		if roll is Dictionary:
+			var tier_id: String = str(roll.get("tier_id", "meadow"))
+			var count: int = int(roll.get("count", 1))
+			var tier_data: Dictionary = Data.egg_tier_definitions.get(tier_id, {})
+			var tier_name := str(tier_data.get("display_name", tier_id.capitalize()))
+			lines.append("• %dx %s" % [count, tier_name])
+	return "\n".join(lines)
 
 func _format_purchase_label(cost: Dictionary) -> String:
 	if cost.is_empty():
@@ -167,7 +321,7 @@ func _format_pack_contents(pack_def: Dictionary) -> String:
 			entries.append("%dx %s" % [count, tier_name])
 	return ", ".join(entries)
 
-func _format_token_label(token: Dictionary) -> String:
+func _format_token_title(token: Dictionary) -> String:
 	var tier_id: String = str(token.get("tier_id", "meadow"))
 	var tier_data: Dictionary = Data.egg_tier_definitions.get(tier_id, {})
 	var tier_name := str(tier_data.get("display_name", tier_id.capitalize()))
@@ -175,21 +329,25 @@ func _format_token_label(token: Dictionary) -> String:
 	var source_name := _get_pack_display_name(source_id)
 	if source_name == "":
 		return "%s Egg" % tier_name
-	return "%s Egg \n %s" % [tier_name, source_name]
+	return "%s Egg (%s)" % [tier_name, source_name]
 
 func _format_token_tooltip(token: Dictionary) -> String:
 	var awarded_ms: int = int(token.get("awarded_at_ms", 0))
 	var source_id: String = str(token.get("source_pack_id", ""))
 	var source_name := _get_pack_display_name(source_id)
-	var awarded_text := ""
-	if awarded_ms > 0:
-		awarded_text = Time.get_datetime_string_from_unix_time(awarded_ms / 1000, true)
+	var awarded_text := _format_awarded_text(awarded_ms)
 	var lines: Array[String] = []
 	if source_name != "":
 		lines.append("Source: %s" % source_name)
 	if awarded_text != "":
 		lines.append("Awarded: %s" % awarded_text)
 	return "\n".join(lines)
+
+func _format_awarded_text(awarded_ms: int) -> String:
+	if awarded_ms <= 0:
+		return ""
+	var seconds := int(awarded_ms / 1000)
+	return Time.get_datetime_string_from_unix_time(seconds, true)
 
 func _format_claim_status(pack_id: String) -> String:
 	var ready_ms: int = int(_cooldowns.get(pack_id, 0))
@@ -250,6 +408,16 @@ func _on_pack_open_pressed(pack_id: String) -> void:
 	else:
 		Eventbus.notification_requested.emit(result.get("message", "No packs available."))
 
+func _on_hatch_action_pressed(index: int) -> void:
+	if index < 0 or index >= _tokens.size():
+		Eventbus.notification_requested.emit("Egg not available.")
+		return
+	var manager := _get_or_find_popup_manager()
+	if manager:
+		manager.close_item_details()
+	Eventbus.egg_hatch_requested.emit(index)
+	close()
+
 func _get_pack_count(pack_id: String) -> int:
 	return int(_pack_counts.get(pack_id, 0))
 
@@ -263,7 +431,3 @@ func _is_pack_ready(pack_id: String) -> bool:
 		return _player.can_claim_pack(pack_id)
 	var ready_ms: int = int(_cooldowns.get(pack_id, 0))
 	return int(Time.get_unix_time_from_system() * 1000.0) >= ready_ms
-
-func _on_egg_selected(index: int) -> void:
-	Eventbus.egg_hatch_requested.emit(index)
-	close()

@@ -8,7 +8,7 @@ extends MenuDrawer
 @onready var intelligence_value: SegmentedBar = %IntelligenceValue
 @onready var happiness_value: SegmentedBar = %HappinessValue
 @onready var training_status_value: Label = %TrainingStatusValue
-@onready var training_fatigue_value: Label = %TrainingFatigueValue
+@onready var training_fatigue_value: SegmentedBar = %TrainingFatigueValue
 @onready var mood_value: Label = %MoodValue
 @onready var action_value: Label = %ActionValue
 @onready var thought_value: Label = %ThoughtValue
@@ -52,7 +52,8 @@ func _refresh() -> void:
 		intelligence_value.set_value(0)
 		happiness_value.set_value(0)
 		training_status_value.text = "--"
-		training_fatigue_value.text = "--"
+		training_fatigue_value.set_value(0.0)
+		training_fatigue_value.tooltip_text = ""
 		mood_value.text = "--"
 		action_value.text = "--"
 		thought_value.text = "--"
@@ -62,15 +63,14 @@ func _refresh() -> void:
 	life_stage_value.text = focused_creature.current_life_stage
 	mistakes_value.text = str(focused_creature.stats.care_mistakes)
 	traits_value.text = _format_traits(focused_creature.get_trait_snapshot())
-	set_stat_bars()
 	var training_snapshot: Dictionary = focused_creature.get_training_snapshot()
+	set_stat_bars(training_snapshot)
 	training_status_value.text = _format_training_status(training_snapshot)
-	training_fatigue_value.text = _format_training_fatigue(training_snapshot)
 	mood_value.text = focused_creature.get_current_mood_label()
 	action_value.text = focused_creature.get_current_action_label()
 	thought_value.text = focused_creature.get_current_thought()
 
-func set_stat_bars():
+func set_stat_bars(training_snapshot: Dictionary) -> void:
 	var new_str = _format_stat_value(focused_creature.stats.strength, focused_creature.stats.strength_baseline, focused_creature.stats.strength_cap)
 	var new_int = _format_stat_value(focused_creature.stats.intelligence, focused_creature.stats.intelligence_baseline, focused_creature.stats.intelligence_cap)
 	var new_hap = _format_stat_value(focused_creature.stats.happiness, focused_creature.stats.happiness_baseline, focused_creature.stats.happiness_cap)
@@ -78,7 +78,18 @@ func set_stat_bars():
 	strength_value.set_value(float(new_str) / focused_creature.stats.strength_cap) 
 	intelligence_value.set_value(float(new_int) / focused_creature.stats.intelligence_cap)
 	happiness_value.set_value(float(new_hap) / focused_creature.stats.happiness_cap) 
-	
+	_update_training_fatigue_bar(training_snapshot)
+
+func _update_training_fatigue_bar(snapshot: Dictionary) -> void:
+	if snapshot.is_empty():
+		training_fatigue_value.set_value(0.0)
+		training_fatigue_value.tooltip_text = ""
+		return
+	var fatigue: float = max(float(snapshot.get("fatigue", 0.0)), 0.0)
+	var fatigue_max: float = max(float(snapshot.get("fatigue_max", 100.0)), 1.0)
+	var fatigue_ratio: float = clampf(fatigue / fatigue_max, 0.0, 1.0)
+	training_fatigue_value.set_value(fatigue_ratio)
+	training_fatigue_value.tooltip_text = _format_training_fatigue(snapshot)
 
 func _format_stat_value(current: int, baseline: int, cap: int) -> int:
 	var bonus: int = max(current - baseline, 0)

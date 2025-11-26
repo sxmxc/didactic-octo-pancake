@@ -1,5 +1,7 @@
 extends Node2D
 
+const DEFAULT_FOOD_SCENE := preload("res://scenes/food/meat.tscn")
+
 @export var buildable_library : Dictionary = {
 	"BasicNest": preload("res://buildables/nests/nest.tscn"),
 	"BasicFoodBowl": preload("res://buildables/food_containers/food_container.tscn"),
@@ -16,6 +18,47 @@ extends Node2D
 	"ghos": preload("res://resources/creature/data/babies/ghos.tres"),
 	"sprit": preload("res://resources/creature/data/babies/sprit.tres"),
 	"squip": preload("res://resources/creature/data/babies/squip.tres")
+}
+
+@export var food_definitions: Dictionary = {
+	"prime_cut": {
+		"display_name": "Prime Cut",
+		"description": "Butchered protein slabs that refill hunger quickly, build muscle, and harshen moods if overused.",
+		"diet_type": &"meat",
+		"hunger_relief": 45,
+		"stat_effects": {
+			&"strength": 2,
+			&"happiness": -1,
+		},
+		"scene": DEFAULT_FOOD_SCENE,
+		"tint": Color("f7a399"),
+	},
+	"leafy_bundle": {
+		"display_name": "Leafy Bundle",
+		"description": "Hydrating veggie wraps that sharpen the mind but leave carnivores unsatisfied.",
+		"diet_type": &"veggie",
+		"hunger_relief": 35,
+		"stat_effects": {
+			&"intelligence": 2,
+			&"strength": -1,
+			&"happiness": 1,
+		},
+		"scene": DEFAULT_FOOD_SCENE,
+		"tint": Color("8cd47e"),
+	},
+	"balanced_bento": {
+		"display_name": "Balanced Bento",
+		"description": "Omnivore-focused sampler that steadies mood while nudging every stat upward a bit.",
+		"diet_type": &"omnivore",
+		"hunger_relief": 40,
+		"stat_effects": {
+			&"strength": 1,
+			&"intelligence": 1,
+			&"happiness": 2,
+		},
+		"scene": DEFAULT_FOOD_SCENE,
+		"tint": Color("ffd480"),
+	},
 }
 
 @export var egg_tier_definitions : Dictionary = {

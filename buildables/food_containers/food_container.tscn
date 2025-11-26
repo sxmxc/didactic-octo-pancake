@@ -11,11 +11,12 @@ region = Rect2(192, 0, 32, 32)
 atlas = ExtResource("3_kdko0")
 region = Rect2(128, 0, 64, 64)
 
-[node name="FoodContainer" type="Node2D"]
+[node name="FoodContainer" type="Node2D" groups=["food_container"]]
 script = ExtResource("1_whm1k")
 buildable_name = "Basic Food Bowl"
 buildable_key = "BasicFoodBowl"
 buildable_cost = 2000
+tile_id = 2
 menu_icon_texture = SubResource("AtlasTexture_c5y6m")
 
 [node name="Sprite2D" type="TextureRect" parent="."]

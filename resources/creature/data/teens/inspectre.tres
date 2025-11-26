@@ -8,6 +8,7 @@
 script = ExtResource("2_v7ser")
 species_name = "Inspectre"
 spritesheet = ExtResource("3_e0u3g")
+diet = "omnivore"
 requirements = {
 "care_mistakes": 0,
 "happiness": 0,

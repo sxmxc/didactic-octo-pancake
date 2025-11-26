@@ -14,6 +14,7 @@ egg_tier = &"phantom"
 hatch_weight = 3
 species_name = "Ghos"
 spritesheet = ExtResource("3_x0bpa")
+diet = "omnivore"
 requirements = {
 "care_mistakes": 0,
 "happiness": 0,

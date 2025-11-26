@@ -1,0 +1,32 @@
+[gd_resource type="TileSet" load_steps=8 format=3 uid="uid://b4djkktwkwybf"]
+
+[ext_resource type="PackedScene" uid="uid://cyv1ty5tg8nyl" path="res://buildables/nests/nest.tscn" id="1_xmbme"]
+[ext_resource type="PackedScene" uid="uid://bfew2qfxgyl8b" path="res://buildables/food_containers/food_container.tscn" id="2_nuxb8"]
+[ext_resource type="PackedScene" uid="uid://djun7vdnudas3" path="res://buildables/training/gym_pod.tscn" id="3_xabr2"]
+[ext_resource type="PackedScene" uid="uid://cu6r0aoqrt5ck" path="res://buildables/training/study_desk.tscn" id="4_xr8nq"]
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_3rh1b"]
+tile_data = PackedInt32Array(0, 1, 0, 65536, 1, 1, 131072, 1, 2, 1, 65537, 0, 65537, 65537, 1, 131073, 65537, 2)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vgmys"]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_xabr2"]
+resource_name = "Buildables"
+scenes/1/scene = ExtResource("1_xmbme")
+scenes/2/scene = ExtResource("2_nuxb8")
+scenes/3/scene = ExtResource("3_xabr2")
+scenes/4/scene = ExtResource("4_xr8nq")
+
+[resource]
+tile_size = Vector2i(64, 64)
+physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_vgmys")
+terrain_set_0/mode = 0
+terrain_set_0/terrain_0/name = "Dirt"
+terrain_set_0/terrain_0/color = Color(0, 0.501961, 0.00784314, 1)
+terrain_set_0/terrain_1/name = "Grass"
+terrain_set_0/terrain_1/color = Color(0.5, 0.4375, 0.25, 1)
+sources/1 = SubResource("TileSetScenesCollectionSource_xabr2")
+pattern_0 = SubResource("TileMapPattern_3rh1b")

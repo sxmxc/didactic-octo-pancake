@@ -9,7 +9,7 @@ func _ready() -> void:
 	_rng.randomize()
 
 func tick(actor, blackboard: Blackboard) -> int:
-	if !actor.world_map:
+	if !actor.navigation_tilemap:
 		return FAILURE
 	if actor.current_life_stage == "egg":
 		return FAILURE
@@ -45,7 +45,7 @@ func tick(actor, blackboard: Blackboard) -> int:
 	return RUNNING
 
 func _build_waypoints(actor: Creature) -> Array[Vector2]:
-	var used_rect: Rect2i = actor.world_map.get_used_rect()
+	var used_rect: Rect2i = actor.navigation_tilemap.get_used_rect()
 	var steps: int = _rng.randi_range(1, 3)
 	if used_rect.size == Vector2i.ZERO:
 		return _build_fallback_points(actor, steps)
@@ -65,7 +65,7 @@ func _build_waypoints(actor: Creature) -> Array[Vector2]:
 				_rng.randi_range(used_rect.position.x + margin.x, used_rect.position.x + used_rect.size.x - margin.x),
 				_rng.randi_range(used_rect.position.y + margin.y, used_rect.position.y + used_rect.size.y - margin.y)
 			)
-			candidate = actor.world_map.map_to_local(random_cell)
+			candidate = actor.navigation_tilemap.map_to_local(random_cell)
 		points.append(candidate)
 	return points
 
@@ -76,14 +76,14 @@ func _build_fallback_points(actor: Creature, steps: int) -> Array[Vector2]:
 			_rng.randf_range(actor.global_position.x - actor.movement_range, actor.global_position.x + actor.movement_range),
 			_rng.randf_range(actor.global_position.y - actor.movement_range, actor.global_position.y + actor.movement_range)
 		)
-		var map_coords: Vector2i = actor.world_map.local_to_map(actor.world_map.to_local(random_target))
-		points.append(actor.world_map.map_to_local(map_coords))
+		var map_coords: Vector2i = actor.navigation_tilemap.local_to_map(actor.navigation_tilemap.to_local(random_target))
+		points.append(actor.navigation_tilemap.map_to_local(map_coords))
 	return points
 
 func _point_near(actor: Creature, origin: Vector2, radius: float, used_rect: Rect2i, margin: Vector2i) -> Vector2:
-	var clamped_origin_cell: Vector2i = actor.world_map.local_to_map(actor.world_map.to_local(origin))
+	var clamped_origin_cell: Vector2i = actor.navigation_tilemap.local_to_map(actor.navigation_tilemap.to_local(origin))
 	var random_cell := Vector2i(
 		clampi(clamped_origin_cell.x + _rng.randi_range(-int(radius / 32.0), int(radius / 32.0)), used_rect.position.x + margin.x, used_rect.position.x + used_rect.size.x - margin.x),
 		clampi(clamped_origin_cell.y + _rng.randi_range(-int(radius / 32.0), int(radius / 32.0)), used_rect.position.y + margin.y, used_rect.position.y + used_rect.size.y - margin.y)
 	)
-	return actor.world_map.map_to_local(random_cell)
+	return actor.navigation_tilemap.map_to_local(random_cell)

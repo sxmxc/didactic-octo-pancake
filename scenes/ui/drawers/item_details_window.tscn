@@ -1,0 +1,75 @@
+[gd_scene load_steps=5 format=3 uid="uid://b4d5jkg504b4o"]
+
+[ext_resource type="Script" uid="uid://b1pm2vkuh85qw" path="res://scenes/ui/drawers/item_details_window.gd" id="1_kg0r2"]
+[ext_resource type="Theme" uid="uid://pweu1m7k1kkf" path="res://assets/themes/item_details_window_theme.tres" id="1_ngcq4"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6ipd7"]
+font_size = 56
+
+[sub_resource type="LabelSettings" id="LabelSettings_jj4mc"]
+font_size = 32
+font_color = Color(0.047058824, 0.94509804, 1, 1)
+
+[node name="ItemDetailsWindow" type="Window"]
+snap_2d_transforms_to_pixel = true
+oversampling_override = 1.0
+title = "Item Details"
+initial_position = 1
+size = Vector2i(720, 640)
+unresizable = true
+content_scale_aspect = 1
+content_scale_stretch = 1
+theme = ExtResource("1_ngcq4")
+script = ExtResource("1_kg0r2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Title"
+label_settings = SubResource("LabelSettings_6ipd7")
+
+[node name="SubtitleLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.8, 0.95, 1)
+theme_override_font_sizes/font_size = 14
+text = "Subtitle"
+label_settings = SubResource("LabelSettings_jj4mc")
+
+[node name="InfoList" type="VBoxContainer" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Description"
+fit_content = true
+scroll_active = false
+
+[node name="ActionsRow" type="HBoxContainer" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 2

@@ -1,0 +1,70 @@
+[gd_scene load_steps=3 format=3 uid="uid://bu7i8nu4pw353"]
+
+[ext_resource type="Script" uid="uid://djcpb6locobam" path="res://scenes/ui/drawers/hatch_odds_window.gd" id="1_scp"]
+[ext_resource type="Theme" path="res://assets/themes/item_details_window_theme.tres" id="1_thm"]
+
+[node name="HatchOddsWindow" type="Window"]
+snap_2d_transforms_to_pixel = true
+oversampling_override = 1.0
+title = "Hatch Odds"
+initial_position = 1
+size = Vector2i(640, 720)
+unresizable = true
+content_scale_aspect = 1
+content_scale_stretch = 1
+theme = ExtResource("1_thm")
+script = ExtResource("1_scp")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Hatch Odds"
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "Odds are calculated from live species weights per tier."
+fit_content = true
+scroll_active = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="InfoList" type="VBoxContainer" parent="MarginContainer/VBox/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="ActionsRow" type="HBoxContainer" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="CloseButton" type="Button" parent="MarginContainer/VBox/ActionsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Close"

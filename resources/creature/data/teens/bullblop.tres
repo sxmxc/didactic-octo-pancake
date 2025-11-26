@@ -8,3 +8,4 @@
 script = ExtResource("2_88acu")
 species_name = "Bullblop"
 spritesheet = ExtResource("3_7mxtd")
+diet = "veggie"

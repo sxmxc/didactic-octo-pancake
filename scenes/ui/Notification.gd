@@ -1,7 +1,7 @@
 extends Panel
 class_name Notification
 
-@onready var label: Label = %Label
+@onready var label: RichTextLabel = %Label
 @export var duration: int = 10
 # Called when the node enters the scene tree for the first time.
 func _ready():

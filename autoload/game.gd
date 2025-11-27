@@ -54,7 +54,7 @@ func register_world(world_instance: GameWorld) -> void:
 	if result.get("ok", false) and result.has("data"):
 		var payload: Dictionary = result["data"]
 		_apply_rng_state(payload.get("rng_state", {}))
-		loaded = _apply_saved_state(payload)
+		loaded = await _apply_saved_state(payload)
 	else:
 		var error: String = result.get("error", "")
 		if error != "" and error != "missing":
@@ -133,7 +133,7 @@ func _apply_rng_state(state: Dictionary) -> void:
 func _apply_saved_state(payload: Dictionary) -> bool:
 	if !_world.has_method("apply_saved_state"):
 		return false
-	var applied: bool = _world.apply_saved_state(payload)
+	var applied: bool = await _world.apply_saved_state(payload)
 	if applied:
 		_run_idle_catchup(payload)
 	return applied

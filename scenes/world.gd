@@ -15,34 +15,56 @@ const BED_MATCH_TOLERANCE: float = 8.0
 @onready var drop: CanvasLayer = $Drop
 @onready var drop_area: Control = get_node("%DropArea")
 @onready var world_map_layer: TileMapLayer = %WorldMapLayer
-@onready var tile_map_layer: TileMapLayer = %TileMapLayer
+@onready var terrain_map_layer: TileMapLayer = %TerrainMapLayer
 @onready var ui: WorldUI = %UI
 
 var world_clock: Timer
 var namegen: NameGenerator = NameGenerator.new()
 var _last_tick_epoch_ms: int = 0
 var _is_simulation_running: bool = false
-var _base_world_map_data: PackedByteArray = PackedByteArray()
+var _camera_service: CameraPriorityService
+var _cameras: WorldCameras
+var _placement: WorldPlacement
+var _simulation: WorldSimulation
+var _persistence: WorldPersistence
 
 func _ready():
 	randomize()
 	Eventbus.buildable_drag_started.connect(drop.show)
 	Eventbus.buildable_drag_ended.connect(drop.hide)
-	Eventbus.focus_view_requested.connect(_on_focus_view_requested)
-	Eventbus.world_view_requested.connect(_on_world_view_requested)
-	Eventbus.build_view_requested.connect(_on_build_view_requested)
 	Eventbus.new_creature_requested.connect(_on_new_creature_requested)
 	Eventbus.feed_request.connect(_on_feed_requested)
 	Eventbus.egg_hatch_requested.connect(_on_egg_hatch_requested)
+	_camera_service = CameraPriorityService.new()
+	add_child(_camera_service)
+	_cameras = WorldCameras.new()
+	_cameras.camera_service = _camera_service
+	_cameras.world_camera = world_camera
+	_cameras.build_camera = build_camera
+	_cameras.ui = ui
+	add_child(_cameras)
+	Eventbus.focus_view_requested.connect(_cameras.on_focus_view_requested)
+	Eventbus.world_view_requested.connect(_cameras.on_world_view_requested)
+	Eventbus.build_view_requested.connect(_cameras.on_build_view_requested)
+	_placement = WorldPlacement.new()
+	_placement.world_map_layer = world_map_layer
+	_placement.drop_area = drop_area
+	_placement.bed_match_tolerance = BED_MATCH_TOLERANCE
+	add_child(_placement)
 	drop_area.world_map_layer = world_map_layer
 	if world_map_layer != null:
-		_base_world_map_data = world_map_layer.tile_map_data.duplicate()
-		world_map_layer.update_internals()
-		call_deferred("_sync_base_buildables")
-	world_clock = Timer.new()
-	world_clock.wait_time = tick_frequency
-	world_clock.timeout.connect(_on_timer_timeout)
-	add_child(world_clock)
+		_placement.cache_map_baseline()
+		_placement.call_deferred("finalize_map_baseline")
+	_simulation = WorldSimulation.new()
+	add_child(_simulation)
+	world_clock = _simulation.setup_timer(self, tick_frequency)
+	_persistence = WorldPersistence.new()
+	_persistence.player = player
+	_persistence.world_map_layer = world_map_layer
+	_persistence.drop_area = drop_area
+	_persistence.placement = _placement
+	_persistence.creature_scene = creature_scene
+	add_child(_persistence)
 	SoundManager.play_music(Data.music_library["cozy"], 1)
 	SoundManager.track_finished.connect(_queue_next_track)
 	Game.register_world(self)
@@ -53,62 +75,49 @@ func _process(_delta):
 func start_new_session() -> void:
 	Tracer.info("Bootstrapping new world session")
 	_reset_world_state()
-	if world_map_layer:
-		world_map_layer.update_internals()
-		_sync_base_buildables()
+	if _placement and !_placement.map_initialized:
+		_placement.finalize_map_baseline()
+		_placement.sync_base_buildables()
 	_bootstrap_player_profile()
 	Game.sync_egg_rewards(player)
 	_hatch_starter_creature()
 	_last_tick_epoch_ms = Time.get_ticks_msec()
 
 func begin_simulation() -> void:
-	if world_clock == null or _is_simulation_running:
-		return
-	world_clock.wait_time = tick_frequency
-	world_clock.start()
-	_is_simulation_running = true
-	_last_tick_epoch_ms = Time.get_ticks_msec()
+	if _simulation:
+		_simulation.begin_simulation(self)
 
 func prepare_for_save() -> void:
-	_last_tick_epoch_ms = Time.get_ticks_msec()
+	if _persistence:
+		_persistence.prepare_for_save(self)
 
 func serialize_state() -> Dictionary:
-	var payload: Dictionary = {
-		"world": {
-			"tick_frequency": tick_frequency,
-			"last_tick_epoch_ms": _last_tick_epoch_ms,
-			"player": _serialize_player(),
-			"buildables": _serialize_buildables(),
-			"creatures": _serialize_creatures(),
-		}
-	}
-	return payload
+	if _persistence:
+		return _persistence.serialize_state(self)
+	return {}
 
 func apply_saved_state(payload: Dictionary) -> bool:
-	var world_data: Dictionary = payload.get("world", {})
-	if world_data.is_empty():
-		return false
-	_reset_world_state()
-	tick_frequency = int(world_data.get("tick_frequency", tick_frequency))
-	if world_clock:
-		world_clock.wait_time = tick_frequency
-	_restore_player(world_data.get("player", {}))
-	_restore_buildables(world_data.get("buildables", []))
-	for creature_data in world_data.get("creatures", []):
-		_restore_creature(creature_data)
-	_last_tick_epoch_ms = int(world_data.get("last_tick_epoch_ms", Time.get_ticks_msec()))
-	return true
+	if _persistence:
+		return await _persistence.apply_saved_state(self, payload)
+	return false
 
 func apply_idle_ticks(tick_count: int) -> void:
-	if tick_count <= 0:
-		return
-	for _i in range(tick_count):
-		for creature in _get_active_creatures():
-			creature._on_world_tick()
-	_last_tick_epoch_ms = Time.get_ticks_msec()
+	if _simulation:
+		_simulation.apply_idle_ticks(self, tick_count)
 
 func spawn_creature(creature: Creature, track_save: bool = true) -> Creature:
-	var target: Node2D = _find_available_nest()
+	if _placement and !_placement.map_initialized and world_map_layer:
+		_placement.finalize_map_baseline()
+	if _placement:
+		_placement.sync_base_buildables()
+	_placement.log_nest_context("spawn_creature_pre_lookup")
+	var target: Node2D = _placement.find_available_nest() if _placement else null
+	if target == null:
+		Tracer.warn("No nests found on first pass; ensuring fallback nests")
+		_placement.ensure_base_nests()
+		_placement.sync_base_buildables()
+		_placement.log_nest_context("spawn_creature_retry")
+		target = _placement.find_available_nest() if _placement else null
 	if target == null:
 		Tracer.info("No available nests")
 		Eventbus.notification_requested.emit("No available nests.")
@@ -123,33 +132,6 @@ func spawn_creature(creature: Creature, track_save: bool = true) -> Creature:
 func _on_timer_timeout() -> void:
 	_last_tick_epoch_ms = Time.get_ticks_msec()
 	tick.emit()
-
-func _on_focus_view_requested(creature: Creature):
-	Tracer.info("Focus view request recieved for " + creature.name)
-	for cam in PhantomCameraManager.get_phantom_camera_2ds():
-		cam.set_priority(0)
-	creature.camera.set_priority(20)
-	creature.camera.follow_target = creature
-	creature.camera.follow_mode = PhantomCamera2D.FollowMode.SIMPLE
-	ui.set_focus(creature)
-	Eventbus.current_energy_updated.emit()
-	Eventbus.current_hunger_updated.emit()
-	ui.current_creature_stats.visible = true
-
-func _on_world_view_requested():
-	Tracer.info("World view request received")
-	if !world_camera.priority >= 20:
-		ui.current_creature_stats.visible = false
-		for cam in PhantomCameraManager.get_phantom_camera_2ds():
-			cam.set_priority(0)
-		world_camera.set_priority(20)
-
-func _on_build_view_requested():
-	Tracer.info("Build view request recieved")
-	if !build_camera.priority >= 20:
-		for cam in PhantomCameraManager.get_phantom_camera_2ds():
-			cam.set_priority(0)
-		build_camera.set_priority(20)
 
 func _on_new_creature_requested():
 	Tracer.info("New creature request received")
@@ -205,15 +187,21 @@ func _finalize_hatch(hatch_result: Dictionary) -> void:
 		new_creature.queue_free()
 
 func _reset_world_state() -> void:
-	if world_clock:
-		world_clock.stop()
+	if _simulation:
+		_simulation.stop_simulation(self)
 	_is_simulation_running = false
+	if _placement and !_placement.map_initialized and world_map_layer:
+		_placement.cache_map_baseline()
+		_placement.finalize_map_baseline()
 	_teardown_creatures()
-	_clear_dynamic_buildables()
-	drop_area.clear_world_items()
+	if _placement:
+		_placement.clear_dynamic_buildables()
+	if drop_area:
+		drop_area.clear_world_items()
 	if world_bb:
 		world_bb.blackboard = {}
-	_sync_base_buildables()
+	if _placement:
+		_placement.sync_base_buildables()
 
 func _teardown_creatures() -> void:
 	for nest in get_tree().get_nodes_in_group("nest"):
@@ -223,17 +211,6 @@ func _teardown_creatures() -> void:
 		if node is Creature:
 			node.queue_free()
 	player.reset_owned_creatures()
-
-func _clear_dynamic_buildables() -> void:
-	if world_map_layer == null:
-		return
-	world_map_layer.clear()
-	for child in world_map_layer.get_children():
-		if child is Buildable:
-			drop_area.forget_buildable(child)
-			child.queue_free()
-	_restore_base_tiles()
-	_sync_base_buildables()
 
 func _bootstrap_player_profile() -> void:
 	player.reset_owned_creatures()
@@ -248,6 +225,10 @@ func _bootstrap_player_profile() -> void:
 	player.open_pack("brood_bundle", false)
 
 func _hatch_starter_creature() -> void:
+	if _placement and !_placement.map_initialized:
+		Tracer.warn("Map baseline not initialized; deferring starter hatch")
+		call_deferred("_hatch_starter_creature")
+		return
 	if player.get_egg_token_count() <= 0:
 		player.grant_pack("daily_single", 1, false, false)
 		player.open_pack("daily_single", false)
@@ -296,14 +277,16 @@ func _create_random_creature(species_override: Species = null) -> Creature:
 	return new_creature
 
 func _attach_creature_to_nest(creature: Creature, nest: Nest) -> void:
-	world_map_layer.add_child(creature)
-	creature.register_tilemap(tile_map_layer)
+	if world_map_layer:
+		world_map_layer.add_child(creature)
+	creature.register_tilemap(terrain_map_layer)
 	creature.register_blackboard(world_bb)
 	if creature.has_method("set_world_tick_interval"):
 		creature.set_world_tick_interval(float(tick_frequency))
 	nest.owned_by_creature = creature
 	creature.global_position = nest.global_position
-	world_clock.timeout.connect(creature._on_world_tick)
+	if _simulation:
+		_simulation.register_creature_for_ticks(self, creature)
 
 func _sync_creature_blackboard(creature: Creature, nest: Nest) -> void:
 	if world_bb == null:
@@ -314,171 +297,6 @@ func _sync_creature_blackboard(creature: Creature, nest: Nest) -> void:
 		world_bb.set_value(creature.name + "_bed", nest.position)
 	Eventbus.current_energy_updated.emit()
 	Eventbus.current_hunger_updated.emit()
-
-func _find_available_nest() -> Node2D:
-	for node in get_tree().get_nodes_in_group("nest"):
-		if node.owned_by_creature == null:
-			return node
-	return null
-
-func _find_nest_at_position(target_position: Vector2) -> Node2D:
-	for node in get_tree().get_nodes_in_group("nest"):
-		if !node.has_method("owned_by_creature"):
-			continue
-		if node.global_position.distance_to(target_position) <= BED_MATCH_TOLERANCE:
-			return node
-	return null
-
-func _serialize_player() -> Dictionary:
-	return {
-		"wallet": player.get_wallet_snapshot(),
-		"known_buildables": player.get_known_buildable_keys(),
-		"egg_inventory": player.get_egg_inventory_snapshot(),
-	}
-
-func _serialize_buildables() -> Array:
-	var entries: Array = []
-	if world_map_layer == null:
-		return entries
-	for child in world_map_layer.get_children():
-		if child is Buildable:
-			var buildable: Buildable = child
-			var cell: Vector2i = world_map_layer.local_to_map(world_map_layer.to_local(buildable.global_position))
-			entries.append({
-				"buildable_key": buildable.buildable_key,
-				"position": buildable.global_position,
-				"cell": cell,
-				"tile_source_id": buildable.tile_source_id,
-				"tile_id": buildable.tile_id,
-				"tile_atlas_coords": buildable.tile_atlas_coords,
-			})
-	return entries
-
-func _build_bed_lookup() -> Dictionary:
-	var lookup: Dictionary = {}
-	for nest in get_tree().get_nodes_in_group("nest"):
-		if nest.has_method("owned_by_creature") and nest.owned_by_creature:
-			lookup[nest.owned_by_creature] = nest.global_position
-	return lookup
-
-func _serialize_creatures() -> Array:
-	var entries: Array = []
-	var bed_lookup: Dictionary = _build_bed_lookup()
-	for node in get_tree().get_nodes_in_group("Creature"):
-		if node is Creature:
-			var creature: Creature = node
-			var creature_payload: Dictionary = creature.get_save_data()
-			creature_payload["bed_position"] = bed_lookup.get(creature, creature.global_position)
-			entries.append(creature_payload)
-	return entries
-
-func _restore_player(data: Dictionary) -> void:
-	player.reset_owned_creatures()
-	player.clear_known_buildables()
-	player.set_wallet_from_save(data.get("wallet", {}))
-	var known_buildables: Array = data.get("known_buildables", [])
-	for key in known_buildables:
-		player.learn_buildable_by_key(str(key), false)
-	player.set_egg_inventory_from_save(data.get("egg_inventory", {}))
-	Game.sync_egg_rewards(player)
-
-func _restore_buildables(entries: Array) -> void:
-	if world_map_layer == null:
-		return
-	world_map_layer.clear()
-	for child in world_map_layer.get_children():
-		if child is Buildable:
-			child.queue_free()
-	_restore_base_tiles()
-	world_map_layer.update_internals()
-	drop_area.clear_world_items()
-	for entry in entries:
-		var buildable_key: String = entry.get("buildable_key", "")
-		if buildable_key == "":
-			continue
-		var template: Buildable = _instantiate_buildable_template(buildable_key)
-		var tile_source_id: int = int(entry.get("tile_source_id", template.tile_source_id if template != null else 1))
-		var tile_id: int = int(entry.get("tile_id", template.tile_id if template != null else -1))
-		var tile_atlas_coords: Vector2i = entry.get("tile_atlas_coords", template.tile_atlas_coords if template != null else Vector2i.ZERO)
-		if tile_id < 0:
-			if template != null:
-				template.queue_free()
-			continue
-		var cell: Vector2i = entry.get("cell", Vector2i.ZERO)
-		if !(cell is Vector2i):
-			if entry.has("position"):
-				cell = world_map_layer.local_to_map(world_map_layer.to_local(entry["position"]))
-			else:
-				cell = Vector2i.ZERO
-		world_map_layer.set_cell(cell, tile_source_id, tile_atlas_coords, tile_id)
-		call_deferred("_register_tile_buildable", cell)
-		if template != null:
-			template.queue_free()
-	_sync_base_buildables()
-
-func _restore_creature(data: Dictionary) -> void:
-	if creature_scene == null:
-		return
-	var creature: Creature = creature_scene.instantiate()
-	creature.apply_save_data(data)
-	var nest: Node2D = _assign_creature_to_bed(creature, data.get("bed_position", null))
-	if nest == null:
-		creature.queue_free()
-		return
-	if data.has("global_position"):
-		creature.global_position = data["global_position"]
-	_sync_creature_blackboard(creature, nest)
-	player.adopt_creature(creature, false)
-
-func _assign_creature_to_bed(creature: Creature, bed_position: Variant) -> Node2D:
-	var target: Node2D = null
-	if bed_position is Vector2:
-		target = _find_nest_at_position(bed_position)
-	if target == null:
-		target = _find_available_nest()
-	if target == null:
-		Eventbus.notification_requested.emit("No available nests.")
-		return null
-	_attach_creature_to_nest(creature, target)
-	return target
-
-func _restore_base_tiles() -> void:
-	if world_map_layer == null:
-		return
-	if _base_world_map_data.is_empty():
-		world_map_layer.clear()
-	else:
-		world_map_layer.tile_map_data = _base_world_map_data.duplicate()
-	world_map_layer.update_internals()
-
-func _sync_base_buildables() -> void:
-	if world_map_layer == null:
-		return
-	drop_area.clear_world_items()
-	for child in world_map_layer.get_children():
-		if child is Buildable:
-			drop_area.register_buildable(child)
-
-func _instantiate_buildable_template(buildable_key: String) -> Buildable:
-	if buildable_key == "" or !Data.buildable_library.has(buildable_key):
-		return null
-	return Data.buildable_library[buildable_key].instantiate()
-
-func _register_tile_buildable(cell: Vector2i) -> void:
-	await get_tree().process_frame
-	var instance := _find_buildable_at_cell(cell)
-	if instance != null:
-		drop_area.register_buildable(instance)
-
-func _find_buildable_at_cell(cell: Vector2i) -> Buildable:
-	var expected_position := world_map_layer.to_global(world_map_layer.map_to_local(cell))
-	var tolerance := float(Vector2(world_map_layer.tile_set.tile_size).length()) if world_map_layer.tile_set else 64.0
-	for child in world_map_layer.get_children():
-		if child is Buildable:
-			var buildable: Buildable = child
-			if buildable.global_position.distance_to(expected_position) <= tolerance:
-				return buildable
-	return null
 
 func _get_active_creatures() -> Array[Creature]:
 	var creatures: Array[Creature] = []

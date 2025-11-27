@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://boqc2y4amjeqp"]
+[gd_scene load_steps=37 format=3 uid="uid://boqc2y4amjeqp"]
 
 [ext_resource type="Script" uid="uid://pcqxihactgb7" path="res://scenes/creature/creature.gd" id="1_4jpvp"]
 [ext_resource type="Script" uid="uid://bb0t2ovl7wifo" path="res://addons/beehave/nodes/beehave_tree.gd" id="2_6f3ey"]
@@ -25,6 +25,7 @@
 [ext_resource type="Script" uid="uid://ccipwllycmnp0" path="res://creature_ai/conditions/ShouldTrainCondition.gd" id="21_wjqcx"]
 [ext_resource type="Script" uid="uid://b3a3b54f68b4" path="res://creature_ai/actions/ApproachTrainingStationAction.gd" id="22_7bvtg"]
 [ext_resource type="Script" uid="uid://cdnem332ovimd" path="res://creature_ai/actions/TrainAtStationAction.gd" id="23_sj8bk"]
+[ext_resource type="Script" uid="uid://d0hy7ode6uh7o" path="res://scenes/creature/controllers/training_controller.gd" id="training_controller"]
 
 [sub_resource type="Resource" id="Resource_ve8t1"]
 script = ExtResource("2_odx68")
@@ -124,10 +125,13 @@ movement_speed = 30.0
 movement_range = 200
 stats = SubResource("Resource_ve8t1")
 
+[node name="TrainingController" type="Node" parent="."]
+script = ExtResource("training_controller")
+
 [node name="BeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("2_6f3ey")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@28954")
+blackboard = NodePath("@Node@21462")
 actor = NodePath("..")
 
 [node name="Either" type="Node" parent="BeehaveTree"]
@@ -223,6 +227,7 @@ shape = SubResource("CircleShape2D_b7s5w")
 [node name="Camera2D" type="Node2D" parent="." node_paths=PackedStringArray("follow_target") groups=["CreatureCamera"]]
 physics_interpolation_mode = 1
 top_level = true
+position = Vector2(135, 240)
 script = ExtResource("15_q5slx")
 follow_mode = 2
 follow_target = NodePath("..")

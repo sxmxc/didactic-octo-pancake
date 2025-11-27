@@ -103,6 +103,7 @@ render_target_update_mode = 4
 
 [node name="CurrentCreatureStats" type="NinePatchRect" parent="SubViewportContainer/SubViewport"]
 unique_name_in_owner = true
+visible = false
 texture_filter = 3
 anchors_preset = 5
 anchor_left = 0.5

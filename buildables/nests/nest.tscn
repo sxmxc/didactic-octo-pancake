@@ -16,8 +16,8 @@ script = ExtResource("1_m4b6s")
 buildable_name = "Basic Nest"
 buildable_key = "BasicNest"
 buildable_cost = 100
-tile_id = 1
 menu_icon_texture = SubResource("AtlasTexture_5wdn3")
+tile_id = 1
 
 [node name="Sprite2D" type="TextureRect" parent="."]
 z_index = 1

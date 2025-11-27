@@ -44,71 +44,12 @@ const CARE_MISTAKE_RULES: Dictionary = {
 	},
 }
 
-const DEFAULT_STAGE_CARE_PROFILE: Dictionary = {
-	"hunger": 1.0,
-	"energy": 1.0,
-	"sleep_energy": 1.0,
-	"sleep_hunger_fraction": 0.5,
-}
-
-const LIFE_STAGE_CARE_PROFILE: Dictionary = {
-	"egg": {
-		"hunger": 0.0,
-		"energy": 0.0,
-		"sleep_energy": 0.0,
-		"sleep_hunger_fraction": 0.0,
-	},
-	"baby": {
-		"hunger": 1.2,
-		"energy": 1.1,
-		"sleep_energy": 0.9,
-		"sleep_hunger_fraction": 0.35,
-	},
-	"teen": {
-		"hunger": 1.0,
-		"energy": 1.0,
-		"sleep_energy": 1.0,
-		"sleep_hunger_fraction": 0.45,
-	},
-	"adult": {
-		"hunger": 0.8,
-		"energy": 0.9,
-		"sleep_energy": 1.1,
-		"sleep_hunger_fraction": 0.6,
-	},
-}
-
 const TRAINING_STAT_KEYS: Array[StringName] = [
 	&"strength",
 	&"intelligence",
 	&"happiness",
 ]
-const TRAINING_GAIN_PER_MINUTE: Dictionary = {
-	"strength": 4.0,
-	"intelligence": 3.5,
-	"happiness": 2.5,
-}
-const TRAINING_XP_PER_POINT: Dictionary = {
-	"strength": 6.0,
-	"intelligence": 5.0,
-	"happiness": 4.0,
-}
-const TRAINING_DECAY_PER_HOUR: Dictionary = {
-	"strength": 1.25,
-	"intelligence": 1.0,
-	"happiness": 0.75,
-}
 const TRAINING_DECAY_GRACE_HOURS: float = 0.5
-const TRAINING_HUNGER_COST_PER_MINUTE: Dictionary = {
-	"strength": 3.0,
-	"intelligence": 2.0,
-	"happiness": 1.5,
-}
-const TRAINING_ENERGY_COST_PER_MINUTE: Dictionary = {
-	"strength": 6.0,
-	"intelligence": 4.0,
-	"happiness": 3.0,
-}
 const TRAINING_FATIGUE_PER_MINUTE: float = 12.0
 const TRAINING_FATIGUE_RECOVERY_PER_HOUR: float = 18.0
 const TRAINING_MAX_FATIGUE: float = 100.0
@@ -153,81 +94,6 @@ const TRAIT_BIRTH_SLOTS: Array[Dictionary] = [
 	},
 ]
 
-const ACTION_METADATA: Dictionary = {
-	"idle": {
-		"label": "Daydreaming",
-		"thoughts": [
-			"Blink... blink... oh hi.",
-			"I swear that cloud winked at me.",
-			"Is it nap time again already?"
-		],
-		"emotion": "idle",
-	},
-	"wander": {
-		"label": "Exploring",
-		"thoughts": [
-			"Perimeter looks secure. Probably.",
-			"New pebble acquired! Treasure?",
-			"If I walk in circles I'll make crop art."
-		],
-		"emotion": "happy",
-	},
-	"seek_food": {
-		"label": "Hunting snacks",
-		"thoughts": [
-			"If it's crunchy I'm in.",
-			"My nose says the buffet is *that* way.",
-			"Please let this be pizza."
-		],
-		"emotion": "hungry",
-	},
-	"eat": {
-		"label": "Eating",
-		"thoughts": [
-			"Chomp city, population: me.",
-			"Compliments to the chef (it's me).",
-			"Culinary excellence unlocked."
-		],
-		"emotion": "love",
-	},
-	"heading_home": {
-		"label": "Heading to bed",
-		"thoughts": [
-			"Calling dibs on the cozy corner.",
-			"Bedtime pilgrimage commencing.",
-			"Hope the sheets are still toasty."
-		],
-		"emotion": "idle",
-	},
-	"sleep": {
-		"label": "Sleeping",
-		"thoughts": [
-			"Dreaming of endless buffets.",
-			"Whale songs + white noise = perfection.",
-			"zzz... (do not disturb)."
-		],
-		"emotion": "sleepy",
-	},
-	"groom": {
-		"label": "Self-care",
-		"thoughts": [
-			"Can't go on stage with messy spikes.",
-			"Polish, rinse, repeat.",
-			"Glow-up loading..."
-		],
-		"emotion": "love",
-	},
-	"tidy_nest": {
-		"label": "Tidying nest",
-		"thoughts": [
-			"Crumbs begone!",
-			"Interior design montage music intensifies.",
-			"This place is going to sparkle."
-		],
-		"emotion": "happy",
-	}
-}
-
 @export var movement_speed: float = 20
 @export var movement_range: int = 500
 
@@ -239,6 +105,7 @@ const ACTION_METADATA: Dictionary = {
 }
 var current_life_stage = "egg"
 @export var seconds_to_age : int = age_chart[current_life_stage]
+@export var creature_config: CreatureConfig = preload("res://resources/creature_configs/default_creature_config.tres")
 @export var stats : CreatureStats
 @export_range(0.5, 8.0, 0.1, "suffix:s") var emotion_linger_seconds: float = 3.0
 @export_range(0, 100, 1) var grooming_relief_per_action: int = 40
@@ -253,6 +120,7 @@ var current_life_stage = "egg"
 }
 @export var thought_bubble_scene: PackedScene = preload("res://scenes/creature/thoughts/thought_bubble.tscn")
 @export var species : Species
+@export var training_controller: TrainingController
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 @onready var bt: BeehaveTree = get_node("BeehaveTree")
 @onready var egg_sprite: Sprite2D = get_node("EggSprite")
@@ -272,8 +140,6 @@ var _pending_energy_drain: float = 0.0
 var _pending_sleep_energy: float = 0.0
 var _pending_grooming_need: float = 0.0
 var _pending_nest_decay: float = 0.0
-var _pending_training_hunger: float = 0.0
-var _pending_training_energy: float = 0.0
 var current_action_id: StringName = &"idle"
 var current_action_label: String = "Idling"
 var current_thought: String = "Just hanging out."
@@ -292,6 +158,12 @@ func _ready() -> void:
 		stats = CreatureStats.new()
 	else:
 		stats = stats.duplicate(true) as CreatureStats
+	if creature_config == null:
+		creature_config = CreatureConfig.new()
+	if training_controller == null and has_node("TrainingController"):
+		training_controller = get_node("TrainingController")
+	if training_controller:
+		training_controller.setup(self)
 	_initialize_training_defaults()
 	_reset_trait_modifiers()
 	_trait_rng.randomize()
@@ -529,9 +401,11 @@ func _update_life_stage_progress() -> void:
 		_age_up()
 
 func _get_stage_care_profile() -> Dictionary:
-	if LIFE_STAGE_CARE_PROFILE.has(current_life_stage):
-		return LIFE_STAGE_CARE_PROFILE[current_life_stage]
-	return DEFAULT_STAGE_CARE_PROFILE
+	if creature_config and creature_config.life_stage_care_profile.has(current_life_stage):
+		return creature_config.life_stage_care_profile[current_life_stage]
+	if creature_config:
+		return creature_config.default_stage_care_profile
+	return {}
 
 func _ticks_per_hour() -> float:
 	return SECONDS_PER_HOUR / max(_tick_interval_seconds, 0.1)
@@ -634,61 +508,28 @@ func _apply_nest_decay_tick() -> void:
 	_pending_nest_decay -= decay_steps
 
 func begin_training_session(stat_key: StringName, duration_seconds: float, intensity: float = 1.0, station_id: StringName = StringName()) -> bool:
-	if stats == null or current_life_stage == "egg":
-		return false
-	if !TRAINING_STAT_KEYS.has(stat_key):
-		return false
-	if duration_seconds <= 0.0:
-		return false
-	if stats.training_fatigue >= TRAINING_MAX_FATIGUE:
-		return false
-	if _is_training_active():
-		return false
-	stats.active_training_stat = stat_key
-	stats.active_training_seconds_remaining = duration_seconds
-	stats.active_training_intensity = clampf(intensity, TRAINING_MIN_INTENSITY, TRAINING_MAX_INTENSITY)
-	stats.last_training_station_id = station_id
-	stats.training_rest_seconds = 0.0
-	stats.last_training_epoch_ms = Time.get_ticks_msec()
-	Eventbus.training_session_started.emit(self, stat_key, duration_seconds)
-	return true
+	if training_controller:
+		return training_controller.begin_training_session(stat_key, duration_seconds, intensity, station_id)
+	return false
 
 func cancel_training_session() -> void:
-	if !_is_training_active():
-		return
-	var stat_key: StringName = stats.active_training_stat
-	stats.active_training_stat = StringName()
-	stats.active_training_seconds_remaining = 0.0
-	stats.active_training_intensity = 0.0
-	Eventbus.training_session_cancelled.emit(self, stat_key)
+	if training_controller:
+		training_controller.cancel_training_session()
 
 func is_training_active() -> bool:
+	if training_controller:
+		return training_controller.is_training_active()
 	return _is_training_active()
 
 func get_training_bonus(stat_key: StringName) -> int:
+	if training_controller:
+		return training_controller.get_training_bonus(stat_key)
 	return max(_get_stat_value(stat_key) - _get_stat_baseline(stat_key), 0)
 
 func get_training_snapshot() -> Dictionary:
-	if stats == null:
-		return {}
-	var per_stat: Dictionary = {}
-	for stat_key in TRAINING_STAT_KEYS:
-		per_stat[stat_key] = {
-			"current": _get_stat_value(stat_key),
-			"baseline": _get_stat_baseline(stat_key),
-			"cap": _get_stat_cap(stat_key),
-			"bonus": max(_get_stat_value(stat_key) - _get_stat_baseline(stat_key), 0),
-		}
-	return {
-		"active_stat": stats.active_training_stat,
-		"seconds_remaining": stats.active_training_seconds_remaining,
-		"intensity": stats.active_training_intensity,
-		"fatigue": stats.training_fatigue,
-		"fatigue_max": TRAINING_MAX_FATIGUE,
-		"rest_seconds": stats.training_rest_seconds,
-		"grace_seconds": TRAINING_DECAY_GRACE_HOURS * SECONDS_PER_HOUR,
-		"stats": per_stat,
-	}
+	if training_controller:
+		return training_controller.get_training_snapshot()
+	return {}
 
 func get_trait_snapshot() -> Array:
 	if stats == null:
@@ -755,130 +596,41 @@ func remove_trait(trait_id: StringName, reason: String = "scripted_remove") -> b
 	return false
 
 func _apply_training_tick() -> void:
-	if !_is_training_active():
-		return
-	if stats == null:
-		return
-	var stat_key: StringName = stats.active_training_stat
-	if !TRAINING_STAT_KEYS.has(stat_key):
-		cancel_training_session()
-		return
-	var seconds_delta: float = max(_tick_interval_seconds, 0.1)
-	stats.active_training_seconds_remaining = max(stats.active_training_seconds_remaining - seconds_delta, 0.0)
-	var minutes_delta: float = seconds_delta / 60.0
-	var xp_rate: float = TRAINING_GAIN_PER_MINUTE.get(stat_key, 0.0)
-	if xp_rate > 0.0:
-		var fatigue_penalty: float = lerpf(1.0, 0.35, clampf(stats.training_fatigue / TRAINING_MAX_FATIGUE, 0.0, 1.0))
-		var trait_multiplier: float = float(_trait_modifiers.get("training_gain", 1.0))
-		var xp_gain: float = xp_rate * minutes_delta * clampf(stats.active_training_intensity, TRAINING_MIN_INTENSITY, TRAINING_MAX_INTENSITY) * fatigue_penalty * trait_multiplier
-		_apply_training_gain(stat_key, xp_gain)
-		stats.last_training_epoch_ms = Time.get_ticks_msec()
-	stats.training_rest_seconds = 0.0
-	_apply_training_resource_costs(stat_key, minutes_delta)
-	_apply_training_fatigue(minutes_delta, stats.active_training_intensity)
-	if should_abort_training_for_needs():
-		cancel_training_session()
-		return
-	Eventbus.training_progress_updated.emit(self, stat_key, _build_training_progress_payload(stat_key))
-	if stats.active_training_seconds_remaining <= 0.01:
-		_complete_training_session(stat_key)
+	if training_controller:
+		training_controller.apply_training_tick(_tick_interval_seconds, _trait_modifiers)
 
 func _apply_training_resource_costs(stat_key: StringName, minutes_delta: float) -> void:
-	var hunger_rate: float = TRAINING_HUNGER_COST_PER_MINUTE.get(stat_key, 0.0)
-	if hunger_rate > 0.0:
-		_pending_training_hunger += hunger_rate * minutes_delta * clampf(stats.active_training_intensity, TRAINING_MIN_INTENSITY, TRAINING_MAX_INTENSITY)
-		var hunger_steps: int = int(_pending_training_hunger)
-		if hunger_steps > 0:
-			stats.current_hunger = clampi(stats.current_hunger + hunger_steps, 0, stats.max_hunger)
-			_pending_training_hunger -= hunger_steps
-	var energy_rate: float = TRAINING_ENERGY_COST_PER_MINUTE.get(stat_key, 0.0)
-	if energy_rate > 0.0:
-		_pending_training_energy += energy_rate * minutes_delta * clampf(stats.active_training_intensity, TRAINING_MIN_INTENSITY, TRAINING_MAX_INTENSITY)
-		var energy_steps: int = int(_pending_training_energy)
-		if energy_steps > 0:
-			stats.current_energy = clampi(stats.current_energy - energy_steps, 0, stats.max_energy)
-			_pending_training_energy -= energy_steps
+	if training_controller:
+		training_controller._apply_training_resource_costs(stat_key, minutes_delta)
 
 func _apply_training_fatigue(minutes_delta: float, intensity: float) -> void:
-	var trait_multiplier: float = float(_trait_modifiers.get("training_fatigue", 1.0))
-	var fatigue_gain: float = TRAINING_FATIGUE_PER_MINUTE * minutes_delta * clampf(intensity, TRAINING_MIN_INTENSITY, TRAINING_MAX_INTENSITY) * trait_multiplier
-	if fatigue_gain <= 0.0:
-		return
-	stats.training_fatigue = clampf(stats.training_fatigue + fatigue_gain, 0.0, TRAINING_MAX_FATIGUE)
+	if training_controller:
+		training_controller._apply_training_fatigue(minutes_delta, intensity, _trait_modifiers)
 
 func should_abort_training_for_needs() -> bool:
-	if stats == null:
-		return false
-	if stats.max_hunger > 0:
-		var hunger_ratio: float = float(stats.current_hunger) / float(stats.max_hunger)
-		if hunger_ratio >= TRAINING_ABORT_MAX_HUNGER_RATIO:
-			return true
-	if stats.max_energy > 0:
-		var energy_ratio: float = float(stats.current_energy) / float(stats.max_energy)
-		if energy_ratio <= TRAINING_ABORT_MIN_ENERGY_RATIO:
-			return true
-	var fatigue_ratio: float = stats.training_fatigue / max(TRAINING_MAX_FATIGUE, 0.01)
-	if fatigue_ratio >= TRAINING_ABORT_MAX_FATIGUE_RATIO:
-		return true
+	if training_controller:
+		return training_controller.should_abort_training_for_needs()
 	return false
 
 func _complete_training_session(stat_key: StringName) -> void:
-	stats.active_training_stat = StringName()
-	stats.active_training_seconds_remaining = 0.0
-	stats.active_training_intensity = 0.0
-	Eventbus.training_session_completed.emit(self, stat_key)
+	if training_controller:
+		training_controller._complete_training_session(stat_key)
 
 func _apply_training_decay_tick() -> void:
-	if stats == null or current_life_stage == "egg":
-		return
-	if _is_training_active():
-		return
-	stats.training_rest_seconds = clampf(stats.training_rest_seconds + _tick_interval_seconds, 0.0, SECONDS_PER_HOUR * 24.0)
-	_recover_training_fatigue()
-	if stats.training_rest_seconds < TRAINING_DECAY_GRACE_HOURS * SECONDS_PER_HOUR:
-		return
-	for stat_key in TRAINING_STAT_KEYS:
-		var current_value: int = _get_stat_value(stat_key)
-		var baseline_value: int = _get_stat_baseline(stat_key)
-		if current_value <= baseline_value:
-			continue
-		var per_hour: float = TRAINING_DECAY_PER_HOUR.get(stat_key, 0.0)
-		if per_hour <= 0.0:
-			continue
-		var decay_points: float = per_hour * (_tick_interval_seconds / SECONDS_PER_HOUR)
-		_apply_training_decay(stat_key, decay_points)
+	if training_controller:
+		training_controller.apply_training_decay_tick(_tick_interval_seconds)
 
 func _recover_training_fatigue() -> void:
-	if stats.training_fatigue <= 0.0:
-		return
-	var recovery: float = TRAINING_FATIGUE_RECOVERY_PER_HOUR * (_tick_interval_seconds / SECONDS_PER_HOUR)
-	if recovery <= 0.0:
-		return
-	stats.training_fatigue = clampf(stats.training_fatigue - recovery, 0.0, TRAINING_MAX_FATIGUE)
+	if training_controller:
+		training_controller._recover_training_fatigue(_tick_interval_seconds)
 
 func _apply_training_gain(stat_key: StringName, xp_gain: float) -> void:
-	if xp_gain <= 0.0 or stats == null:
-		return
-	var xp_per_point: float = TRAINING_XP_PER_POINT.get(stat_key, 0.0)
-	if xp_per_point <= 0.0:
-		return
-	var point_gain: float = xp_gain / xp_per_point
-	var progress: float = _get_training_progress(stat_key)
-	progress += point_gain
-	var whole_points: int = int(progress)
-	_set_training_progress(stat_key, progress - whole_points)
-	if whole_points > 0:
-		_increase_stat(stat_key, whole_points)
+	if training_controller:
+		training_controller._apply_training_gain(stat_key, xp_gain)
 
 func _apply_training_decay(stat_key: StringName, decay_points: float) -> void:
-	if decay_points <= 0.0:
-		return
-	var progress: float = _get_decay_progress(stat_key)
-	progress += decay_points
-	var whole_points: int = int(progress)
-	_set_decay_progress(stat_key, progress - whole_points)
-	if whole_points > 0:
-		_decrease_stat(stat_key, whole_points)
+	if training_controller:
+		training_controller._apply_training_decay(stat_key, decay_points)
 
 func _increase_stat(stat_key: StringName, amount: int) -> void:
 	if amount <= 0:
@@ -1128,7 +880,7 @@ func show_thought(thought: String, reveal_immediately: bool = true) -> void:
 
 func set_behavior_state(action_id: StringName, options: Dictionary = {}) -> void:
 	var action_key: String = String(action_id)
-	var meta: Dictionary = ACTION_METADATA.get(action_key, {})
+	var meta: Dictionary = _get_action_metadata(action_key)
 	current_action_id = action_id
 	current_action_label = options.get("label", meta.get("label", action_key.capitalize()))
 	var thought_override: String = options.get("thought", "")
@@ -1145,6 +897,11 @@ func set_behavior_state(action_id: StringName, options: Dictionary = {}) -> void
 		show_emotion(emotion_name)
 	_last_behavior_change = Time.get_ticks_msec() / 1000.0
 	Eventbus.creature_activity_changed.emit(self)
+
+func _get_action_metadata(action_key: String) -> Dictionary:
+	if creature_config and creature_config.action_metadata.has(action_key):
+		return creature_config.action_metadata[action_key]
+	return {}
 
 func get_current_action_label() -> String:
 	if current_life_stage == "egg":

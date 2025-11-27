@@ -1,23 +1,17 @@
 meta:
   version: 1
-  last_updated: 2025-11-25
-  notes: >-
-	Structured backlog with priorities, blockers, and subtasks so agents can
-	quickly gauge sequencing constraints.
+  last_updated: 2025-11-27
+  notes: Structured backlog with priorities, blockers, and subtasks so agents can quickly gauge sequencing constraints.
 areas:
   - id: core_mechanics
-	title: Core mechanics
-	tasks:
-	  - id: core.menu_bar_unification
-		title: Unified menu bar + drawer profiles
-		priority: critical
-		status: done
-		owner: unassigned
-		problem: >-
-		  The shared `MenuBar` + drawer system now drives the world-view HUD, but focus view
-		  still relies on the legacy `focus_view_menu.tscn`, and documentation hasn't caught up.
-          We need to finish migrating focus view to the new profile workflow and capture the
-          architecture so future buttons/drawers are easy to add.
+    title: Core mechanics
+    tasks:
+      - id: core.menu_bar_unification
+        title: Unified menu bar + drawer profiles
+        priority: critical
+        status: done
+        owner: unassigned
+        problem: The shared `MenuBar` + drawer system now drives the world-view HUD, but focus view still relies on the legacy `focus_view_menu.tscn`, and documentation hasn't caught up. We need to finish migrating focus view to the new profile workflow and capture the architecture so future buttons/drawers are easy to add.
         entrypoints:
           - scenes/ui/ui.tscn (SubViewport hierarchy + HUDMenuBar owner)
           - scenes/ui/menu_bar.tscn / scenes/ui/menu_bar.gd
@@ -28,31 +22,19 @@ areas:
           - TODO.yaml
         blockers: []
         subtasks:
-          - description: ✅ Author `scenes/ui/menu_bar.tscn` with shared button row, ButtonGroup toggles,
-              drawer host, and save/zoom signals (world profile live).
-          - description: ✅ Create drawer scenes (creature list, egg catalog, build shop, food bag,
-              creature details) extending `MenuDrawer`, hooked under the SubViewport.
-          - description: ✅ Implement profile data/API so the bar swaps button sets; world profile is
-              wired, focus profile still needs migration onto HUDMenuBar.
-          - description: ✅ Wire buttons to animated drawers (single-open enforcement, icon tweens,
-              build drag auto-close) and remove redundant world menu logic.
-          - description: ✅ Document the new HUD architecture + usage in README/TODO once focus migration
-              is complete.
-          - description: ✅ Migrate focus view to the shared `MenuBar` profile (zoom + creature details
-              buttons, drawer content) and delete the old `focus_view_menu` scene/scripts.
-        definition_of_done: >-
-          A single menu_bar scene drives both world/focus HUDs, buttons toggle drawers cleanly,
-          save appears only in world view, zoom only in focus view, documentation covers the flow,
-          and the legacy menus are removed.
+          - description: "\u2705 Author `scenes/ui/menu_bar.tscn` with shared button row, ButtonGroup toggles, drawer host, and save/zoom signals (world profile live)."
+          - description: "\u2705 Create drawer scenes (creature list, egg catalog, build shop, food bag, creature details) extending `MenuDrawer`, hooked under the SubViewport."
+          - description: "\u2705 Implement profile data/API so the bar swaps button sets; world profile is wired, focus profile still needs migration onto HUDMenuBar."
+          - description: "\u2705 Wire buttons to animated drawers (single-open enforcement, icon tweens, build drag auto-close) and remove redundant world menu logic."
+          - description: "\u2705 Document the new HUD architecture + usage in README/TODO once focus migration is complete."
+          - description: "\u2705 Migrate focus view to the shared `MenuBar` profile (zoom + creature details buttons, drawer content) and delete the old `focus_view_menu` scene/scripts."
+        definition_of_done: A single menu_bar scene drives both world/focus HUDs, buttons toggle drawers cleanly, save appears only in world view, zoom only in focus view, documentation covers the flow, and the legacy menus are removed.
       - id: core.behavior_tree_action_expansion
         title: Behavior tree action expansion
         priority: medium
         status: done
         owner: unassigned
-        problem: >-
-          The current creature behavior tree only contains a handful of basic actions (idle,
-          sleep, eat, wander), so creatures never perform richer interactions like grooming,
-          social play, nest maintenance, or curiosity-driven exploration.
+        problem: The current creature behavior tree only contains a handful of basic actions (idle, sleep, eat, wander), so creatures never perform richer interactions like grooming, social play, nest maintenance, or curiosity-driven exploration.
         entrypoints:
           - creature_ai/actions/* (BeeHave action scripts)
           - creature_ai/conditions/* (BeeHave condition scripts)
@@ -60,27 +42,17 @@ areas:
           - scenes/world.gd (world events that should trigger new actions)
         blockers: []
         subtasks:
-          - description: ✅ Audited the Sleep/Eat/Wander-only BeeHave tree and defined grooming + nest
-              decay stats so the missing scenarios and blackboard data were captured in README.md.
-          - description: ✅ Added `NeedsGroomingCondition`/`GroomSelfAction` and `IsNestDirtyCondition`/
-              `CleanNestAction` so creatures perform self-care before falling back to roaming.
-          - description: ✅ Synced the new stats/blackboard values via `scenes/creature/Creature.gd` with
-              exported tuning knobs for grooming relief and nest cleanliness recovery.
-          - description: ✅ Documented action priorities, triggers, and side effects in README.md plus
-              this TODO entry so future designers can extend the tree confidently.
-        definition_of_done: >-
-          Creatures regularly demonstrate the new actions in sandbox playtests, blackboard data is
-          clearly defined, and documentation lists available actions plus how to extend them.
+          - description: "\u2705 Audited the Sleep/Eat/Wander-only BeeHave tree and defined grooming + nest decay stats so the missing scenarios and blackboard data were captured in README.md."
+          - description: "\u2705 Added `NeedsGroomingCondition`/`GroomSelfAction` and `IsNestDirtyCondition`/ `CleanNestAction` so creatures perform self-care before falling back to roaming."
+          - description: "\u2705 Synced the new stats/blackboard values via `scenes/creature/Creature.gd` with exported tuning knobs for grooming relief and nest cleanliness recovery."
+          - description: "\u2705 Documented action priorities, triggers, and side effects in README.md plus this TODO entry so future designers can extend the tree confidently."
+        definition_of_done: Creatures regularly demonstrate the new actions in sandbox playtests, blackboard data is clearly defined, and documentation lists available actions plus how to extend them.
       - id: core.egg_inventory_weighted_spawns
         title: Egg inventory + weighted hatching
         priority: medium
         status: done
         owner: unassigned
-        problem: >-
-          Eggs currently spawn randomly without player agency, but design now calls for
-          pack-like drops (1/3/5 bundles) that players earn via daily/periodic rewards
-          or purchase with soft currency, then consume to spawn new creatures using
-          weighted RNG per egg tier.
+        problem: Eggs currently spawn randomly without player agency, but design now calls for pack-like drops (1/3/5 bundles) that players earn via daily/periodic rewards or purchase with soft currency, then consume to spawn new creatures using weighted RNG per egg tier.
         entrypoints:
           - autoload/data.gd (inventory + currency definitions)
           - autoload/game.gd (reward cadence + egg consumption flow)
@@ -90,33 +62,18 @@ areas:
           - README.md / TODO.yaml (document pack naming + acquisition rules)
         blockers: []
         subtasks:
-          - description: ✅ Introduced `resources/eggs/egg_inventory.gd` and rewired `Player`
-              to serialize pack counts, claim timers, and tiered egg tokens instead of the
-              old free-form array payload.
-          - description: ✅ Defined Daily Meadow Drop, Brood Bundle, and Nursery Crate packs
-              (counts, tiers, cooldowns, gold costs) plus Meadow/Tidepool/Phantom tier metadata
-              directly in `autoload/data.gd`, anchored to the new `egg_tier`/`hatch_weight`
-              exports on every baby species resource.
-          - description: ✅ Updated `autoload/game.gd`/`scenes/world.gd` so daily rewards are
-              delivered via `Game.sync_egg_rewards()`, new creatures only spawn by
-              consuming tokens, and failed spawns automatically restore the egg.
-          - description: ✅ Rebuilt `scenes/ui/drawers/egg_catalog_drawer.*` into the live
-              pack/inventory drawer (claim, purchase, open, hatch odds) so designers no
-              longer rely on the legacy world-view debug catalog.
-          - description: ✅ Documented the pack economy in `README.md`/`TODO.yaml` so future
-              contributors know how to extend packs, tiers, and UI hooks.
-        definition_of_done: >-
-          Eggs no longer appear for free; players earn/stock egg tokens via login rewards or
-          purchases, inventory counts gate spawns, and weighted RNG tables determine hatch
-          results with clear documentation.
+          - description: "\u2705 Introduced `resources/eggs/egg_inventory.gd` and rewired `Player` to serialize pack counts, claim timers, and tiered egg tokens instead of the old free-form array payload."
+          - description: "\u2705 Defined Daily Meadow Drop, Brood Bundle, and Nursery Crate packs (counts, tiers, cooldowns, gold costs) plus Meadow/Tidepool/Phantom tier metadata directly in `autoload/data.gd`, anchored to the new `egg_tier`/`hatch_weight` exports on every baby species resource."
+          - description: "\u2705 Updated `autoload/game.gd`/`scenes/world.gd` so daily rewards are delivered via `Game.sync_egg_rewards()`, new creatures only spawn by consuming tokens, and failed spawns automatically restore the egg."
+          - description: "\u2705 Rebuilt `scenes/ui/drawers/egg_catalog_drawer.*` into the live pack/inventory drawer (claim, purchase, open, hatch odds) so designers no longer rely on the legacy world-view debug catalog."
+          - description: "\u2705 Documented the pack economy in `README.md`/`TODO.yaml` so future contributors know how to extend packs, tiers, and UI hooks."
+        definition_of_done: Eggs no longer appear for free; players earn/stock egg tokens via login rewards or purchases, inventory counts gate spawns, and weighted RNG tables determine hatch results with clear documentation.
       - id: core.stat_training_loops
         title: Stat training loops
         priority: high
         status: done
         owner: unassigned
-        problem: >-
-          Creatures can lose hunger/energy over time but have no way to raise
-          strength, intelligence, or other stats.
+        problem: Creatures can lose hunger/energy over time but have no way to raise strength, intelligence, or other stats.
         entrypoints:
           - scenes/world.gd (world tick + event wiring)
           - scenes/creature/Creature.gd (stat container + behavior tree integration)
@@ -126,67 +83,52 @@ areas:
         blockers:
           - sim.training_payoff_model
         subtasks:
-          - description: ✅ Authored Gym Pod + Study Desk training buildables, registered them via autoload/data.gd, and exposed them in the build drawer.
-          - description: ✅ Added a BeeHave branch (`ShouldTrainCondition`, `ApproachTrainingStationAction`, `TrainAtStationAction`) so idle creatures seek nearby stations, walk to them, and emit the Eventbus training lifecycle.
-          - description: ✅ Hooked TrainingStation nodes into `Creature.begin_training_session()` so stats climb while draining hunger/energy/fatigue per tick.
-          - description: ✅ Forwarded training progress through Eventbus/Creature snapshots so HUD drawers reflect multiple concurrent sessions.
-        definition_of_done: >-
-          Stats visibly increase after training, UI reflects progress, and the system
-          works for any number of creatures.
+          - description: "\u2705 Authored Gym Pod + Study Desk training buildables, registered them via autoload/data.gd, and exposed them in the build drawer."
+          - description: "\u2705 Added a BeeHave branch (`ShouldTrainCondition`, `ApproachTrainingStationAction`, `TrainAtStationAction`) so idle creatures seek nearby stations, walk to them, and emit the Eventbus training lifecycle."
+          - description: "\u2705 Hooked TrainingStation nodes into `Creature.begin_training_session()` so stats climb while draining hunger/energy/fatigue per tick."
+          - description: "\u2705 Forwarded training progress through Eventbus/Creature snapshots so HUD drawers reflect multiple concurrent sessions."
+        definition_of_done: Stats visibly increase after training, UI reflects progress, and the system works for any number of creatures.
       - id: core.free_camera_focus_mode
         title: World tap-to-zoom free camera
         priority: medium
+        status: done
+        owner: unassigned
+        problem: World view only supports fixed focus targets, so players can't tap a point on the map to inspect it with a free camera. We need a creature-view-style zoom that follows any tapped tile with manual pan/zoom controls.
+        entrypoints:
+          - scenes/world.gd (tap detection + camera transitions)
+          - scenes/ui/ui.tscn (new HUD buttons for zoom in/out/exit)
+          - scenes/ui/menu_bar.gd (profile switching)
+          - autoload/eventbus.gd (signals for entering/exiting free camera)
+        blockers: []
+        subtasks:
+          - description: Detect taps on the world map that should enter a free-camera mode centered on that location instead of forcing a creature focus.
+          - description: Add HUD buttons (return to world, zoom in, zoom out) that display only in the free-camera profile and wire them into the same HUD/menu workflow as other modes.
+          - description: Implement touch panning + zoom controls (pinch or button-driven) with safe limits while keeping standard world/focus modes unchanged.
+          - description: Emit/document new Eventbus signals so other systems know when the camera enters or exits this free mode.
+        definition_of_done: Tapping any walkable area enters a smooth free camera with dedicated zoom controls, touch panning, and a clear button to return to world view, without affecting the existing creature-focus workflow.
+      - id: core.hud_creature_transparency
+        title: HUD transparency over creatures
+        priority: low
+        status: in_progress
+        owner: unassigned
+        problem: HUD elements can fully cover creatures when they walk underneath (menu bar excluded), making it hard to see their animations or status.
+        entrypoints:
+          - scenes/ui/ui.tscn (HUD root)
+          - scenes/ui/hud/* (status widgets that need fading)
+          - scenes/creature/creature.gd (position data)
+          - autoload/eventbus.gd (signals if needed)
+        blockers: []
+        subtasks:
+          - description: Detect when a creature overlaps HUD widgets (excluding the menu bar) in screen space and flag those widgets as obstructed.
+          - description: Tween/fade obstructed HUD elements to higher transparency while a creature is underneath, restoring opacity afterward.
+          - description: Document how future HUD widgets can opt into/out of this behavior.
+        definition_of_done: HUD controls (other than the menu bar) automatically fade when a creature passes beneath them and return to normal afterward, with reusable detection logic and docs.
+      - id: core.creature_training_shortcuts
+        title: Creature view training shortcuts
+        priority: medium
         status: todo
         owner: unassigned
-        problem: >-
-		  World view only supports fixed focus targets, so players can't tap a point on the
-		  map to inspect it with a free camera. We need a creature-view-style zoom that
-		  follows any tapped tile with manual pan/zoom controls.
-		entrypoints:
-		  - scenes/world.gd (tap detection + camera transitions)
-		  - scenes/ui/ui.tscn (new HUD buttons for zoom in/out/exit)
-		  - scenes/ui/menu_bar.gd (profile switching)
-		  - autoload/eventbus.gd (signals for entering/exiting free camera)
-		blockers: []
-		subtasks:
-		  - description: Detect taps on the world map that should enter a free-camera mode centered on that location instead of forcing a creature focus.
-		  - description: Add HUD buttons (return to world, zoom in, zoom out) that display only in the free-camera profile and wire them into the same HUD/menu workflow as other modes.
-		  - description: Implement touch panning + zoom controls (pinch or button-driven) with safe limits while keeping standard world/focus modes unchanged.
-		  - description: Emit/document new Eventbus signals so other systems know when the camera enters or exits this free mode.
-		definition_of_done: >-
-		  Tapping any walkable area enters a smooth free camera with dedicated zoom controls,
-		  touch panning, and a clear button to return to world view, without affecting the
-		  existing creature-focus workflow.
-	  - id: core.hud_creature_transparency
-		title: HUD transparency over creatures
-		priority: low
-		status: todo
-		owner: unassigned
-		problem: >-
-		  HUD elements can fully cover creatures when they walk underneath (menu bar excluded),
-		  making it hard to see their animations or status.
-		entrypoints:
-		  - scenes/ui/ui.tscn (HUD root)
-		  - scenes/ui/hud/* (status widgets that need fading)
-		  - scenes/creature/creature.gd (position data)
-		  - autoload/eventbus.gd (signals if needed)
-		blockers: []
-		subtasks:
-		  - description: Detect when a creature overlaps HUD widgets (excluding the menu bar) in screen space and flag those widgets as obstructed.
-		  - description: Tween/fade obstructed HUD elements to higher transparency while a creature is underneath, restoring opacity afterward.
-		  - description: Document how future HUD widgets can opt into/out of this behavior.
-		definition_of_done: >-
-		  HUD controls (other than the menu bar) automatically fade when a creature passes
-		  beneath them and return to normal afterward, with reusable detection logic and docs.
-	  - id: core.creature_training_shortcuts
-		title: Creature view training shortcuts
-		priority: medium
-		status: todo
-		owner: unassigned
-		problem: >-
-		  Even with training stations, players can't command the focused creature to begin a
-          workout—they must wait for AI to wander over. Creature view needs explicit buttons
-          for strength/intelligence training.
+        problem: "Even with training stations, players can't command the focused creature to begin a workout\u2014they must wait for AI to wander over. Creature view needs explicit buttons for strength/intelligence training."
         entrypoints:
           - scenes/ui/ui.tscn / scenes/ui/menu_bar.tscn (focus mode button row)
           - scenes/ui/drawers/creature_details_drawer.* (training info)
@@ -197,20 +139,14 @@ areas:
         subtasks:
           - description: Add two focus-view buttons (Train Strength / Train Intelligence) that appear for the focused creature and dispatch commands to the world.
           - description: Implement helpers that locate the nearest matching TrainingStation and call `Creature.begin_training_session()` with the right stat/intensity.
-          - description: Emit the same style of notification as “No available nests/food bowls” when no appropriate station exists so players understand the failure.
-        definition_of_done: >-
-          Players can tap dedicated focus-view shortcuts to send the current creature to the
-          nearest strength or intelligence station; if none exist, a toast explains why. The
-          command immediately kicks off training without waiting for idle AI loops.
+          - description: "Emit the same style of notification as \u201CNo available nests/food bowls\u201D when no appropriate station exists so players understand the failure."
+        definition_of_done: Players can tap dedicated focus-view shortcuts to send the current creature to the nearest strength or intelligence station; if none exist, a toast explains why. The command immediately kicks off training without waiting for idle AI loops.
       - id: core.dietary_food_system
         title: Diet types + food effects
         priority: high
         status: done
         owner: unassigned
-        problem: >-
-          Every creature eats the same placeholder food so hunger relief is trivial and there are no stat
-          tradeoffs. We need explicit diets (meat, veggie, omnivore), typed food resources, and feeding rules
-          that impact stats so care choices matter.
+        problem: Every creature eats the same placeholder food so hunger relief is trivial and there are no stat tradeoffs. We need explicit diets (meat, veggie, omnivore), typed food resources, and feeding rules that impact stats so care choices matter.
         entrypoints:
           - resources/creature/species.gd
           - resources/creature/data/**
@@ -224,21 +160,17 @@ areas:
           - TODO.yaml
         blockers: []
         subtasks:
-          - description: ✅ Add a diet enum/field to species definitions in `resources/creature/species.gd` and retrofit every `.tres` in `resources/creature/data/**` so each creature declares meat, veggie, or omnivore.
-          - description: ✅ Author multiple food resources (meat cuts, veggie bundles, balanced meals) inside `autoload/data.gd`/`scenes/food/food.gd` with hunger relief values plus stat buffs/debuffs designers can tune.
-          - description: ✅ Update feeding flows (`scenes/world.gd`, Player helpers, Food Bag drawer) to enforce diet compatibility, surface warnings, and apply the configured stat effects or penalties.
-          - description: ✅ Document diet rules, food stats, and extension guidelines in README.md/TODO.yaml so future contributors can add new foods confidently.
-        definition_of_done: >-
-          Species advertise diets, foods are typed with gameplay effects, feeding enforces compatibility with
-          UI feedback, and documentation covers how to tune/extend the system.
+          - description: "\u2705 Add a diet enum/field to species definitions in `resources/creature/species.gd` and retrofit every `.tres` in `resources/creature/data/**` so each creature declares meat, veggie, or omnivore."
+          - description: "\u2705 Author multiple food resources (meat cuts, veggie bundles, balanced meals) inside `autoload/data.gd`/`scenes/food/food.gd` with hunger relief values plus stat buffs/debuffs designers can tune."
+          - description: "\u2705 Update feeding flows (`scenes/world.gd`, Player helpers, Food Bag drawer) to enforce diet compatibility, surface warnings, and apply the configured stat effects or penalties."
+          - description: "\u2705 Document diet rules, food stats, and extension guidelines in README.md/TODO.yaml so future contributors can add new foods confidently."
+        definition_of_done: Species advertise diets, foods are typed with gameplay effects, feeding enforces compatibility with UI feedback, and documentation covers how to tune/extend the system.
       - id: core.food_bowl_variants
         title: Food bowl variety + capacity rules
         priority: medium
         status: todo
         owner: unassigned
-        problem: >-
-          Only one generic bowl exists and it holds unlimited, mixed foods, so diet rules and resource
-          planning cannot exist. Bowls should be typed per food category with explicit capacity.
+        problem: Only one generic bowl exists and it holds unlimited, mixed foods, so diet rules and resource planning cannot exist. Bowls should be typed per food category with explicit capacity.
         entrypoints:
           - buildables/food_containers/food_container.tscn
           - buildables/food_containers/food_container.gd
@@ -255,9 +187,7 @@ areas:
           - description: Update `buildables/food_containers/food_container.gd` and placement logic so bowls only accept their configured food type, enforce one type per bowl, and respect serving capacity with user feedback.
           - description: Surface bowl capacities/types in HUD drawers (`scenes/ui/drawers/build_shop_drawer.*`, `food_bag_drawer.*`) and placement previews so players understand restrictions before crafting/placing.
           - description: Document bowl upgrade paths and capacity rules in README.md/TODO.yaml for future references.
-        definition_of_done: >-
-          Multiple bowl buildables exist, each enforces food type + capacity limits, UI reflects the rules,
-          and documentation explains how to craft/upgrade bowls that match diets.
+        definition_of_done: Multiple bowl buildables exist, each enforces food type + capacity limits, UI reflects the rules, and documentation explains how to craft/upgrade bowls that match diets.
       - id: core.evolution_requirement_checks
         title: Evolution requirement checks
         priority: medium
@@ -273,9 +203,7 @@ areas:
           - description: Evaluate requirement dictionaries whenever a creature crosses an age threshold.
           - description: Select a valid teen/adult resource (support randomness or weighting) and swap sprites/stats.
           - description: Emit UI + notification signals detailing why a branch triggered.
-        definition_of_done: >-
-          Evolution outcomes reflect stat training and care history; requirements are
-          easy to tweak per species.
+        definition_of_done: Evolution outcomes reflect stat training and care history; requirements are easy to tweak per species.
       - id: core.care_mistake_tracking
         title: Care mistake tracking
         priority: medium
@@ -288,302 +216,241 @@ areas:
           - autoload/eventbus.gd
         blockers: []
         subtasks:
-          - description: ✅ Defined starvation/exhaustion/grooming/nest thresholds in `CARE_MISTAKE_RULES`
-              inside `scenes/creature/creature.gd`, each with trigger and recovery ratios tuned for the
-              10s world tick.
-          - description: ✅ Increment care mistakes via `_evaluate_care_mistakes()` +
-              `_record_care_mistake()`, emit `Eventbus.care_mistake_recorded` and
-			  `care_mistake_total_changed`, and sync the totals onto each creature's blackboard/UI signals.
-		  - description: ✅ Added a one in-game hour decay window (`CARE_MISTAKE_DECAY_HOURS`), documented the
-			  behavior in `README.md`, and surfaced totals so upcoming evolution checks can branch on them.
-		definition_of_done: >-
-		  Care mistakes rise under neglect, reset/decay rules are documented, and
-		  evolution branches consume the value.
-	  - id: core.trait_system
-		title: Trait system
-		priority: medium
-		status: done
-		owner: unassigned
-		problem: Creatures had no personality traits to differentiate behavior, yet design called for positive/negative traits that can be inherited, learned, and evolve over time (e.g., "glutton" worsening or improving).
-		entrypoints:
-		  - scenes/creature/Creature.gd (trait container + lifecycle hooks)
-		  - resources/stats/creature_stats.gd (serialization + modifiers)
-		  - autoload/eventbus.gd (signals for trait changes)
-		  - README.md (document available traits and evolution rules)
-		blockers: []
-		subtasks:
-		  - description: ✅ Added `resources/traits/trait_state.gd` + `trait_catalog.gd` so trait ids, tiers, alignments, and modifiers live in data instead of ad-hoc dictionaries.
-		  - description: ✅ Stored trait arrays on `CreatureStats`, serialized them through `Creature._stats_to_dict()`/`_apply_stats_from_dict()`, and rolled one positive + one negative slot via `TraitCatalog.roll_random_state()` while exposing `add_trait`/`upgrade_trait`/`remove_trait`.
-		  - description: ✅ Fed trait multipliers into hunger ticks, energy drain/recovery, training XP/fatigue, and BeeHave grooming/nest actions, firing new `Eventbus.trait_*` signals plus notifications whenever traits change.
-		  - description: ✅ Surfaced live trait lists in `scenes/ui/drawers/creature_details_drawer.*` and documented the workflow/stats impact in `README.md`.
-		definition_of_done: >-
-		  Creatures can spawn or learn traits, traits visibly impact simulation stats/behaviors, and documentation explains how traits evolve or flip alignment.
-	  - id: core.creature_types_and_nests
-		title: Creature types + nest gating
-		priority: medium
-		status: todo
-		owner: unassigned
-		problem: >-
-		  Design now calls for land, flying, and water creatures with matching nest types, but the
-		  sim only exposes a single "BasicNest" buildable and creatures lack any elemental/type
-		  metadata, so nothing enforces habitat requirements.
-		entrypoints:
-		  - resources/creature/species.gd (type metadata + serialization)
-		  - resources/creature/data/* (species resource definitions)
-		  - buildables/nests/* (new nest scenes + scripts per habitat)
-		  - autoload/data.gd (nest registries + build costs)
-		  - scenes/world.gd (spawning logic that assigns creatures to compatible nests)
-		  - README.md / TODO.yaml (document available types + nest rules)
-		blockers: []
-		subtasks:
-		  - description: Extend species resources with a `creature_type` enum (land, flying, water)
-			  and retrofit existing assets with the appropriate values.
-		  - description: Author distinct nest scenes/resources for water vs. land-capable creatures
-			  and register them in autoload/data.gd with clear build costs/requirements.
-		  - description: Update world spawning + nesting logic so water types can only occupy water
-			  nests while land and flying types share land nests, surfacing user feedback when no
-			  compatible nest exists.
-		  - description: Document the new type system, nest unlock rules, and cross-type behavior in
-			  README.md so future tasks can extend the taxonomy.
-		definition_of_done: >-
-		  Every creature species declares a type, matching nests exist and are enforced at runtime,
-		  and documentation explains how habitats map to species plus how to add future types.
+          - description: "\u2705 Defined starvation/exhaustion/grooming/nest thresholds in `CARE_MISTAKE_RULES` inside `scenes/creature/creature.gd`, each with trigger and recovery ratios tuned for the 10s world tick."
+          - description: "\u2705 Increment care mistakes via `_evaluate_care_mistakes()` + `_record_care_mistake()`, emit `Eventbus.care_mistake_recorded` and `care_mistake_total_changed`, and sync the totals onto each creature's blackboard/UI signals."
+          - description: "\u2705 Added a one in-game hour decay window (`CARE_MISTAKE_DECAY_HOURS`), documented the behavior in `README.md`, and surfaced totals so upcoming evolution checks can branch on them."
+        definition_of_done: Care mistakes rise under neglect, reset/decay rules are documented, and evolution branches consume the value.
+      - id: core.trait_system
+        title: Trait system
+        priority: medium
+        status: done
+        owner: unassigned
+        problem: Creatures had no personality traits to differentiate behavior, yet design called for positive/negative traits that can be inherited, learned, and evolve over time (e.g., "glutton" worsening or improving).
+        entrypoints:
+          - scenes/creature/Creature.gd (trait container + lifecycle hooks)
+          - resources/stats/creature_stats.gd (serialization + modifiers)
+          - autoload/eventbus.gd (signals for trait changes)
+          - README.md (document available traits and evolution rules)
+        blockers: []
+        subtasks:
+          - description: "\u2705 Added `resources/traits/trait_state.gd` + `trait_catalog.gd` so trait ids, tiers, alignments, and modifiers live in data instead of ad-hoc dictionaries."
+          - description: "\u2705 Stored trait arrays on `CreatureStats`, serialized them through `Creature._stats_to_dict()`/`_apply_stats_from_dict()`, and rolled one positive + one negative slot via `TraitCatalog.roll_random_state()` while exposing `add_trait`/`upgrade_trait`/`remove_trait`."
+          - description: "\u2705 Fed trait multipliers into hunger ticks, energy drain/recovery, training XP/fatigue, and BeeHave grooming/nest actions, firing new `Eventbus.trait_*` signals plus notifications whenever traits change."
+          - description: "\u2705 Surfaced live trait lists in `scenes/ui/drawers/creature_details_drawer.*` and documented the workflow/stats impact in `README.md`."
+        definition_of_done: Creatures can spawn or learn traits, traits visibly impact simulation stats/behaviors, and documentation explains how traits evolve or flip alignment.
+      - id: core.creature_types_and_nests
+        title: Creature types + nest gating
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: Design now calls for land, flying, and water creatures with matching nest types, but the sim only exposes a single "BasicNest" buildable and creatures lack any elemental/type metadata, so nothing enforces habitat requirements.
+        entrypoints:
+          - resources/creature/species.gd (type metadata + serialization)
+          - resources/creature/data/* (species resource definitions)
+          - buildables/nests/* (new nest scenes + scripts per habitat)
+          - autoload/data.gd (nest registries + build costs)
+          - scenes/world.gd (spawning logic that assigns creatures to compatible nests)
+          - README.md / TODO.yaml (document available types + nest rules)
+        blockers: []
+        subtasks:
+          - description: Extend species resources with a `creature_type` enum (land, flying, water) and retrofit existing assets with the appropriate values.
+          - description: Author distinct nest scenes/resources for water vs. land-capable creatures and register them in autoload/data.gd with clear build costs/requirements.
+          - description: Update world spawning + nesting logic so water types can only occupy water nests while land and flying types share land nests, surfacing user feedback when no compatible nest exists.
+          - description: Document the new type system, nest unlock rules, and cross-type behavior in README.md so future tasks can extend the taxonomy.
+        definition_of_done: Every creature species declares a type, matching nests exist and are enforced at runtime, and documentation explains how habitats map to species plus how to add future types.
   - id: content_ux
-	title: Content & UX
-	tasks:
-	  - id: content.evolution_data_pass
-		title: Evolution data pass
-		priority: medium
-		status: todo
-		owner: unassigned
-		problem: Only four baby species exist and one teen slot lacks a base form.
-		entrypoints:
-		  - resources/creature/data/babies/*.tres
-		  - resources/creature/data/teens/*.tres
-		  - design docs
-		blockers: []
-		subtasks:
-		  - description: Flesh out evolution diagram nodes as .tres resources (names may be temporary).
-		  - description: Capture sprite references, requirement dictionaries, and metadata for each form.
-		  - description: Document relationships so future agents can implement them quickly.
-		definition_of_done: >-
-		  Each teen/adult node in the diagram has a resource with documented
-		  requirements and owner sprites.
-	  - id: content.item_roster_audit
-		title: Item roster audit
-		priority: medium
-		status: todo
-		owner: unassigned
-		problem: Starter buildables are debug conveniences and the long-term item list is undecided.
-		entrypoints:
-		  - buildables/*
-		  - autoload/data.gd
-		  - design notes
-		blockers: []
-		subtasks:
-		  - description: Draft a proposed item progression (core habitat, specialty training gear, cosmetic clutter).
-		  - description: Note costs, unlock triggers, and desired effects for each tier.
-		  - description: Capture rationale inside README/TODO for early/mid/late-game availability.
-		definition_of_done: >-
-		  README/TODO captures an ordered list of candidate items plus rationale for
-		  availability.
-	  - id: content.food_art_refresh
-		title: Food + bowl art refresh
-		priority: medium
-		status: todo
-		owner: unassigned
-		problem: >-
-		  Diet mechanics and bowl variants will feel unfinished while the project still uses generic placeholder
-		  sprites. We need bespoke art for each food type and bowl tier, with editable sources alongside exports.
-		entrypoints:
-		  - assets/
-		  - assets/food_bowl.png
-		  - assets/design/**
-		  - README.md
-		  - TODO.yaml
-		blockers:
-		  - core.dietary_food_system
-		  - core.food_bowl_variants
-		subtasks:
-		  - description: Concept + produce meat, veggie, and omnivore food sprites (inventory + placed versions) with Krita/PSD/etc. sources stored under `assets/food/` next to exported PNGs.
-		  - description: Author unique bowl sprites per capacity/tier (icons + in-world) and save editable sources alongside exports so future recolors or upgrades are simple.
-		  - description: Update README.md with previews/links plus editing instructions so contributors know how to regenerate textures or add new variants.
-		definition_of_done: >-
-		  Distinct food/bowl art assets (sources + exports) live under `assets/`, UI/world scenes use them,
-		  and README/TODO document how to update the set.
-	  - id: content.egg_catalog_usability_polish
-		title: Egg catalog usability polish
-		priority: low
-		status: todo
-		owner: unassigned
-		problem: >-
-		  The streamlined catalog cards plus detail window reduce clutter, but players still need better affordances
-		  for browsing large inventories (filters, grouping, visual urgency for ready-to-claim packs, etc.).
-		entrypoints:
-		  - scenes/ui/drawers/egg_catalog_drawer.gd
-		  - scenes/ui/drawers/egg_catalog_drawer.tscn
-		  - scenes/ui/drawers/catalog_item_panel.gd
-		  - scenes/ui/drawers/item_details_window.* (new shared dialog)
-		  - assets/themes/pull_out_drawer_theme.tres
-		blockers: []
-		subtasks:
-		  - description: Add sorting/filter toggles so players can collapse owned/zero-count packs and filter egg inventory by tier or source without scrolling.
-		  - description: Surface urgency cues (color, icons, claim timers) directly on pack cards and egg entries so readiness is apparent without opening tooltips.
-		  - description: Expand the detail window with art/previews and a responsive layout (resizable or multi-column) that can be reused by other drawers.
-		definition_of_done: >-
-		  The egg catalog drawer supports filtering/grouping, highlights actionable packs/eggs at a glance, and
-		  the detail dialog offers richer context plus visuals without overwhelming the main list.
+    title: Content & UX
+    tasks:
+      - id: content.evolution_data_pass
+        title: Evolution data pass
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: Only four baby species exist and one teen slot lacks a base form.
+        entrypoints:
+          - resources/creature/data/babies/*.tres
+          - resources/creature/data/teens/*.tres
+          - design docs
+        blockers: []
+        subtasks:
+          - description: Flesh out evolution diagram nodes as .tres resources (names may be temporary).
+          - description: Capture sprite references, requirement dictionaries, and metadata for each form.
+          - description: Document relationships so future agents can implement them quickly.
+        definition_of_done: Each teen/adult node in the diagram has a resource with documented requirements and owner sprites.
+      - id: content.item_roster_audit
+        title: Item roster audit
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: Starter buildables are debug conveniences and the long-term item list is undecided.
+        entrypoints:
+          - buildables/*
+          - autoload/data.gd
+          - design notes
+        blockers: []
+        subtasks:
+          - description: Draft a proposed item progression (core habitat, specialty training gear, cosmetic clutter).
+          - description: Note costs, unlock triggers, and desired effects for each tier.
+          - description: Capture rationale inside README/TODO for early/mid/late-game availability.
+        definition_of_done: README/TODO captures an ordered list of candidate items plus rationale for availability.
+      - id: content.food_art_refresh
+        title: Food + bowl art refresh
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: Diet mechanics and bowl variants will feel unfinished while the project still uses generic placeholder sprites. We need bespoke art for each food type and bowl tier, with editable sources alongside exports.
+        entrypoints:
+          - assets/
+          - assets/food_bowl.png
+          - assets/design/**
+          - README.md
+          - TODO.yaml
+        blockers:
+          - core.dietary_food_system
+          - core.food_bowl_variants
+        subtasks:
+          - description: Concept + produce meat, veggie, and omnivore food sprites (inventory + placed versions) with Krita/PSD/etc. sources stored under `assets/food/` next to exported PNGs.
+          - description: Author unique bowl sprites per capacity/tier (icons + in-world) and save editable sources alongside exports so future recolors or upgrades are simple.
+          - description: Update README.md with previews/links plus editing instructions so contributors know how to regenerate textures or add new variants.
+        definition_of_done: Distinct food/bowl art assets (sources + exports) live under `assets/`, UI/world scenes use them, and README/TODO document how to update the set.
+      - id: content.egg_catalog_usability_polish
+        title: Egg catalog usability polish
+        priority: low
+        status: todo
+        owner: unassigned
+        problem: The streamlined catalog cards plus detail window reduce clutter, but players still need better affordances for browsing large inventories (filters, grouping, visual urgency for ready-to-claim packs, etc.).
+        entrypoints:
+          - scenes/ui/drawers/egg_catalog_drawer.gd
+          - scenes/ui/drawers/egg_catalog_drawer.tscn
+          - scenes/ui/drawers/catalog_item_panel.gd
+          - scenes/ui/drawers/item_details_window.* (new shared dialog)
+          - assets/themes/pull_out_drawer_theme.tres
+        blockers: []
+        subtasks:
+          - description: Add sorting/filter toggles so players can collapse owned/zero-count packs and filter egg inventory by tier or source without scrolling.
+          - description: Surface urgency cues (color, icons, claim timers) directly on pack cards and egg entries so readiness is apparent without opening tooltips.
+          - description: Expand the detail window with art/previews and a responsive layout (resizable or multi-column) that can be reused by other drawers.
+        definition_of_done: The egg catalog drawer supports filtering/grouping, highlights actionable packs/eggs at a glance, and the detail dialog offers richer context plus visuals without overwhelming the main list.
       - id: content.naming_and_theming
         title: Naming + theming review
         priority: low
         status: todo
         owner: unassigned
-		problem: Species names are placeholders and may change with art direction.
-		entrypoints:
-		  - resources/creature/data/**/*.tres
-		  - assets/design reference image
-		blockers: []
-		subtasks:
-		  - description: Propose naming conventions (e.g., elemental roots + suffix).
-		  - description: Outline how recolors or variants are labeled consistently.
-		  - description: Update design references if needed.
-		definition_of_done: >-
-		  Documented naming guide plus a list of proposed replacements for existing
-		  species.
+        problem: Species names are placeholders and may change with art direction.
+        entrypoints:
+          - resources/creature/data/**/*.tres
+          - assets/design reference image
+        blockers: []
+        subtasks:
+          - description: Propose naming conventions (e.g., elemental roots + suffix).
+          - description: Outline how recolors or variants are labeled consistently.
+          - description: Update design references if needed.
+        definition_of_done: Documented naming guide plus a list of proposed replacements for existing species.
   - id: tooling
-	title: Tooling
-	tasks:
-	  - id: tooling.evolution_tree_asset_ingestion
-		title: Evolution tree asset ingestion
-		priority: medium
-		status: todo
-		owner: unassigned
-		problem: The evolution-diagram image lives outside the repo.
-		entrypoints:
-		  - assets/design/
-		  - README.md
-		blockers: []
-		subtasks:
-		  - description: Check the diagram into version control as both the editable source and exported PNG.
-		  - description: Reference the asset from README once available.
-		  - description: Document how to update/edit the source file.
-		definition_of_done: >-
-		  Diagram sits in the repo, README links to it, and future contributors can
-		  edit the source.
+    title: Tooling
+    tasks:
+      - id: tooling.evolution_tree_asset_ingestion
+        title: Evolution tree asset ingestion
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: The evolution-diagram image lives outside the repo.
+        entrypoints:
+          - assets/design/
+          - README.md
+        blockers: []
+        subtasks:
+          - description: Check the diagram into version control as both the editable source and exported PNG.
+          - description: Reference the asset from README once available.
+          - description: Document how to update/edit the source file.
+        definition_of_done: Diagram sits in the repo, README links to it, and future contributors can edit the source.
   - id: maintenance
-	title: Maintenance & cleanup
-	tasks:
-	  - id: maintenance.remove_unused_drop_zone_canvas
-		title: Remove unused drop zone canvas scripts
-		priority: low
-		status: todo
-		owner: unassigned
-		problem: >-
-		  The legacy `scenes/drop_zone_canvas.gd` script (and matching `.uid`) was replaced by
-		  `scenes/ui/drop_area.gd` but never deleted, so the orphan files now cause confusion about
-		  which drop target is authoritative.
-		entrypoints:
-		  - scenes/drop_zone_canvas.gd
-		  - scenes/drop_zone_canvas.gd.uid
-		  - scenes/ui/drop_area.gd (replacement implementation)
-		  - scenes/world.tscn / scenes/world.gd
-		  - README.md / TODO.yaml
-		blockers: []
-		subtasks:
-		  - description: Confirm no scenes reference `drop_zone_canvas` (current drop logic hangs off `%DropArea`).
-		  - description: Delete the unused script + uid, removing any lingering load errors from the project cache.
-		  - description: Update documentation/TODO to point at `scenes/ui/drop_area.gd` as the drag/drop target.
-		definition_of_done: >-
-		  The unused drop-zone canvas artifacts are gone, only `DropArea` handles build placement, and
-		  documentation/TODO references no longer mention the legacy script.
+    title: Maintenance & cleanup
+    tasks:
+      - id: maintenance.remove_unused_drop_zone_canvas
+        title: Remove unused drop zone canvas scripts
+        priority: low
+        status: todo
+        owner: unassigned
+        problem: The legacy `scenes/drop_zone_canvas.gd` script (and matching `.uid`) was replaced by `scenes/ui/drop_area.gd` but never deleted, so the orphan files now cause confusion about which drop target is authoritative.
+        entrypoints:
+          - scenes/drop_zone_canvas.gd
+          - scenes/drop_zone_canvas.gd.uid
+          - scenes/ui/drop_area.gd (replacement implementation)
+          - scenes/world.tscn / scenes/world.gd
+          - README.md / TODO.yaml
+        blockers: []
+        subtasks:
+          - description: Confirm no scenes reference `drop_zone_canvas` (current drop logic hangs off `%DropArea`).
+          - description: Delete the unused script + uid, removing any lingering load errors from the project cache.
+          - description: Update documentation/TODO to point at `scenes/ui/drop_area.gd` as the drag/drop target.
+        definition_of_done: The unused drop-zone canvas artifacts are gone, only `DropArea` handles build placement, and documentation/TODO references no longer mention the legacy script.
   - id: simulation_balance
-	title: Simulation balance
-	tasks:
-	  - id: sim.training_payoff_model
-		title: Training payoff & upkeep model
-		priority: high
-		status: done
-		owner: unassigned
-		problem: Strength/intelligence/happiness never change after hatching, so training buildables will have no systemic impact.
-		entrypoints:
-		  - resources/stats/creature_stats.gd
-		  - buildables/*
-		  - scenes/creature/Creature.gd
-		  - scenes/ui/*
-		blockers: []
-		subtasks:
-		  - description: ✅ Added baseline/cap + fractional progress fields to `resources/stats/creature_stats.gd` and wired the XP→stat conversion/decay math inside `scenes/creature/Creature.gd`.
-		  - description: ✅ Training sessions now drain extra hunger/energy, accumulate fatigue, and emit lifecycle signals (`autoload/eventbus.gd`, `Creature.begin_training_session()`).
-		  - description: ✅ README.md plus `scenes/ui/drawers/creature_details_drawer.*` document and surface the new status/fatigue readouts so evolution/combat systems can consume the same snapshot.
-		definition_of_done: >-
-		  Training introduces clear tradeoffs (resource drain vs. stat growth), and
-		  documentation explains how to tune the reward curve and decay.
-	  - id: sim.stat_decay_telemetry
-		title: Stat decay telemetry + debug overlay
-		priority: low
-		status: todo
-		owner: unassigned
-		problem: >-
-		  We tuned hunger, energy, grooming, and nest decay using theoretical constants, but the game
-		  captures no per-creature metrics, so there is no way to confirm the 6 feeds / 2 naps / 4 sleep
-		  recoveries per hour targets or diagnose spikes in care mistakes.
-		entrypoints:
-		  - scenes/world.gd
-		  - autoload/eventbus.gd
-		  - autoload/telemetry.gd
-		  - scenes/ui/drawers/creature_details_drawer.tscn
-		  - scenes/ui/drawers/creature_details_drawer.gd
-		  - README.md
-		  - TODO.yaml
-		blockers: []
-		subtasks:
-		  - description: Instrument `GameWorld` ticks to compute hunger/energy/grooming/nest deltas per creature and emit the data through `Eventbus` so other systems can subscribe.
-		  - description: Aggregate those deltas into hourly care-interaction counters (feeds, naps, grooming loops, nest cleanups) and expose them in a debug HUD panel/log for live tuning.
-		  - description: Forward the aggregated metrics into `autoload/telemetry.gd`/Talo so remote dashboards capture the same decay data for longer playtests.
-		  - description: Document how to enable and interpret the instrumentation inside README.md and keep TODO.yaml updated as tooling evolves.
-		definition_of_done: >-
-		  Designers can view live/hourly decay and care-interaction stats per creature both in-game and via telemetry logs,
-		  and README/TODO describe how to toggle and use the instrumentation to validate balance targets.
+    title: Simulation balance
+    tasks:
+      - id: sim.training_payoff_model
+        title: Training payoff & upkeep model
+        priority: high
+        status: done
+        owner: unassigned
+        problem: Strength/intelligence/happiness never change after hatching, so training buildables will have no systemic impact.
+        entrypoints:
+          - resources/stats/creature_stats.gd
+          - buildables/*
+          - scenes/creature/Creature.gd
+          - scenes/ui/*
+        blockers: []
+        subtasks:
+          - description: "\u2705 Added baseline/cap + fractional progress fields to `resources/stats/creature_stats.gd` and wired the XP\u2192stat conversion/decay math inside `scenes/creature/Creature.gd`."
+          - description: "\u2705 Training sessions now drain extra hunger/energy, accumulate fatigue, and emit lifecycle signals (`autoload/eventbus.gd`, `Creature.begin_training_session()`)."
+          - description: "\u2705 README.md plus `scenes/ui/drawers/creature_details_drawer.*` document and surface the new status/fatigue readouts so evolution/combat systems can consume the same snapshot."
+        definition_of_done: Training introduces clear tradeoffs (resource drain vs. stat growth), and documentation explains how to tune the reward curve and decay.
+      - id: sim.stat_decay_telemetry
+        title: Stat decay telemetry + debug overlay
+        priority: low
+        status: todo
+        owner: unassigned
+        problem: We tuned hunger, energy, grooming, and nest decay using theoretical constants, but the game captures no per-creature metrics, so there is no way to confirm the 6 feeds / 2 naps / 4 sleep recoveries per hour targets or diagnose spikes in care mistakes.
+        entrypoints:
+          - scenes/world.gd
+          - autoload/eventbus.gd
+          - autoload/telemetry.gd
+          - scenes/ui/drawers/creature_details_drawer.tscn
+          - scenes/ui/drawers/creature_details_drawer.gd
+          - README.md
+          - TODO.yaml
+        blockers: []
+        subtasks:
+          - description: Instrument `GameWorld` ticks to compute hunger/energy/grooming/nest deltas per creature and emit the data through `Eventbus` so other systems can subscribe.
+          - description: Aggregate those deltas into hourly care-interaction counters (feeds, naps, grooming loops, nest cleanups) and expose them in a debug HUD panel/log for live tuning.
+          - description: Forward the aggregated metrics into `autoload/telemetry.gd`/Talo so remote dashboards capture the same decay data for longer playtests.
+          - description: Document how to enable and interpret the instrumentation inside README.md and keep TODO.yaml updated as tooling evolves.
+        definition_of_done: Designers can view live/hourly decay and care-interaction stats per creature both in-game and via telemetry logs, and README/TODO describe how to toggle and use the instrumentation to validate balance targets.
   - id: online_services
-	title: Online services & auth
-	tasks:
-	  - id: online.storefront_architecture_eval
-		title: Storefront architecture decision
-		priority: high
-		status: done
-		owner: unassigned
-		problem: >-
-		  Decision locked: keep Talo for identity, analytics, and saves, while a new, multi-tenant,
-		  game-agnostic companion repo (`commerce-hub-suite`) owns storefront, dashboard, and Godot
-		  client logic. This repo will focus on integration touchpoints only.
-		entrypoints:
-		  - README.md (documented options + recommendation + hybrid plan)
-		  - TODO.yaml (references to remaining storefront tasks)
-		  - docs/storefront_repo_prompt.md (prompt for spinning up the external repo)
-		blockers: []
-		subtasks:
-		  - description: ✅ Audited Talo extension points to confirm commerce logic is better hosted
-			  outside the core backend so we can keep upstream updates intact.
-		  - description: ✅ Spiked the companion service design and captured a bootstrap prompt for the
-			  `commerce-hub-suite` repo so future agents can create it consistently.
-		  - description: ✅ Documented fallback criteria and integration boundaries in README/TODO to keep
-			  future storefront tasks aligned with the hybrid approach.
-		definition_of_done: >-
-		  README captures the decision matrix plus a recommendation, TODO.yaml references the selected path,
-		  docs/storefront_repo_prompt.md exists for the companion repo, and future tasks clearly state how
-		  purchases, auth, and analytics split across services.
-	  - id: online.server_authority_talo
-		title: Server authoritative backend (Talo)
-		priority: medium
-		status: todo
-		owner: unassigned
-		problem: >-
-		  The sim currently trusts local state even though Talo already provides a Dockerized,
-		  Godot-ready backend (auth, leaderboards, analytics, remote config). We need to wire the
-		  official service into our project—without vendoring Talo's server code—so authoritative
-          state, device/OAuth auth, and data visualization all flow through Talo instead of bespoke
-          logic. Developers should run the upstream stack alongside this repo while `backend/`
-          remains reserved for lightweight bridge scripts we author ourselves.
+    title: Online services & auth
+    tasks:
+      - id: online.storefront_architecture_eval
+        title: Storefront architecture decision
+        priority: high
+        status: done
+        owner: unassigned
+        problem: 'Decision locked: keep Talo for identity, analytics, and saves, while a new, multi-tenant, game-agnostic companion repo (`commerce-hub-suite`) owns storefront, dashboard, and Godot client logic. This repo will focus on integration touchpoints only.'
+        entrypoints:
+          - README.md (documented options + recommendation + hybrid plan)
+          - TODO.yaml (references to remaining storefront tasks)
+          - docs/storefront_repo_prompt.md (prompt for spinning up the external repo)
+        blockers: []
+        subtasks:
+          - description: "\u2705 Audited Talo extension points to confirm commerce logic is better hosted outside the core backend so we can keep upstream updates intact."
+          - description: "\u2705 Spiked the companion service design and captured a bootstrap prompt for the `commerce-hub-suite` repo so future agents can create it consistently."
+          - description: "\u2705 Documented fallback criteria and integration boundaries in README/TODO to keep future storefront tasks aligned with the hybrid approach."
+        definition_of_done: README captures the decision matrix plus a recommendation, TODO.yaml references the selected path, docs/storefront_repo_prompt.md exists for the companion repo, and future tasks clearly state how purchases, auth, and analytics split across services.
+      - id: online.server_authority_talo
+        title: Server authoritative backend (Talo)
+        priority: medium
+        status: todo
+        owner: unassigned
+        problem: "The sim currently trusts local state even though Talo already provides a Dockerized, Godot-ready backend (auth, leaderboards, analytics, remote config). We need to wire the official service into our project\u2014without vendoring Talo's server code\u2014so authoritative state, device/OAuth auth, and data visualization all flow through Talo instead of bespoke logic. Developers should run the upstream stack alongside this repo while `backend/` remains reserved for lightweight bridge scripts we author ourselves."
         entrypoints:
           - README.md (document architecture + auth expectations)
           - TODO.yaml (track backend milestones)
@@ -593,65 +460,40 @@ areas:
           - backend/ (future bridge scripts that proxy Talo without forking it)
         blockers: []
         subtasks:
-          - description: Document how to clone/run the official Talo Docker stack from its upstream repo (outside of ours), link
-              those steps inside `docs/integrations/talo.md`, and keep `backend/` empty except for our own bridge scripts.
-          - description: Configure the vendor-supplied `addons/talo_client/` via project settings/resources (no code edits) so the
-              sim can authenticate per-device, fallback to OAuth, and forward tokens to `autoload/game.gd`.
-          - description: Map Talo features (leaderboards, remote config, analytics, presence) onto our gameplay loops, add any
-              bridge scripts/config we need under `backend/`, and update README.md with trust boundaries/failure modes so eggs/
-              inventory always sync through authoritative endpoints.
-          - description: ✅ Wire pack/egg telemetry signals into `autoload/telemetry.gd` so purchases, claims, openings, hatches,
-              and adoptions submit the documented Talo events/stats (per https://docs.trytalo.com/docs/godot/events and /stats)
-              while guarding against missing player identity.
-          - description: ✅ Replace the fake login delay with device-based identification (per https://docs.trytalo.com/docs/godot/identifying)
-              so the login screen caches a unique device ID, calls `Talo.players.identify("device", id)` on boot, and only enters the
-              main menu once Talo has issued an alias (no username/password prompts required).
-        definition_of_done: >-
-          A Talo service owns the canonical game state, runs via the upstream repo/Docker instructions without any vendored
-          files here, clients authenticate per-device or via OAuth through the configured plug-in, and documentation covers setup,
-          bridge scripts inside `backend/`, and which Talo features back each gameplay surface.
+          - description: Document how to clone/run the official Talo Docker stack from its upstream repo (outside of ours), link those steps inside `docs/integrations/talo.md`, and keep `backend/` empty except for our own bridge scripts.
+          - description: Configure the vendor-supplied `addons/talo_client/` via project settings/resources (no code edits) so the sim can authenticate per-device, fallback to OAuth, and forward tokens to `autoload/game.gd`.
+          - description: Map Talo features (leaderboards, remote config, analytics, presence) onto our gameplay loops, add any bridge scripts/config we need under `backend/`, and update README.md with trust boundaries/failure modes so eggs/ inventory always sync through authoritative endpoints.
+          - description: "\u2705 Wire pack/egg telemetry signals into `autoload/telemetry.gd` so purchases, claims, openings, hatches, and adoptions submit the documented Talo events/stats (per https://docs.trytalo.com/docs/godot/events and /stats) while guarding against missing player identity."
+          - description: "\u2705 Replace the fake login delay with device-based identification (per https://docs.trytalo.com/docs/godot/identifying) so the login screen caches a unique device ID, calls `Talo.players.identify(\"device\", id)` on boot, and only enters the main menu once Talo has issued an alias (no username/password prompts required)."
+        definition_of_done: A Talo service owns the canonical game state, runs via the upstream repo/Docker instructions without any vendored files here, clients authenticate per-device or via OAuth through the configured plug-in, and documentation covers setup, bridge scripts inside `backend/`, and which Talo features back each gameplay surface.
       - id: online.storefront_egg_packs
         title: Storefront + egg pack purchases
         priority: medium
         status: done
         owner: unassigned
-        problem: >-
-          Egg bundles (and future SKUs) must be inventory-gated by the new multi-tenant commerce suite,
-          but the Godot project still lacks storefront UI, client calls, and entitlement sync hooks.
-          We need to consume offers from `commerce-hub-suite`, mint/consume bundles via REST, and keep
-		  Talo's authoritative inventory in sync after purchases.
-		entrypoints:
-		  - scenes/ui/storefront/* (new UI panels + pack carousel)
-		  - autoload/game.gd (store commands + inventory refresh)
-		  - addons/talo_client/* (device/OAuth tokens forwarded to commerce suite)
-		  - addons/commerce_client/* (vendored Godot plug-in from `commerce-hub-suite`)
-		  - README.md / TODO.yaml (document offer tiers + costs + flows)
-		  - docs/storefront_repo_prompt.md (integration expectations)
-		blockers:
-		  - core.egg_inventory_weighted_spawns
-		  - online.server_authority_talo
-		  - external.commerce_hub_suite_ready (plugin + APIs available from companion repo)
-		subtasks:
-		  - description: Author a Godot storefront menu that lists offers from the commerce hub (egg bundle
-			  fixtures first), including pricing, drop rates, and limited-time badges with multi-tenant
-			  tenant/locale awareness.
-		  - description: Use the `commerce_client` add-on to call purchase endpoints, relay Talo auth tokens,
-			  and wait for entitlements so inventory can't desync or double-spend.
-          - description: Sync UI and local inventory to the authoritative responses (commerce suite + Talo),
-              surfacing success/failure state, receipts, and audit logs.
-        definition_of_done: >-
-          Players obtain egg bundles only through the storefront, purchases are validated by the commerce
-          hub (with Talo receiving final entitlements), inventory updates atomically, and documentation
-          explains SKU names, currencies, and logs for all tenants.
+        problem: Egg bundles (and future SKUs) must be inventory-gated by the new multi-tenant commerce suite, but the Godot project still lacks storefront UI, client calls, and entitlement sync hooks. We need to consume offers from `commerce-hub-suite`, mint/consume bundles via REST, and keep Talo's authoritative inventory in sync after purchases.
+        entrypoints:
+          - scenes/ui/storefront/* (new UI panels + pack carousel)
+          - autoload/game.gd (store commands + inventory refresh)
+          - addons/talo_client/* (device/OAuth tokens forwarded to commerce suite)
+          - addons/commerce_client/* (vendored Godot plug-in from `commerce-hub-suite`)
+          - README.md / TODO.yaml (document offer tiers + costs + flows)
+          - docs/storefront_repo_prompt.md (integration expectations)
+        blockers:
+          - core.egg_inventory_weighted_spawns
+          - online.server_authority_talo
+          - external.commerce_hub_suite_ready (plugin + APIs available from companion repo)
+        subtasks:
+          - description: Author a Godot storefront menu that lists offers from the commerce hub (egg bundle fixtures first), including pricing, drop rates, and limited-time badges with multi-tenant tenant/locale awareness.
+          - description: Use the `commerce_client` add-on to call purchase endpoints, relay Talo auth tokens, and wait for entitlements so inventory can't desync or double-spend.
+          - description: Sync UI and local inventory to the authoritative responses (commerce suite + Talo), surfacing success/failure state, receipts, and audit logs.
+        definition_of_done: Players obtain egg bundles only through the storefront, purchases are validated by the commerce hub (with Talo receiving final entitlements), inventory updates atomically, and documentation explains SKU names, currencies, and logs for all tenants.
       - id: online.monetization_foundation
         title: Monetization + real-currency hooks
         priority: low
         status: todo
         owner: unassigned
-        problem: >-
-          The roadmap now calls for optional real-money purchases (egg packs, premium currencies, cosmetic
-          bundles). There is no pricing model, payment provider plan, or entitlement flow, so we need a
-          blueprint that keeps soft/hard currency in sync across the commerce hub and Talo.
+        problem: The roadmap now calls for optional real-money purchases (egg packs, premium currencies, cosmetic bundles). There is no pricing model, payment provider plan, or entitlement flow, so we need a blueprint that keeps soft/hard currency in sync across the commerce hub and Talo.
         entrypoints:
           - README.md (monetization overview + compliance notes)
           - TODO.yaml (task tracking)
@@ -666,13 +508,80 @@ areas:
           - online.storefront_egg_packs
           - external.commerce_hub_suite_ready (commerce suite must expose payment adapters)
         subtasks:
-          - description: Define SKU tables for soft-currency bundles, premium currency, and direct egg
-              purchases, including price tiers for USD (or platform equivalents).
-          - description: Select/pay mock gateways (Stripe test mode, Steam wallet, platform IAP) and
-              describe how Talo will verify receipts before granting items.
-          - description: Document refund/chargeback handling plus how real-money purchases convert into
-              in-game egg inventory or currency balances.
-        definition_of_done: >-
-          Pricing tables, gateway integration plans, and entitlement validation steps are documented,
-          Talo exposes placeholders/hooks for real-currency receipts, and the storefront can surface
-          both soft- and hard-currency options even if final payment SDKs are stubbed.
+          - description: Define SKU tables for soft-currency bundles, premium currency, and direct egg purchases, including price tiers for USD (or platform equivalents).
+          - description: Select/pay mock gateways (Stripe test mode, Steam wallet, platform IAP) and describe how Talo will verify receipts before granting items.
+          - description: Document refund/chargeback handling plus how real-money purchases convert into in-game egg inventory or currency balances.
+        definition_of_done: Pricing tables, gateway integration plans, and entitlement validation steps are documented, Talo exposes placeholders/hooks for real-currency receipts, and the storefront can surface both soft- and hard-currency options even if final payment SDKs are stubbed.
+  - id: architecture
+    title: Architecture and modularization
+    tasks:
+      - id: architecture.creature_controller_split
+        title: Modular creature controllers
+        priority: critical
+        status: todo
+        owner: unassigned
+        problem: |-
+          `scenes/creature/creature.gd` mixes needs ticks, training, traits, visuals, and persistence
+          in one 1.3k-line script, making tuning and testing risky. We need to split into child
+          controllers so each system is isolated and reusable.
+        entrypoints:
+          - scenes/creature/creature.gd
+          - scenes/creature/creature.tscn
+          - scenes/creature/controllers/* (new)
+          - resources/creature_configs/* (new Resource configs)
+        subtasks:
+          - description: "\u2705 Add child controller scripts (`NeedsController`, `TrainingController`, `TraitController`, `PersistenceAdapter`) under `scenes/creature/controllers/`, and wire them as nodes in `scenes/creature/creature.tscn`."
+          - description: Delegate hunger/energy/grooming/nest ticks to `NeedsController` and ensure world tick connections flow through the root creature to that node.
+          - description: "\u2705 Delegate session lifecycle, fatigue/decay math, and blackboard updates to `TrainingController`; keep AI/UI APIs stable (`begin_training_session()`, etc.)."
+          - description: Move trait roll/apply/emit logic into `TraitController`, keeping public APIs (`add_trait`, `upgrade_trait`, `remove_trait`, snapshots) unchanged.
+          - description: Move save/load and stat snapshots into `PersistenceAdapter` so world restore and buildable saves call a thin facade on the creature.
+          - description: Extract action metadata, care profiles, and training tuning into exported Resource assets under `resources/creature_configs/` and load them in the creature.
+        definition_of_done: |-
+          Creature root focuses on visuals/signals; needs, training, traits, and persistence live in
+          dedicated controllers; config dictionaries live in Resources; AI/UI APIs stay backward
+          compatible; README and TODO describe the new structure.
+      - id: architecture.world_helper_split
+        title: World helpers + camera service
+        priority: critical
+        status: done
+        owner: unassigned
+        problem: |-
+          `scenes/world.gd` owns simulation, persistence, buildable placement, and camera toggling.
+          The monolith is hard to extend and repeats camera-priority resets.
+        entrypoints:
+          - scenes/world.gd
+          - scenes/world.tscn
+          - scenes/world/helpers/* (new)
+        subtasks:
+          - description: "✅ Added `WorldSimulation` helper to own the tick Timer (world tick remains the driver), idle catch-up math, and simulation start/stop, with signals back to GameWorld."
+          - description: "✅ Ensured world tick wiring still drives creature needs/training via the timer (even if the world tick signal stays unused) and captured the contract in docs."
+          - description: "✅ Added `WorldPersistence` helper to serialize/restore player, buildables, and creatures; keep payload shape stable for `autoload/game.gd`."
+          - description: "✅ Added `WorldPlacement` helper for nest/buildable lookup, register/clear logic, and bed assignment, called by GameWorld on spawn/restore."
+          - description: "✅ Added `WorldCameras` helper and a shared camera-priority service to centralize focus/build/world view switching without repeating priority loops."
+          - description: "✅ Added `CameraPriorityService` (`scenes/world/helpers/camera_service.gd`) and wired focus/world/build view toggles through it to remove repeated priority loops."
+          - description: "✅ Added `WorldPlacement` helper (`scenes/world/helpers/world_placement.gd`) and wired nest lookup/bed assignment/buildable registration in `scenes/world.gd` to it."
+        definition_of_done: |-
+          GameWorld coordinates helpers; simulation/persistence/placement/camera logic live in
+          dedicated scripts; camera priority toggles use a shared service; README/TODO updated.
+      - id: architecture.folder_hierarchy_refresh
+        title: Folder hierarchy refresh (Godot 4.5)
+        priority: high
+        status: todo
+        owner: unassigned
+        problem: |-
+          Folder layout has grown organically. We should align with Godot 4.5 conventions (scenes +
+          scripts paired, Resources grouped, autoloads isolated) to improve discoverability.
+        entrypoints:
+          - scenes/*
+          - autoload/*
+          - resources/*
+          - creature_ai/*
+          - docs/README.md
+        subtasks:
+          - description: 'Propose and document a hierarchy: e.g., `scenes/creature/{controllers,ui}`, `scenes/world/{helpers}`, `resources/{creature_configs,traits,species}`, `scripts/` for shared utilities, keeping addons untouched.'
+          - description: Plan a staged move (with `.import` safety) to avoid breaking Godot paths; map scene/script renames and update `project.godot` paths if required.
+          - description: Audit for unused scenes/scripts/resources before moving; remove or archive dead assets so the new hierarchy stays lean.
+          - description: Document the target structure and migration steps in README and TODO before moving assets; explicitly exclude `addons/`, `build/`, and `android/` from changes.
+        definition_of_done: |-
+          A documented folder plan that aligns with Godot 4.5 practices, preserves addon isolation,
+          and outlines safe migration steps for scenes, scripts, and resources.

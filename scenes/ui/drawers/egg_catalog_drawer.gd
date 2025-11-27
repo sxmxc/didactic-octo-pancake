@@ -118,7 +118,7 @@ func _render_eggs() -> void:
 		button.pressed.connect(_on_egg_entry_pressed.bind(index))
 		egg_list.add_child(button)
 
-func _on_pack_details_requested(pack_id: String) -> void:
+func _on_pack_details_requested(_panel: CatalogItemPanel, pack_id: String) -> void:
 	_show_pack_details(pack_id)
 
 func _on_egg_entry_pressed(index: int) -> void:

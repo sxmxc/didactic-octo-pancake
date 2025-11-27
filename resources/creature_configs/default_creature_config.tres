@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CreatureConfig" load_steps=2 format=3 uid="uid://b1e3p7cvcfgsq"]
+
+[ext_resource type="Script" uid="uid://pw3va87uffop" path="res://resources/creature_configs/creature_config.gd" id="1_p0tqa"]
+
+[resource]
+script = ExtResource("1_p0tqa")
+metadata/_custom_type_script = "uid://pw3va87uffop"

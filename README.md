@@ -5,7 +5,7 @@ A Godot 4.5 virtual-creature sandbox inspired by classic Tamagotchi and Digimon 
 ## Current pillars
 
 - **Signal-driven simulation.** Autoload singletons (`Data`, `Game`, `Eventbus`, etc.) expose shared data, events, and logging so scenes can communicate without tight coupling.
-- **World scene as orchestrator.** `scenes/world.tscn` and `scenes/world.gd` spawn creatures, manage timers, and react to UI requests such as feeding or dropping buildables.
+- **World scene as orchestrator.** `scenes/world.tscn` and `scenes/world.gd` now coordinate helpers—`scenes/world/helpers/world_simulation.gd` (timer + idle catch-up), `scenes/world/helpers/world_persistence.gd` (save/load payloads), `scenes/world/helpers/world_placement.gd` (baseline TileMap + nest/buildable lookup), and `scenes/world/helpers/world_cameras.gd` + `scenes/world/helpers/camera_service.gd` (view switching)—while still spawning creatures, managing timers, and reacting to HUD requests such as feeding or dropping buildables.
 - **Resource-based content.** Creatures, stats, and audio live in `resources/`, making it easy to add new species or items by authoring `.tres` files and referencing them from `autoload/data.gd`.
 - **UI-first interactions.** The HUD (`scenes/ui`) listens to `Eventbus` signals to switch menus, update segmented bars, drag-and-drop buildables, and queue notifications.
 
@@ -39,6 +39,7 @@ The world clock inside `scenes/world.gd` emits a tick every `tick_frequency` sec
 
 - **Base targets per real-time hour.** Hunger rises enough to require ~6 feedings, energy drains to zero twice, and sleep restores a full bar four times. These values map to the constants `HUNGER_INTERACTIONS_PER_HOUR`, `ENERGY_DRAIN_CYCLES_PER_HOUR`, and `SLEEP_RECOVERY_CYCLES_PER_HOUR` inside `scenes/creature/Creature.gd`.
 - **Life-stage multipliers.** Babies run hotter than teens while adults coast longer; eggs stay stable. The per-stage profile also specifies what fraction of the hunger rate applies while the creature sleeps.
+- **Designer tuning resource.** Action labels/thoughts, life-stage care profiles, and training rate/cost dictionaries now live in `resources/creature_configs/default_creature_config.tres` (script: `resources/creature_configs/creature_config.gd`). Adjust those Resource values instead of editing `scenes/creature/creature.gd`.
 
 | Life stage | Hunger multiplier | Energy multiplier | Sleep energy multiplier | Sleep hunger fraction |
 | --- | --- | --- | --- | --- |
@@ -106,6 +107,7 @@ The fallback selector (WalkAround → Idle) still keeps creatures roaming whenev
 
 - `autoload/game.gd` owns the lifecycle for persistence. It calls `scenes/world.gd.serialize_state()` and writes `user://saves/autosave.save` via `save/save_io.gd`, bundling player wallet/buildables, all spawned buildables, creature payloads (stats, species, bed positions), RNG state, and the last world tick timestamp.
 - `scenes/world.gd` exposes `start_new_session()`, `begin_simulation()`, `apply_saved_state()`, `apply_idle_ticks()`, and `prepare_for_save()` while `scenes/creature/Creature.gd` ships `Creature.apply_save_data()` so those calls can rebuild the player wallet, dynamic buildables, creature stats, and nest assignments before manual or auto saves run.
+- World helpers: `scenes/world/helpers/world_simulation.gd` owns the timer + idle catch-up wiring (including per-creature connections), `scenes/world/helpers/world_persistence.gd` serializes/restores player/buildable/creature payloads with the existing `autoload/game.gd` shape, `scenes/world/helpers/world_placement.gd` caches the baseline TileMap/buildable set and handles nest lookup/bed matching, and `scenes/world/helpers/world_cameras.gd` + `scenes/world/helpers/camera_service.gd` centralize focus/world/build view toggles. `GameWorld` orchestrates these helpers so UI and Eventbus contracts stay stable.
 - Autosaves occur whenever key actions fire (`Player.add_to_wallet`, buildable placement in `scenes/ui/drop_area.gd`, creature adoption inside `scenes/world.gd`) and are debounced inside `Game.queue_save`. Players can pick **Continue** on the main menu to load the last save, opt for **New** to wipe `user://saves/autosave.save` before entering the world, or trigger a manual checkpoint via the Save button on `scenes/ui/menu_bar.tscn`.
 - On boot `Game.register_world()` loads the payload, rehydrates `scenes/world.gd` (player, buildables, creatures), and runs a bounded idle catch-up loop (up to six hours of ticks) so hunger/energy decay and life-stage transitions advance before the clock restarts.
 - Failures (missing/corrupt save) emit `Eventbus.load_failed` and fall back to `start_new_session()`, so other systems can surface warnings without crashing the sim.

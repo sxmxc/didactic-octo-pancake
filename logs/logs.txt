@@ -1,0 +1,79 @@
+[2025-11-27T12:01:06] INFO autoload/game.gd::_ready: Tracer Ready
+[2025-11-27T12:01:06] INFO autoload/game.gd::_ready: Game Ready
+[2025-11-27T12:01:14] INFO scenes/world/helpers/world_persistence.gd::apply_saved_state: Applying saved world state (buildables=9, creatures=6)
+[2025-11-27T12:01:14] INFO scenes/world/helpers/world_simulation.gd::stop_simulation: World simulation stopped
+[2025-11-27T12:01:14] INFO scenes/world/helpers/world_placement.gd::log_nest_context: baseline_init: nests=0 []
+[2025-11-27T12:01:14] INFO scenes/world/helpers/world_placement.gd::log_nest_context: clear_dynamic_buildables: nests=0 []
+[2025-11-27T12:01:14] INFO scenes/player/player.gd::set_wallet_from_save: Wallet restored from save: { "gold": 950, "gem": 0, "platinum": 0 }
+[2025-11-27T12:01:14] INFO scenes/player/player.gd::learn_buildable: Learned buildable BasicNest
+[2025-11-27T12:01:14] INFO scenes/player/player.gd::learn_buildable: Learned buildable BasicFoodBowl
+[2025-11-27T12:01:14] INFO scenes/player/player.gd::learn_buildable: Learned buildable GymPod
+[2025-11-27T12:01:14] INFO scenes/player/player.gd::learn_buildable: Learned buildable StudyDesk
+[2025-11-27T12:01:14] INFO scenes/world/helpers/world_placement.gd::log_nest_context: restore_buildables_complete: nests=0 []
+[2025-11-27T12:01:14] INFO scenes/world/helpers/world_placement.gd::log_nest_context: baseline_init: nests=6 [Nest (owner=none), @Node2D@126 (owner=none), @Node2D@127 (owner=none), @Node2D@128 (owner=none), @Node2D@129 (owner=none), @Node2D@130 (owner=none)]
+[2025-11-27T12:01:14] INFO scenes/player/player.gd::adopt_creature: Player adopted creature Qbli (Blop)
+[2025-11-27T12:01:14] INFO scenes/player/player.gd::adopt_creature: Player adopted creature Moy (Blop)
+[2025-11-27T12:01:14] INFO scenes/player/player.gd::adopt_creature: Player adopted creature Cawguy (Squip)
+[2025-11-27T12:01:14] INFO scenes/player/player.gd::adopt_creature: Player adopted creature Xi'oustoank (Sprit)
+[2025-11-27T12:01:14] INFO scenes/player/player.gd::adopt_creature: Player adopted creature Tigio (Sprit)
+[2025-11-27T12:01:14] INFO scenes/player/player.gd::adopt_creature: Player adopted creature Sumes (Squip)
+[2025-11-27T12:01:14] INFO scenes/world/helpers/world_persistence.gd::apply_saved_state: World state applied (tick_frequency=2)
+[2025-11-27T12:01:14] INFO scenes/world/helpers/world_simulation.gd::begin_simulation: World simulation started (tick_frequency=2)
+[2025-11-27T12:01:15] INFO scenes/world/helpers/world_persistence.gd::prepare_for_save: Prepared world for save at 12233 ms
+[2025-11-27T12:01:15] INFO scenes/world/helpers/world_persistence.gd::serialize_state: Serializing world state (tick_frequency=2, buildables=15, creatures=6)
+[2025-11-27T12:01:46] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:46] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:46] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:46] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:47] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:47] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:47] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:47] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:47] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:47] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:47] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:47] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:50] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:50] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:51] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:51] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:51] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:51] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:51] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:51] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:52] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:52] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:52] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:52] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:52] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:52] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:53] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:53] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:55] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:55] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:55] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:55] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:01:56] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:01:56] INFO scenes/world.gd::_on_feed_requested: No available food containers
+[2025-11-27T12:02:05] INFO scenes/world/helpers/world_persistence.gd::prepare_for_save: Prepared world for save at 62265 ms
+[2025-11-27T12:02:05] INFO scenes/world/helpers/world_persistence.gd::serialize_state: Serializing world state (tick_frequency=2, buildables=15, creatures=6)
+[2025-11-27T12:02:05] INFO scenes/ui/ui.gd::_on_popup_requested: Popup request received
+[2025-11-27T12:05:47] INFO scenes/world/helpers/world_persistence.gd::prepare_for_save: Prepared world for save at 281751 ms
+[2025-11-27T12:05:47] INFO scenes/world/helpers/world_persistence.gd::serialize_state: Serializing world state (tick_frequency=2, buildables=16, creatures=6)
+[2025-11-27T12:05:57] INFO scenes/world/helpers/world_persistence.gd::prepare_for_save: Prepared world for save at 291649 ms
+[2025-11-27T12:05:57] INFO scenes/world/helpers/world_persistence.gd::serialize_state: Serializing world state (tick_frequency=2, buildables=17, creatures=6)
+[2025-11-27T12:05:58] INFO scenes/creature/creature.gd::_on_touch_screen_button_pressed: Requesting focus view for Cawguy 
+[2025-11-27T12:05:58] INFO scenes/ui/ui.gd::_on_focus_requested: Focus view request recieved for Cawguy 
+[2025-11-27T12:05:58] INFO scenes/world/helpers/world_cameras.gd::on_focus_view_requested: Focus view request recieved for Cawguy
+[2025-11-27T12:06:08] INFO scenes/ui/ui.gd::_on_world_view_requested: World view request recieved
+[2025-11-27T12:06:08] INFO scenes/world/helpers/world_cameras.gd::on_world_view_requested: World view request received
+[2025-11-27T12:06:15] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:06:15] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:06:15] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:06:15] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:06:15] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:06:15] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:06:15] INFO scenes/world.gd::_on_feed_requested: Food request received
+[2025-11-27T12:06:15] INFO scenes/world.gd::_on_feed_requested: Adding food to available container
+[2025-11-27T12:06:16] INFO scenes/world.gd::_on_feed_requested: Food request received
+[
